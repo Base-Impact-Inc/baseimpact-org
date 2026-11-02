@@ -108,7 +108,7 @@ html {
   color: var(--color-body);
   color-scheme: dark;
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
+  font-size: 100%;
   line-height: 1.55;
 }
 html:not(.dark) {
@@ -803,9 +803,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Body text improvements */
 body {
-  font-size: 1.0625rem;
+  font-size: inherit;
   line-height: 1.6;
   letter-spacing: -0.005em;
+  overflow-x: hidden;
 }
 
 /* Better paragraph spacing */
