@@ -1,5 +1,22 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth(); // 0-based
+const monthName = now.toLocaleString('en-US', { month: 'long' });
+const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+// Tentative event days (update as dates are confirmed)
+const eventDays: Record<number, string> = {
+  7: 'Supply drive',
+  14: 'Distribution day',
+  21: 'Supply drive',
+  28: 'Community outreach',
+};
+const cells: (number | null)[] = [];
+for (let i = 0; i < firstDay; i++) cells.push(null);
+for (let d = 1; d <= daysInMonth; d++) cells.push(d);
 ---
 
 <Base
@@ -47,7 +64,31 @@ import Base from '../layouts/Base.astro';
     </div>
   </section>
 
-  <!-- Recent impact stories -->
+  <!-- Calendar -->
+  <section class="mb-10 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body mb-3">{monthName} {year} — Event calendar</h2>
+    <p class="text-sm text-muted mb-4">Tentative dates; will be confirmed as events are scheduled. Highlighted days have activity.</p>
+    <div class="grid grid-cols-7 gap-1 max-w-md">
+      {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
+        <div class="text-center text-xs font-bold uppercase text-muted py-1">{d}</div>
+      ))}
+      {cells.map((d) => (
+        d === null ? (
+          <div class="aspect-square"></div>
+        ) : (
+          <div class={`aspect-square flex flex-col items-center justify-center rounded-lg text-sm font-semibold ${eventDays[d] ? 'bg-fill text-on-fill' : 'bg-inset text-body'}`} title={eventDays[d] || ''}>
+            <span>{d}</span>
+            {eventDays[d] && <span class="text-[9px] leading-none mt-0.5 opacity-90">{eventDays[d].split(' ')[0]}</span>}
+          </div>
+        )
+      ))}
+    </div>
+    <ul class="mt-4 space-y-1 text-sm text-muted">
+      {Object.entries(eventDays).map(([d, label]) => (
+        <li><span class="font-semibold text-body">{monthName} {d}:</span> {label}</li>
+      ))}
+    </ul>
+  </section>
   <section class="mb-10 space-y-4 fade-in">
     <h2 class="font-display text-2xl font-semibold text-body">Recent impact</h2>
     <div class="space-y-4">

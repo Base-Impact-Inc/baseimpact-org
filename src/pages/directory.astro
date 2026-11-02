@@ -45,6 +45,13 @@ const groupLabels: Record<string, string> = {
     </label>
   </div>
 
+  <div class="flex gap-2 mb-4" id="view-toggle">
+    <button type="button" id="view-list" class="chip px-4 py-2 rounded-full text-sm font-semibold bg-fill text-on-fill">List</button>
+    <button type="button" id="view-map" class="chip px-4 py-2 rounded-full text-sm font-semibold bg-inset text-body hover:bg-line">Map</button>
+  </div>
+
+  <div id="map-container" class="hidden mb-4 rounded-2xl overflow-hidden shadow-[var(--shadow-border)]" style="height: 480px;"></div>
+
   <p id="results-count" class="text-sm text-muted mb-4">{resources.length} results</p>
 
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="resource-grid">
@@ -54,6 +61,13 @@ const groupLabels: Record<string, string> = {
       </div>
     ))}
   </div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+
+  <script type="application/json" id="resource-data">
+    {JSON.stringify(resources.map((r: any) => ({ id: r.id, name: r.name, lat: r.lat, lng: r.lng, address: r.address, category: r.category, group: r.group })))}
+  </script>
 
   <div id="empty-state" class="hidden text-center py-12">
     <p class="text-lg text-muted">No resources found.</p>
@@ -171,4 +185,52 @@ const groupLabels: Record<string, string> = {
       setSaved(current);
     });
   });
+
+  // Map view (Leaflet)
+  const viewListBtn = document.getElementById('view-list');
+  const viewMapBtn = document.getElementById('view-map');
+  const mapContainer = document.getElementById('map-container');
+  const resourceGrid = document.getElementById('resource-grid');
+  let map = null;
+
+  function initMap() {
+    if (map) return;
+    const dataEl = document.getElementById('resource-data');
+    if (!dataEl || typeof L === 'undefined') return;
+    let data = [];
+    try { data = JSON.parse(dataEl.textContent || '[]'); } catch { data = []; }
+    map = L.map('map-container').setView([28.0836, -80.6081], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 18,
+    }).addTo(map);
+    data.forEach(r => {
+      if (typeof r.lat !== 'number' || typeof r.lng !== 'number') return;
+      const m = L.marker([r.lat, r.lng]).addTo(map);
+      m.bindPopup('<strong>' + r.name + '</strong><br/>' + r.address + '<br/><a href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(r.address) + '&travelmode=transit" target="_blank" rel="noreferrer">Bus directions</a>');
+    });
+  }
+
+  function showList() {
+    mapContainer?.classList.add('hidden');
+    resourceGrid?.classList.remove('hidden');
+    viewListBtn?.classList.add('bg-fill','text-on-fill');
+    viewListBtn?.classList.remove('bg-inset','text-body');
+    viewMapBtn?.classList.remove('bg-fill','text-on-fill');
+    viewMapBtn?.classList.add('bg-inset','text-body');
+  }
+  function showMap() {
+    mapContainer?.classList.remove('hidden');
+    resourceGrid?.classList.add('hidden');
+    viewMapBtn?.classList.add('bg-fill','text-on-fill');
+    viewMapBtn?.classList.remove('bg-inset','text-body');
+    viewListBtn?.classList.remove('bg-fill','text-on-fill');
+    viewListBtn?.classList.add('bg-inset','text-body');
+    if (typeof L === 'undefined') { setTimeout(showMap, 200); return; }
+    initMap();
+    setTimeout(() => { if (map) map.invalidateSize(); }, 100);
+  }
+
+  viewListBtn?.addEventListener('click', showList);
+  viewMapBtn?.addEventListener('click', showMap);
 </script>
