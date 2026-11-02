@@ -80,30 +80,6 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
       </div>
     </div>
   </footer>
-
-  <script>
-    (function() {
-      var btn = document.getElementById('menu-btn');
-      var menu = document.getElementById('mobile-menu');
-      var backdrop = document.getElementById('mobile-menu-backdrop');
-      if (!btn || !menu) return;
-      btn.addEventListener('click', function() {
-        var open = menu.classList.contains('hidden');
-        menu.classList.toggle('hidden', !open);
-        if (backdrop) backdrop.classList.toggle('hidden', !open);
-        btn.setAttribute('aria-expanded', String(open));
-        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      });
-      if (backdrop) {
-        backdrop.addEventListener('click', function() {
-          menu.classList.add('hidden');
-          backdrop.classList.add('hidden');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.setAttribute('aria-label', 'Open menu');
-        });
-      }
-    })();
-  </script>
 </div>
 
 <script>
@@ -179,6 +155,34 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
       li.appendChild(a);
       mobileMore.appendChild(li);
     });
+  }
+
+  // Mobile menu toggle
+  function setupMobileMenu() {
+    var btn = document.getElementById('menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    var backdrop = document.getElementById('mobile-menu-backdrop');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function() {
+      var open = menu.classList.contains('hidden');
+      menu.classList.toggle('hidden', !open);
+      if (backdrop) backdrop.classList.toggle('hidden', !open);
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+    if (backdrop) {
+      backdrop.addEventListener('click', function() {
+        menu.classList.add('hidden');
+        backdrop.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupMobileMenu);
+  } else {
+    setupMobileMenu();
   }
 
   // Triage button (placeholder)
