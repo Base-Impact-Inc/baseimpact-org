@@ -72,8 +72,22 @@ const opportunities = [
     body: 'We are seeking local churches, ministries, and nonprofits for joint community events, co-hosted digital-skills training, program collaboration, and shared space for training sessions and community programs.',
   },
 ];
----
 
+const explorers = [
+  {
+    name: 'United Against Poverty Orlando',
+    meta: '501(c)(3) · Orlando, FL · serving Central Florida since 2003 (uporlando.org)',
+    body: 'Registered 501(c)(3) nonprofit serving families and individuals with crisis care, case management, transformative education, food assistance (Member Share Grocery Program), employment training & placement (STEP), and computer access. Hosts Orange County\'s Coordinated Entry Hub and offers Collaborative Partner Services for joint programming. Serves households at or below 200% of the Federal Poverty Level.',
+    angle: 'Directory/resource sharing and joint digital-skills or workforce-training programming — UAP already provides computer access and workforce training.',
+  },
+  {
+    name: 'IDignity',
+    meta: '501(c)(3) · Orlando, FL · serves U.S. citizens and legal residents (idignity.org)',
+    body: '501(c)(3) nonprofit providing free government identification services — Florida IDs and driver\'s licenses, U.S. birth certificates, Social Security cards, and other vital records. Runs Identification Service Days at Jackie\'s Place; appointments strongly encouraged and walk-ins should arrive before 9:00 AM.',
+    angle: 'ID/document assistance is a prerequisite for housing, employment, healthcare, and benefits — the gateway to the populations Base Impact serves. Referral partnerships and joint device/tech-access programs for newly documented neighbors.',
+  },
+];
+---
 <Base
   title="Partners — Base Impact"
   description="Partnerships, collaborations, and organizational relationships for Base Impact Inc. — a pre-filing nonprofit building technology access and community resilience in Brevard County, FL."
@@ -131,7 +145,7 @@ const opportunities = [
       {orgs.map((org) => (
         <div class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)]">
           <h3 class="font-display text-lg font-semibold text-body">{org.name}</h3>
-          <p class="text-sm text-faint">{org.meta}</p>
+          <p class="text-sm text-faint mt-0.5">{org.meta}</p>
           <p class="text-sm text-muted mt-2">{org.body}</p>
         </div>
       ))}
@@ -197,6 +211,28 @@ const opportunities = [
       Potential technology partners include Microsoft, Google, Apple, Dell, HP, Lenovo, and other
       companies with nonprofit donation programs.
     </p>
+  </section>
+
+  <!-- Organizations we are exploring -->
+  <section class="mt-10 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-2">Organizations we are exploring</h2>
+    <p class="max-w-2xl text-muted leading-relaxed mb-4">
+      These are verified, credible nonprofits we are actively exploring as future collaborators —
+      not yet formal partners. Each provides services that complement Base Impact's technology access
+      and digital skills work.
+    </p>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      {explorers.map((org) => (
+        <div class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)]">
+          <h3 class="font-display text-lg font-semibold text-body">{org.name}</h3>
+          <p class="text-sm text-faint mt-0.5">{org.meta}</p>
+          <p class="text-sm text-muted mt-2">{org.body}</p>
+          <p class="text-sm text-faint mt-3">
+            <span class="font-semibold text-body">Suggested angle:</span> {org.angle}
+          </p>
+        </div>
+      ))}
+    </div>
   </section>
 
   <!-- Technology & AI vision -->
