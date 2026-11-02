@@ -110,6 +110,7 @@ html {
   font-family: var(--font-sans);
   font-size: 100%;
   line-height: 1.55;
+  overflow-x: hidden;
 }
 html:not(.dark) {
   color-scheme: light;
