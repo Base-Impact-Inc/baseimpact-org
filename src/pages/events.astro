@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Events — Base Impact"
+  description="Upcoming events, cold-weather supply drives, shelter nights, and community impact stories from Base Impact in Brevard County, FL."
+>
+  <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">Events &amp; Community Impact</h1>
+  <p class="max-w-2xl text-muted leading-relaxed mb-8 fade-in">
+    Cold weather is coming to Florida, and neighbors will need heavier clothing, blankets, and supplies
+    for extended stays at cold-night shelter facilities. Here's what's coming up, what's needed, and
+    what we've done together.
+  </p>
+
+  <!-- Upcoming events -->
+  <section class="mb-10 space-y-4 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body">Upcoming</h2>
+    <div class="space-y-4">
+      <article class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] space-y-2">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="rounded-md bg-fill px-2 py-1 text-xs font-bold uppercase tracking-wide text-on-fill">Cold weather</span>
+          <span class="text-sm font-semibold text-muted">Coming soon · Brevard County</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-body">Cold-night shelter supply drive</h3>
+        <p class="text-muted leading-relaxed">
+          Collecting heavier jackets, hoodies, blankets, socks, gloves, and hygiene kits for extended stays
+          at cold-night shelter facilities. Drop-off and distribution details to be announced.
+        </p>
+        <p class="text-sm text-faint"><strong>Needed:</strong> 2XL+ jackets/hoodies, blankets, warm socks, gloves, toiletry kits</p>
+      </article>
+
+      <article class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] space-y-2">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="rounded-md bg-fill px-2 py-1 text-xs font-bold uppercase tracking-wide text-on-fill">Ongoing</span>
+          <span class="text-sm font-semibold text-muted">By appointment · Scottsmoor, FL</span>
+        </div>
+        <h3 class="font-display text-xl font-semibold text-body">Device &amp; supply distribution</h3>
+        <p class="text-muted leading-relaxed">
+          Refurbished phones, tablets, and laptops distributed alongside warm clothing and supply kits.
+          Call or text to schedule a pickup or drop-off.
+        </p>
+        <a href="tel:+13213230999" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">
+          Call (321) 323-0999
+        </a>
+      </article>
+    </div>
+  </section>
+
+  <!-- Recent impact stories -->
+  <section class="mb-10 space-y-4 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body">Recent impact</h2>
+    <div class="space-y-4">
+      <article class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] space-y-2">
+        <p class="text-xs font-bold uppercase tracking-widest text-muted">Community donation</p>
+        <h3 class="font-display text-xl font-semibold text-body">Two 2XL jackets &amp; hoodies for a Scottsmoor neighbor</h3>
+        <p class="text-muted leading-relaxed">
+          A generous donor contributed two 2XL jackets and hoodies that went directly to a community member
+          in Scottsmoor, FL. Small, targeted gifts like this make an immediate difference when cold weather hits.
+        </p>
+      </article>
+
+      <article class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] space-y-2">
+        <p class="text-xs font-bold uppercase tracking-widest text-muted">Housing stability</p>
+        <h3 class="font-display text-xl font-semibold text-body">Matched an 80-something neighbor with a roommate</h3>
+        <p class="text-muted leading-relaxed">
+          We matched a lady in her mid-80s who had been living in her car with a roommate who welcomed her
+          into her condo. We helped her move and rearrange so both could enjoy better, safer living conditions
+          and keep each other company.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- How to help with events -->
+  <section class="rounded-2xl bg-band p-6 text-on-fill fade-in">
+    <h2 class="font-display text-xl font-semibold mb-2">Help with cold-weather supplies</h2>
+    <p class="text-sm opacity-90 mb-4">
+      Have heavier clothing, blankets, or supplies to donate? Want to volunteer at a shelter night or
+      distribution day? We'd love your help — every item and every hour counts.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/donate" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Donate supplies</a>
+      <a href="/volunteer" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Volunteer</a>
+      <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Get in touch</a>
+    </div>
+  </section>
+</Base>
