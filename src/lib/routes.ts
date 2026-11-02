@@ -139,10 +139,52 @@ export const ROUTE_META: RouteMeta[] = [
       "Where to find Base Impact online. Our handle is baseimpactorg on every platform.",
   },
   {
-    path: "/terms",
-    title: "Terms of Use & Directory Disclaimer",
+    path: "/donate",
+    title: "Donate to Base Impact",
     description:
-      "Terms of use, resource directory disclaimer, accuracy limits, and liability terms for baseimpact.org.",
+      "Support Base Impact's technology access, digital skills, and community programs in Brevard County.",
+  },
+  {
+    path: "/events",
+    title: "Events & Community Impact",
+    description:
+      "Upcoming events, supply drives, shelter nights, and community impact stories from Base Impact in Brevard County.",
+  },
+  {
+    path: "/grants",
+    title: "Grants & Funding",
+    description:
+      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving Brevard County.",
+  },
+  {
+    path: "/financials",
+    title: "Financials",
+    description:
+      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving Brevard County.",
+  },
+  {
+    path: "/programs",
+    title: "Programs",
+    description:
+      "Base Impact's programs: technology access, digital skills, laptop training, AI infrastructure, cell phone partnerships, and a local resource guide.",
+  },
+  {
+    path: "/technology-access",
+    title: "Technology Access",
+    description:
+      "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for Brevard County neighbors in need.",
+  },
+  {
+    path: "/es",
+    title: "Ayuda — Base Impact",
+    description:
+      "Nuestra misión es ayudar a los vecinos a conectarse y a las pequeñas organizaciones sin fines de lucro a mantener su tecnología funcionando.",
+  },
+  {
+    path: "/es/directory",
+    title: "Directorio de recursos",
+    description:
+      "Busca comida, refugio y ayuda cerca de ti en Brevard, Volusia, Orange y estados de Florida.",
   },
 ];
 

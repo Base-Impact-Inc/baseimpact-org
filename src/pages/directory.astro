@@ -1,6 +1,4 @@
 ---
-export const prerender = false;
-
 import Base from '../layouts/Base.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 
@@ -34,10 +32,10 @@ if (env?.baseimpact_verify) {
     nextAvail: { status: 'UNKNOWN' },
   }));
 } else {
-  // Fallback for dev/preview without D1 binding
+  // Fallback for build/preview without D1 binding
   const { processResources } = await import('../lib/resources/logic');
   const origin = { lat: 28.0836, lng: -80.6081 };
-  resources = processResources(origin, 50, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
+  resources = processResources(origin, 200, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
 }
 
 const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'crisis', 'saved'];
@@ -50,7 +48,7 @@ const groupLabels: Record<string, string> = {
 <Base>
   <div class="mb-6">
     <h1 class="font-display text-3xl font-semibold text-body mb-2">Find Help</h1>
-    <p class="text-muted mb-4">{resources.length} resources in Brevard County, FL</p>
+    <p class="text-muted mb-4">{resources.length} resources in Brevard, Volusia, Orange & Statewide Counties</p>
 
     <div class="relative mb-4">
       <svg class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -61,7 +59,7 @@ const groupLabels: Record<string, string> = {
     <div class="chip-row mb-4" id="filter-chips">
       {groups.map((g) => (
         <button type="button" data-group={g}
-          class={`chip px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
+          class={`chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap sm:text-sm sm:px-4 sm:py-2 ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
           {groupLabels[g]}
         </button>
       ))}
@@ -73,9 +71,10 @@ const groupLabels: Record<string, string> = {
     </label>
   </div>
 
-  <div class="flex gap-2 mb-4" id="view-toggle">
-    <button type="button" id="view-list" class="chip px-4 py-2 rounded-full text-sm font-semibold bg-fill text-on-fill">List</button>
-    <button type="button" id="view-map" class="chip px-4 py-2 rounded-full text-sm font-semibold bg-inset text-body hover:bg-line">Map</button>
+  <div class="flex flex-wrap gap-2 mb-4" id="view-toggle">
+    <button type="button" id="view-list" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm">List</button>
+    <button type="button" id="view-map" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm">Map</button>
+    <button type="button" id="sort-distance" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm">Sort by distance</button>
   </div>
 
   <div id="map-legend" class="hidden flex flex-wrap gap-2 mb-3">
@@ -92,7 +91,7 @@ const groupLabels: Record<string, string> = {
 
   <div class="grid gap-4 grid-cols-1 max-w-3xl" id="resource-grid">
     {resources.map((r: any) => (
-      <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}>
+      <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'} data-lat={r.lat} data-lng={r.lng}>
         <ResourceCard resource={r} />
       </div>
     ))}
@@ -315,4 +314,67 @@ const groupLabels: Record<string, string> = {
       filterMap(chip.getAttribute('data-mapgroup') || 'all');
     });
   });
+
+  // Distance sorting via browser geolocation
+  const sortDistanceBtn = document.getElementById('sort-distance');
+  if (sortDistanceBtn) {
+    sortDistanceBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser');
+        return;
+      }
+      sortDistanceBtn.textContent = 'Locating...';
+      sortDistanceBtn.disabled = true;
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const userLat = pos.coords.latitude;
+          const userLng = pos.coords.longitude;
+          sortByDistance(userLat, userLng);
+          sortDistanceBtn.textContent = 'Sorted by distance';
+          sortDistanceBtn.classList.add('bg-fill', 'text-on-fill');
+          sortDistanceBtn.classList.remove('bg-inset', 'text-body');
+        },
+        () => {
+          alert('Unable to retrieve your location');
+          sortDistanceBtn.textContent = 'Sort by distance';
+          sortDistanceBtn.disabled = false;
+        },
+        { timeout: 10000 }
+      );
+    });
+  }
+
+  function sortByDistance(lat, lng) {
+    const R = 3958.8; // miles
+    const items = Array.from(document.querySelectorAll('.resource-item'));
+    const grid = document.getElementById('resource-grid');
+    const countEl = document.getElementById('results-count');
+
+    items.forEach((item) => {
+      const rLat = parseFloat(item.getAttribute('data-lat') || '0');
+      const rLng = parseFloat(item.getAttribute('data-lng') || '0');
+      if (!rLat || !rLng) return;
+
+      const dLat = ((rLat - lat) * Math.PI) / 180;
+      const dLng = ((rLng - lng) * Math.PI) / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat * Math.PI / 180) * Math.cos(rLat * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const dist = R * c;
+
+      item.setAttribute('data-distance', dist.toFixed(1));
+      const distSpan = item.querySelector('.distance-miles');
+      if (distSpan) distSpan.textContent = dist.toFixed(1) + ' miles away (straight line)';
+    });
+
+    items.sort((a, b) => {
+      const da = parseFloat(a.getAttribute('data-distance') || '9999');
+      const db = parseFloat(b.getAttribute('data-distance') || '9999');
+      return da - db;
+    });
+
+    items.forEach((item) => grid.appendChild(item));
+    if (countEl) countEl.textContent = items.length + ' results';
+  }
 </script>

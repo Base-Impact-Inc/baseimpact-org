@@ -49,7 +49,7 @@ const canNavigate = !resource.mobileOnly && resource.address.trim().length > 0;
     <span>
       {resource.address}
       {canNavigate && (
-        <span class="mt-0.5 block font-semibold text-body tabular-nums">
+        <span class="mt-0.5 block font-semibold text-body tabular-nums distance-miles">
           {resource.distanceMiles} miles away (straight line)
         </span>
       )}
