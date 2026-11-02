@@ -1,0 +1,137 @@
+---
+import Base from '../layouts/Base.astro';
+import TurnstileWidget from '../components/TurnstileWidget.astro';
+
+const submitted = Astro.url.searchParams.get('submitted') === '1';
+---
+
+<Base
+  title="Technology Access — Base Impact"
+  description="Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for Brevard County neighbors in need."
+>
+  {submitted && (
+    <div class="mb-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-green-800 font-semibold fade-in" role="status">
+      Thanks! Your request was received. We'll follow up within a few business days.
+    </div>
+  )}
+  <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">Technology Access</h1>
+  <p class="max-w-2xl text-muted leading-relaxed mb-8 fade-in">
+    Base Impact helps neighbors get a working device, a connection, and the skills to use them.
+    If you need a phone, tablet, laptop, or hotspot — or help applying for service — this is the place to start.
+  </p>
+
+  <!-- What we provide -->
+  <section class="mb-10 space-y-4 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body">What we can help with</h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-lg font-semibold text-body mb-1">Devices</h3>
+        <p class="text-sm text-muted leading-relaxed">Refurbished phones, tablets, and laptops, cleaned and set up with the apps you need. Loaned or donated depending on availability and training completion.</p>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-lg font-semibold text-body mb-1">Internet service</h3>
+        <p class="text-sm text-muted leading-relaxed">Help applying for free or low-cost phone and data plans, plus Wi-Fi hotspot loans while you wait.</p>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-lg font-semibold text-body mb-1">Digital skills</h3>
+        <p class="text-sm text-muted leading-relaxed">One-on-one help with email, job search, housing portals, benefits, telehealth, and staying safe online — at your pace.</p>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-lg font-semibold text-body mb-1">AI &amp; tech support</h3>
+        <p class="text-sm text-muted leading-relaxed">Help filling forms, reading documents, and troubleshooting — including AI tools that run privately on the device.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Eligibility & no-ID path -->
+  <section class="mb-10 space-y-4 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body">Who can apply</h2>
+    <p class="text-muted leading-relaxed max-w-2xl">
+      You don't need to have everything figured out to ask. We serve neighbors in Brevard County, FL,
+      with priority for people experiencing homelessness or housing instability, seniors, and small
+      nonprofits with no IT support.
+    </p>
+    <div class="rounded-2xl bg-inset p-5 space-y-3">
+      <h3 class="font-display text-lg font-semibold text-body">Don't have an ID yet?</h3>
+      <p class="text-sm text-muted leading-relaxed">
+        That's okay — it's a common hurdle. If you don't have a state ID, we can help you get a letter
+        from a shelter or community organization to start the process. Check the box on the form below
+        and we'll walk you through it. You won't be turned away for missing paperwork.
+      </p>
+    </div>
+  </section>
+
+  <!-- Partner programs -->
+  <section class="mb-10 space-y-4 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body">Programs we connect you to</h2>
+    <ul class="space-y-2 text-muted leading-relaxed max-w-2xl">
+      <li class="flex gap-2"><span class="text-accent font-bold">·</span><span><strong>Lifeline / ACP successor programs</strong> — free or discounted phone and internet service for qualifying households.</span></li>
+      <li class="flex gap-2"><span class="text-accent font-bold">·</span><span><strong>PCs for People &amp; local refurbishers</strong> — low-cost computers and hotspots.</span></li>
+      <li class="flex gap-2"><span class="text-accent font-bold">·</span><span><strong>Public libraries</strong> — free Wi-Fi, computer access, and digital skills classes.</span></li>
+      <li class="flex gap-2"><span class="text-accent font-bold">·</span><span><strong>Cell provider partnerships</strong> — we're building relationships with carriers for free/low-cost phones and data plans.</span></li>
+    </ul>
+    <p class="text-sm text-faint">Programs and eligibility change often. We'll help you find what's current and apply.</p>
+  </section>
+
+  <!-- Request form -->
+  <section class="mb-10 fade-in">
+    <h2 class="font-display text-2xl font-semibold text-body mb-4">Request help</h2>
+    <p class="text-muted mb-4 max-w-2xl">Fill out what you can. We'll follow up within a few business days. All information stays private.</p>
+    <form class="max-w-lg space-y-4" method="POST" action="/api/technology-access">
+      <div>
+        <label for="name" class="block text-sm font-semibold text-body mb-1">Name (or nickname)</label>
+        <input type="text" id="name" name="name" required
+          class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11" />
+      </div>
+      <div>
+        <label for="contact" class="block text-sm font-semibold text-body mb-1">Phone or email (optional)</label>
+        <input type="text" id="contact" name="contact"
+          class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11"
+          placeholder="How we can reach you" />
+      </div>
+      <div>
+        <label for="need" class="block text-sm font-semibold text-body mb-1">What do you need?</label>
+        <select id="need" name="need" required
+          class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11">
+          <option value="">Choose one…</option>
+          <option value="phone">Phone</option>
+          <option value="tablet">Tablet</option>
+          <option value="laptop">Laptop / computer</option>
+          <option value="hotspot">Wi-Fi hotspot / internet</option>
+          <option value="skills">Digital skills help</option>
+          <option value="service">Apply for phone/internet service</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="situation" class="block text-sm font-semibold text-body mb-1">Tell us a little about your situation (optional)</label>
+        <textarea id="situation" name="situation" rows="4"
+          class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body"
+          placeholder="Anything that helps us help you — housing, work, school, health, etc."></textarea>
+      </div>
+      <div class="flex items-start gap-3">
+        <input type="checkbox" id="no-id" name="no_id" value="yes"
+          class="mt-1 size-5 rounded border-line" />
+        <label for="no-id" class="text-sm text-body leading-relaxed">
+          I don't have a state ID right now and would like help getting one.
+        </label>
+      </div>
+      <TurnstileWidget />
+      <button type="submit" class="rounded-xl bg-fill px-6 py-3 text-base font-semibold text-on-fill hover:bg-fill-hover min-h-11">
+        Submit request
+      </button>
+      <p class="text-xs text-faint">We never share your information. Requests are reviewed by a real person.</p>
+    </form>
+  </section>
+
+  <!-- Other ways to help / get involved -->
+  <section class="rounded-2xl bg-band p-6 text-on-fill fade-in">
+    <h2 class="font-display text-xl font-semibold mb-2">Want to help provide devices?</h2>
+    <p class="text-sm opacity-90 mb-4">Donated phones, tablets, and laptops change lives. If you have a device to give, or want to fund this work, we'd love to hear from you.</p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/donate" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Donate</a>
+      <a href="/volunteer" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Volunteer</a>
+      <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Partner with us</a>
+    </div>
+  </section>
+</Base>
