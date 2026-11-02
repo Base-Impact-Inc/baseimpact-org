@@ -59,7 +59,7 @@ const groupLabels: Record<string, string> = {
     <div class="chip-row mb-4" id="filter-chips">
       {groups.map((g) => (
         <button type="button" data-group={g}
-          class={`chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap sm:text-sm sm:px-4 sm:py-2 ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
+          class={`chip flex-shrink-0 scroll-snap-start px-2 py-1 rounded-full text-[0.65rem] font-semibold whitespace-nowrap sm:px-3 sm:py-1.5 sm:text-xs md:px-4 md:py-2 md:text-sm ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
           {groupLabels[g]}
         </button>
       ))}

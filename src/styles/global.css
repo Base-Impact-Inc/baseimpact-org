@@ -174,9 +174,15 @@ input, select, textarea {
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   padding-bottom: 0.125rem;
+  scroll-snap-type: x mandatory;
+  mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
 }
 .chip-row::-webkit-scrollbar {
   display: none;
+}
+.chip {
+  scroll-snap-align: start;
 }
 
 /* Site shell layout classes */
