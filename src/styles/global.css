@@ -135,7 +135,7 @@ a {
   color: var(--color-accent);
   text-decoration: none;
 }
-a:hover {
+a:not([class*="bg-fill"]):hover {
   color: var(--color-accent-hover);
 }
 ::placeholder {

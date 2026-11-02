@@ -54,9 +54,9 @@ const groupLabels: Record<string, string> = {
 
   <p id="results-count" class="text-sm text-muted mb-4">{resources.length} results</p>
 
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="resource-grid">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch" id="resource-grid">
     {resources.map((r: any) => (
-      <div class="resource-item" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}>
+      <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}>
         <ResourceCard resource={r} />
       </div>
     ))}
