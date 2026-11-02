@@ -1,0 +1,71 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import { Icon } from 'astro-icon/components';
+import ResourceCard from '~/components/ResourceCard.astro';
+
+const runtime = (Astro.locals as any)?.runtime;
+const env = runtime?.env;
+let resources: any[] = [];
+if (env?.baseimpact_verify) {
+  const result = await env.baseimpact_verify.prepare('SELECT * FROM resources ORDER BY name ASC').all();
+  resources = (result.results || []).map((row: any) => ({
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    address: row.address,
+    lat: row.lat,
+    lng: row.lng,
+    phone: row.phone,
+    website: row.website || undefined,
+    serviceUrl: row.service_url || undefined,
+    sourceUrl: row.source_url || undefined,
+    description: row.description,
+    hoursText: row.hours_text,
+    schedule: JSON.parse(row.schedule || '{}'),
+    tags: JSON.parse(row.tags || '[]'),
+    partnerType: row.partner_type,
+    capacityStatus: row.capacity_status,
+    group: row.help_group,
+    services: JSON.parse(row.services || '[]'),
+    county: row.county,
+    lastVerified: row.last_verified || undefined,
+    mobileOnly: row.mobile_only === 1,
+    nextAvail: { status: 'UNKNOWN' },
+  }));
+} else {
+  const { processResources } = await import('~/lib/resources/logic');
+  const origin = { lat: 28.0836, lng: -80.6081 };
+  resources = processResources(origin, 200, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
+}
+---
+
+<Layout metadata={{ title: 'Directorio de Recursos — Base Impact', description: 'Encuentra comida, refugio, salud, vivienda y recursos de recuperación.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Buscar Ayuda</h1>
+    <p class="mt-2 text-lg text-gray-600 dark:text-slate-300">{resources.length} recursos</p>
+
+    <div class="relative mt-4 mb-4">
+      <Icon name="tabler:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+      <input type="search" id="search-input" placeholder="Buscar comida, refugio, salud..."
+        class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400" />
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-4" id="filter-chips">
+      {['all','food','shelter','health','money','basics','crisis'].map((g) => (
+        <button type="button" data-group={g}
+          class={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${g === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600'}`}>
+          {g === 'all' ? 'Todos' : g.charAt(0).toUpperCase() + g.slice(1)}
+        </button>
+      ))}
+    </div>
+
+    <div class="grid gap-4 grid-cols-1 max-w-3xl" id="resource-grid">
+      {resources.map((r: any) => (
+        <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-lat={r.lat} data-lng={r.lng}>
+          <ResourceCard resource={r} />
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

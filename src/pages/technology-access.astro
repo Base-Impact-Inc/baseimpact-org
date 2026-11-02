@@ -1,0 +1,53 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import TurnstileWidget from '~/components/common/TurnstileWidget.astro';
+
+const submitted = Astro.url.searchParams.get('submitted') === '1';
+---
+
+<Layout metadata={{ title: 'Technology Access — Base Impact', description: 'Request a device, internet service, or digital skills help from Base Impact.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-2xl">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Technology Access</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-slate-300">
+        Base Impact helps neighbors get a working device, a connection, and the skills to use them.
+        If you need a phone, tablet, laptop, or hotspot — or help applying for service — this is the place to start.
+      </p>
+
+      {submitted && (
+        <div class="mt-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-green-800 font-semibold" role="status">
+          Thanks! Your request was received. We'll follow up within a few business days.
+        </div>
+      )}
+
+      <form class="mt-8 space-y-4" method="POST" action="/api/technology-access">
+        <div>
+          <label for="name" class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Name</label>
+          <input type="text" id="name" name="name" required class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Email</label>
+          <input type="email" id="email" name="email" required class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-gray-900 dark:text-white" />
+        </div>
+        <div>
+          <label for="need" class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">What do you need?</label>
+          <select id="need" name="need" required class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-gray-900 dark:text-white">
+            <option value="">Select one...</option>
+            <option value="device">Device (phone, tablet, laptop)</option>
+            <option value="internet">Internet service help</option>
+            <option value="training">Digital skills training</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-semibold text-gray-900 dark:text-white mb-1">Tell us more</label>
+          <textarea id="message" name="message" rows="4" class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 text-gray-900 dark:text-white"></textarea>
+        </div>
+        <TurnstileWidget />
+        <button type="submit" class="w-full rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white hover:bg-blue-700">
+          Submit request
+        </button>
+      </form>
+    </div>
+  </section>
+</Layout>

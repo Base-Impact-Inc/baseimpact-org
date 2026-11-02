@@ -1,0 +1,46 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const programs = [
+  {
+    title: "Technology Access",
+    description: "Helping neighbors get a working device and internet service — and learn to use them.",
+    details: "We provide refurbished devices, help with internet service applications, and walk people through setup. Many neighbors in Brevard County lack reliable access to technology, which limits their ability to apply for jobs, housing, benefits, and healthcare.",
+    outcomes: "Devices distributed, internet connections established, digital skills taught",
+  },
+  {
+    title: "Digital Skills & Job Help",
+    description: "Walk-throughs for housing portals, job applications, benefits, and staying safe online.",
+    details: "One-on-one and small group sessions covering: how to use a computer, email, online forms, job search platforms, housing applications, benefit portals, and online safety. Sessions are tailored to each person's needs and pace.",
+    outcomes: "People trained, job applications submitted, housing portals navigated, benefits accessed",
+  },
+  {
+    title: "Tech for Small Nonprofits",
+    description: "Free setup, security, and support for churches, pantries, and 1–5 person community groups.",
+    details: "Small community organizations often lack IT support. We provide free technology setup, security hardening, backup strategies, and ongoing support. This includes device setup, email configuration, cloud storage, and basic cybersecurity.",
+  },
+];
+---
+
+<Layout metadata={{ title: 'Programs — Base Impact', description: 'Base Impact programs: technology access, digital skills, and nonprofit tech support for Brevard County.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-3xl">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Programs</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-slate-300">
+        Our programs focus on immediate needs first, then build the skills and tools that keep people housed, employed, and connected.
+      </p>
+      <div class="mt-8 space-y-6">
+        {programs.map((program) => (
+          <article class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-md border border-gray-100 dark:border-slate-700">
+            <h3 class="font-heading text-xl font-semibold text-gray-900 dark:text-white">{program.title}</h3>
+            <p class="mt-2 text-gray-600 dark:text-slate-300">{program.description}</p>
+            <p class="mt-3 text-gray-600 dark:text-slate-300">{program.details}</p>
+            {program.outcomes && (
+              <p class="mt-3 text-sm text-gray-500 dark:text-slate-400"><strong>Outcomes:</strong> {program.outcomes}</p>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

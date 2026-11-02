@@ -1,0 +1,156 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import { Icon } from 'astro-icon/components';
+import ResourceCard from '~/components/ResourceCard.astro';
+import StructuredData from '~/components/common/StructuredData.astro';
+import { SITE, METADATA, I18N } from 'astrowind:config';
+import favIconSvg from '~/assets/favicons/favicon.svg';
+
+const metadata = {
+  title: 'Resource Directory — Base Impact',
+  description: 'Find food, shelter, health, housing, and recovery resources in Brevard, Volusia, Orange & Statewide Counties.',
+  ignoreTitleTemplate: true,
+};
+
+const organizationId = `${SITE?.site}/#organization`;
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE?.site}/#website`,
+    name: SITE?.name,
+    url: SITE?.site,
+    inLanguage: I18N?.language,
+    publisher: { '@id': organizationId },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': organizationId,
+    name: SITE?.name,
+    url: SITE?.site,
+    logo: new URL(favIconSvg.src, SITE?.site).toString(),
+  },
+];
+
+const runtime = (Astro.locals as any)?.runtime;
+const env = runtime?.env;
+let resources: any[] = [];
+if (env?.baseimpact_verify) {
+  const result = await env.baseimpact_verify.prepare('SELECT * FROM resources ORDER BY name ASC').all();
+  resources = (result.results || []).map((row: any) => ({
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    address: row.address,
+    lat: row.lat,
+    lng: row.lng,
+    phone: row.phone,
+    website: row.website || undefined,
+    serviceUrl: row.service_url || undefined,
+    sourceUrl: row.source_url || undefined,
+    description: row.description,
+    hoursText: row.hours_text,
+    schedule: JSON.parse(row.schedule || '{}'),
+    tags: JSON.parse(row.tags || '[]'),
+    partnerType: row.partner_type,
+    capacityStatus: row.capacity_status,
+    group: row.help_group,
+    services: JSON.parse(row.services || '[]'),
+    county: row.county,
+    lastVerified: row.last_verified || undefined,
+    mobileOnly: row.mobile_only === 1,
+    nextAvail: { status: 'UNKNOWN' },
+  }));
+} else {
+  // Fallback for build/preview without D1 binding
+  const { processResources } = await import('~/lib/resources/logic');
+  const origin = { lat: 28.0836, lng: -80.6081 };
+  resources = processResources(origin, 200, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
+}
+
+const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'crisis', 'saved'];
+const groupLabels: Record<string, string> = {
+  all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
+  money: 'Money', basics: 'Basics', crisis: 'Crisis', saved: 'Saved',
+};
+---
+
+<Layout metadata={metadata}>
+  <StructuredData slot="head" schema={structuredData} />
+
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-6">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Find Help</h1>
+      <p class="mt-2 text-lg text-gray-600 dark:text-slate-300">{resources.length} resources in Brevard, Volusia, Orange & Statewide Counties</p>
+    </div>
+
+    <!-- Search -->
+    <div class="relative mb-4">
+      <Icon name="tabler:search" class="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-gray-400" />
+      <input type="search" id="search-input" placeholder="Search food, shelter, health..."
+        class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-10 pr-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400" />
+    </div>
+
+    <!-- Filter Chips -->
+    <div class="flex flex-wrap gap-2 mb-4" id="filter-chips">
+      {groups.map((g) => (
+        <button type="button" data-group={g}
+          class={`px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${g === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600'}`}>
+          {groupLabels[g]}
+        </button>
+      ))}
+    </div>
+
+    <!-- View Toggle -->
+    <div class="flex flex-wrap gap-2 mb-4" id="view-toggle">
+      <button type="button" id="view-list" class="px-4 py-2 rounded-full text-sm font-semibold bg-blue-600 text-white">List</button>
+      <button type="button" id="view-map" class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600">Map</button>
+      <button type="button" id="sort-distance" class="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600">Sort by distance</button>
+    </div>
+
+    <!-- Map Legend -->
+    <div class="hidden flex-wrap gap-2 mb-3" id="map-legend">
+      {['all','food','shelter','health','money','basics','crisis'].map(g => (
+        <button type="button" data-mapgroup={g} class={`px-3 py-1.5 rounded-full text-xs font-semibold ${g === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200'}`}>
+          {g.charAt(0).toUpperCase() + g.slice(1)}
+        </button>
+      ))}
+    </div>
+
+    <!-- Map Container -->
+    <div id="map-container" class="hidden mb-4 rounded-2xl overflow-hidden shadow-lg" style="height: 480px;"></div>
+
+    <p id="results-count" class="text-sm text-gray-500 dark:text-slate-400 mb-4">{resources.length} results</p>
+
+    <!-- Resource Grid -->
+    <div class="grid gap-4 grid-cols-1 max-w-3xl" id="resource-grid">
+      {resources.map((r: any) => (
+        <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'} data-lat={r.lat} data-lng={r.lng}>
+          <ResourceCard resource={r} />
+        </div>
+      ))}
+    </div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+
+    <script type="application/json" id="resource-data">
+      {JSON.stringify(resources.map((r: any) => ({ id: r.id, name: r.name, lat: r.lat, lng: r.lng, address: r.address, category: r.category, group: r.group })))}
+    </script>
+
+    <div id="empty-state" class="hidden text-center py-12">
+      <p class="text-lg text-gray-500 dark:text-slate-400">No resources found.</p>
+      <p class="text-sm text-gray-400 dark:text-slate-500 mt-2">Try a different search or filter.</p>
+    </div>
+
+    <div class="mt-8 rounded-2xl bg-blue-50 dark:bg-slate-800 p-6 text-center">
+      <p class="text-sm text-gray-600 dark:text-slate-300 mb-2">Need immediate help?</p>
+      <div class="flex gap-2 justify-center flex-wrap">
+        <a href="tel:211" class="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">Call 211</a>
+        <a href="tel:988" class="inline-flex items-center gap-1 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">Crisis 988</a>
+      </div>
+    </div>
+  </section>
+</Layout>

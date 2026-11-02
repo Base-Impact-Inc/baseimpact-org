@@ -1,0 +1,48 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const now = new Date();
+const year = now.getFullYear();
+const month = now.getMonth();
+const monthName = now.toLocaleString('en-US', { month: 'long' });
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+const recurring: Record<number, string> = {
+  1: 'Under the Bridge Ministries (5-7pm)',
+  4: 'Lifepointe Ministries — Showers, Clothes, Dinner (4:30-7pm)',
+  6: 'FUMC Breakfast (8-9:30am)',
+};
+---
+
+<Layout metadata={{ title: 'Events — Base Impact', description: 'Upcoming events and volunteer opportunities with Base Impact.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-3xl">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Events</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-slate-300">
+        {monthName} {year} — recurring volunteer opportunities and community events.
+      </p>
+
+      <div class="mt-8 rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-md border border-gray-100 dark:border-slate-700">
+        <h2 class="font-heading text-xl font-semibold text-gray-900 dark:text-white mb-4">Weekly Schedule</h2>
+        <div class="space-y-3">
+          {Object.entries(recurring).map(([day, event]) => (
+            <div class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-slate-700 last:border-0">
+              <span class="text-gray-900 dark:text-white font-medium">{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][parseInt(day)]}</span>
+              <span class="text-gray-600 dark:text-slate-300 text-sm">{event}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="mt-8 rounded-2xl bg-blue-50 dark:bg-slate-800 p-6">
+        <h2 class="font-heading text-xl font-semibold text-gray-900 dark:text-white">Get involved</h2>
+        <p class="mt-2 text-gray-600 dark:text-slate-300">
+          Interested in volunteering? Contact us to learn how you can help.
+        </p>
+        <a href="/volunteer" class="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
+          Learn more
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

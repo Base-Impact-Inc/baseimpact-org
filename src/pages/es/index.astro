@@ -1,0 +1,22 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+---
+
+<Layout metadata={{ title: 'Base Impact — Encuentra Ayuda', description: 'Encuentra comida, refugio, salud, vivienda y recursos de recuperación en los condados de Brevard, Volusia, Orange y Estatal.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-3xl">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Base Impact</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-slate-300">
+        Ayuda tecnológica para el condado de Brevard — dispositivos, internet y las habilidades para usarlos.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/es/directory" class="flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-base font-semibold text-white hover:bg-blue-700 sm:w-auto">
+          Buscar ayuda
+        </a>
+        <a href="/technology-access" class="flex w-full items-center justify-center gap-2 rounded-full bg-gray-100 dark:bg-slate-700 px-6 py-3 text-base font-semibold text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-slate-600 sm:w-auto">
+          Necesita ayuda?
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

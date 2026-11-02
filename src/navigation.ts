@@ -3,166 +3,121 @@ import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 export const headerData = {
   links: [
     {
-      text: 'Homes',
+      text: 'Find Help',
       links: [
         {
-          text: 'SaaS',
-          href: getPermalink('/homes/saas'),
+          text: 'Resource Directory',
+          href: getPermalink('/directory'),
         },
         {
-          text: 'Startup',
-          href: getPermalink('/homes/startup'),
+          text: 'Grants & Assistance',
+          href: getPermalink('/grants'),
         },
         {
-          text: 'Mobile App',
-          href: getPermalink('/homes/mobile-app'),
-        },
-        {
-          text: 'Personal',
-          href: getPermalink('/homes/personal'),
+          text: 'Technology Access',
+          href: getPermalink('/technology-access'),
         },
       ],
     },
     {
-      text: 'Pages',
+      text: 'About',
       links: [
         {
-          text: 'Features (Anchor Link)',
-          href: getPermalink('/#features'),
+          text: 'Our Purpose',
+          href: getPermalink('/purpose'),
         },
         {
-          text: 'Services',
-          href: getPermalink('/services'),
-        },
-        {
-          text: 'Pricing',
-          href: getPermalink('/pricing'),
-        },
-        {
-          text: 'About us',
+          text: 'About Us',
           href: getPermalink('/about'),
         },
         {
-          text: 'Contact',
+          text: 'Partners',
+          href: getPermalink('/partners'),
+        },
+      ],
+    },
+    {
+      text: 'Programs',
+      links: [
+        {
+          text: 'Programs',
+          href: getPermalink('/programs'),
+        },
+        {
+          text: 'Events',
+          href: getPermalink('/events'),
+        },
+        {
+          text: 'Volunteer',
+          href: getPermalink('/volunteer'),
+        },
+      ],
+    },
+    {
+      text: 'Contact',
+      links: [
+        {
+          text: 'Contact Us',
           href: getPermalink('/contact'),
         },
         {
-          text: 'Terms',
-          href: getPermalink('/terms'),
-        },
-        {
-          text: 'Privacy policy',
-          href: getPermalink('/privacy'),
-        },
-      ],
-    },
-    {
-      text: 'Landing',
-      links: [
-        {
-          text: 'Lead Generation',
-          href: getPermalink('/landing/lead-generation'),
-        },
-        {
-          text: 'Long-form Sales',
-          href: getPermalink('/landing/sales'),
-        },
-        {
-          text: 'Click-Through',
-          href: getPermalink('/landing/click-through'),
-        },
-        {
-          text: 'Product Details (or Services)',
-          href: getPermalink('/landing/product'),
-        },
-        {
-          text: 'Coming Soon or Pre-Launch',
-          href: getPermalink('/landing/pre-launch'),
-        },
-        {
-          text: 'Subscription',
-          href: getPermalink('/landing/subscription'),
-        },
-      ],
-    },
-    {
-      text: 'Blog',
-      links: [
-        {
-          text: 'Blog List',
-          href: getBlogPermalink(),
-        },
-        {
-          text: 'Article',
-          href: getPermalink('get-started-website-with-astro-tailwind-css', 'post'),
-        },
-        {
-          text: 'Article (with MDX)',
-          href: getPermalink('markdown-elements-demo-post', 'post'),
-        },
-        {
-          text: 'Category Page',
-          href: getPermalink('tutorials', 'category'),
-        },
-        {
-          text: 'Tag Page',
-          href: getPermalink('astro', 'tag'),
+          text: 'Donate',
+          href: getPermalink('/donate'),
         },
       ],
     },
   ],
-  actions: [{ text: 'Download', href: 'https://github.com/arthelokyo/astrowind', target: '_blank' }],
+  actions: [
+    {
+      text: 'Call 211',
+      href: 'tel:211',
+      variant: 'primary',
+      icon: 'tabler:phone',
+    },
+  ],
 };
 
 export const footerData = {
   links: [
     {
-      title: 'Product',
-      links: [
-        { text: 'Features', href: getPermalink('/#features') },
-        { text: 'Pricing', href: getPermalink('/pricing') },
-        { text: 'Services', href: getPermalink('/services') },
-        { text: 'Blog', href: getBlogPermalink() },
-      ],
-    },
-    {
-      title: 'Demos',
-      links: [
-        { text: 'SaaS', href: getPermalink('/homes/saas') },
-        { text: 'Startup', href: getPermalink('/homes/startup') },
-        { text: 'Mobile App', href: getPermalink('/homes/mobile-app') },
-        { text: 'Personal', href: getPermalink('/homes/personal') },
-        { text: 'Landing pages', href: getPermalink('/landing/lead-generation') },
-      ],
-    },
-    {
       title: 'Resources',
       links: [
-        { text: 'Documentation', href: 'https://github.com/arthelokyo/astrowind#readme' },
-        { text: 'Skills for AI agents', href: 'https://github.com/arthelokyo/astrowind/tree/main/.agents/skills' },
-        { text: 'Releases', href: 'https://github.com/arthelokyo/astrowind/releases' },
-        { text: 'Discussions', href: 'https://github.com/arthelokyo/astrowind/discussions' },
+        { text: 'Resource Directory', href: getPermalink('/directory') },
+        { text: 'Grants', href: getPermalink('/grants') },
+        { text: 'Technology Help', href: getPermalink('/technology-access') },
+        { text: 'Programs', href: getPermalink('/programs') },
       ],
     },
     {
-      title: 'Company',
+      title: 'Organization',
       links: [
-        { text: 'About', href: getPermalink('/about') },
+        { text: 'Purpose', href: getPermalink('/purpose') },
+        { text: 'About Us', href: getPermalink('/about') },
+        { text: 'Partners', href: getPermalink('/partners') },
+        { text: 'Financials', href: getPermalink('/financials') },
+      ],
+    },
+    {
+      title: 'Get Involved',
+      links: [
+        { text: 'Volunteer', href: getPermalink('/volunteer') },
+        { text: 'Donate', href: getPermalink('/donate') },
+        { text: 'Events', href: getPermalink('/events') },
         { text: 'Contact', href: getPermalink('/contact') },
-        { text: 'Report an issue', href: 'https://github.com/arthelokyo/astrowind/issues' },
-        { text: 'License', href: 'https://github.com/arthelokyo/astrowind/blob/main/LICENSE.md' },
       ],
     },
   ],
   secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
+    { text: 'Terms of Service', href: getPermalink('/terms') },
   ],
   socialLinks: [
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/arthelokyo/astrowind' },
+    { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: 'https://facebook.com/baseimpact' },
+    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://instagram.com/baseimpact' },
   ],
   footNote: `
-    Made by <a class="text-blue-600 underline dark:text-muted" href="https://arthelokyo.com"> Arthelokyo</a> · All rights reserved.
+    Base Impact is a Florida nonprofit, pending 501(c)(3) approval. · 
+    <a class="text-blue-600 underline dark:text-muted" href="mailto:info@baseimpact.org">info@baseimpact.org</a>
   `,
 };
+

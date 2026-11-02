@@ -1,13 +1,20 @@
-// Cloudflare Workers configuration for the "Deploy to Cloudflare" button in the
-// README. The site is fully static, so the
-// Worker only serves the `dist/` folder as assets; no adapter is needed.
-// Docs: https://developers.cloudflare.com/workers/static-assets/
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "astrowind",
-  "compatibility_date": "2026-09-01",
-  "assets": {
-    "directory": "./dist",
-    "not_found_handling": "404-page",
+  "name": "baseimpact-org",
+  "pages_build_output_dir": "dist/client",
+  "compatibility_date": "2026-10-23",
+  "compatibility_flags": [
+    "global_fetch_strictly_public"
+  ],
+  "observability": {
+    "enabled": true
   },
+  "d1_databases": [
+    {
+      "binding": "baseimpact_verify",
+      "database_name": "baseimpact-verify",
+      "database_id": "d60b0270-bc07-445f-b4fc-da0bcaa2af24",
+      "migrations_dir": "src/migrations"
+    }
+  ]
 }

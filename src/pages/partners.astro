@@ -1,0 +1,41 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const orgs = [
+  {
+    name: 'LifePointe Ministries, Inc.',
+    meta: 'EIN 45-1198607 · Titusville, FL · 501(c)(3)',
+    body: 'Operates the Titusville Civic Center. Provides homeless showers, clothing, essentials, toiletries, and Thursday evening dinners. Operates the only inclement-weather cold-night shelter between Titusville and Port Orange. Runs CREW 29 outreach ministry providing meals, clothing, hygiene items, and fellowship. (Fiscal sponsorship pending.)',
+  },
+  {
+    name: 'No One Hungry, Inc.',
+    meta: 'EIN 83-2834992 · Titusville, FL · 501(c)(3)',
+    body: 'Operates the Pine St Food Pantry providing food and basic necessities. Delivers food to homebound seniors. Reaches people experiencing homelessness with food and personal care items.',
+  },
+  {
+    name: 'Hope for North Brevard, Inc.',
+    meta: 'EIN 27-0352718 · Brevard County, FL · 501(c)(3)',
+    body: 'Sponsors Under The Bridge Ministries. Provides community support and outreach in North Brevard County.',
+  },
+];
+---
+
+<Layout metadata={{ title: 'Partners — Base Impact', description: 'Base Impact partners with local organizations serving Brevard County.', ignoreTitleTemplate: true }}>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="max-w-3xl">
+      <h1 class="font-heading text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white">Partners</h1>
+      <p class="mt-4 text-lg text-gray-600 dark:text-slate-300">
+        We work alongside trusted local organizations. These are the groups we're proud to partner with.
+      </p>
+      <div class="mt-8 space-y-6">
+        {orgs.map((org) => (
+          <article class="rounded-2xl bg-white dark:bg-slate-800 p-6 shadow-md border border-gray-100 dark:border-slate-700">
+            <h3 class="font-heading text-xl font-semibold text-gray-900 dark:text-white">{org.name}</h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">{org.meta}</p>
+            <p class="mt-3 text-gray-600 dark:text-slate-300">{org.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
