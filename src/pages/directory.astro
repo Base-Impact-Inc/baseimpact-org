@@ -1,16 +1,44 @@
 ---
+export const prerender = false;
+
 import Base from '../layouts/Base.astro';
 import ResourceCard from '../components/ResourceCard.astro';
-import { processResources } from '../lib/resources/logic';
 
-const origin = { lat: 28.0836, lng: -80.6081 };
-const resources = processResources(origin, 50, {
-  category: 'All',
-  tag: 'All',
-  query: '',
-  onlySaved: false,
-  savedIds: [],
-});
+const runtime = (Astro.locals as any)?.runtime;
+const env = runtime?.env;
+let resources: any[] = [];
+if (env?.baseimpact_verify) {
+  const result = await env.baseimpact_verify.prepare('SELECT * FROM resources ORDER BY name ASC').all();
+  resources = (result.results || []).map((row: any) => ({
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    address: row.address,
+    lat: row.lat,
+    lng: row.lng,
+    phone: row.phone,
+    website: row.website || undefined,
+    serviceUrl: row.service_url || undefined,
+    sourceUrl: row.source_url || undefined,
+    description: row.description,
+    hoursText: row.hours_text,
+    schedule: JSON.parse(row.schedule || '{}'),
+    tags: JSON.parse(row.tags || '[]'),
+    partnerType: row.partner_type,
+    capacityStatus: row.capacity_status,
+    group: row.help_group,
+    services: JSON.parse(row.services || '[]'),
+    county: row.county,
+    lastVerified: row.last_verified || undefined,
+    mobileOnly: row.mobile_only === 1,
+    nextAvail: { status: 'UNKNOWN' },
+  }));
+} else {
+  // Fallback for dev/preview without D1 binding
+  const { processResources } = await import('../lib/resources/logic');
+  const origin = { lat: 28.0836, lng: -80.6081 };
+  resources = processResources(origin, 50, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
+}
 
 const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'crisis', 'saved'];
 const groupLabels: Record<string, string> = {
@@ -150,7 +178,21 @@ const groupLabels: Record<string, string> = {
     });
   });
 
-  // Save for later functionality
+  // Copy address to clipboard
+  document.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement)?.closest?.('.copy-addr-btn');
+    if (!btn) return;
+    const addr = btn.getAttribute('data-copy-address') || '';
+    try {
+      await navigator.clipboard.writeText(addr);
+      const orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    } catch {
+      btn.textContent = 'Copy failed';
+      setTimeout(() => { btn.textContent = 'Copy address'; }, 1500);
+    }
+  });
   const SAVED_KEY = 'baseimpact-saved';
   function getSaved() {
     try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch { return []; }
