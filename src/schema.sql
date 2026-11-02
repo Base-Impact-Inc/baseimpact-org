@@ -17,4 +17,13 @@ CREATE TABLE IF NOT EXISTS device_requests (
   created_at TEXT DEFAULT (datetime('now'))
 );
 
-CREATE INDEX IF NOT EXISTS idx_device_requests_created ON device_requests(created_at);
+CREATE TABLE IF NOT EXISTS volunteer_signups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  contact TEXT NOT NULL,
+  shift TEXT NOT NULL,
+  notes TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_volunteer_signups_created ON volunteer_signups(created_at);

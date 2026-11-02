@@ -50,6 +50,14 @@ const groupLabels: Record<string, string> = {
     <button type="button" id="view-map" class="chip px-4 py-2 rounded-full text-sm font-semibold bg-inset text-body hover:bg-line">Map</button>
   </div>
 
+  <div id="map-legend" class="hidden flex flex-wrap gap-2 mb-3">
+    {['all','food','shelter','health','money','basics','crisis'].map(g => (
+      <button type="button" data-mapgroup={g} class={`map-legend-chip px-3 py-1.5 rounded-full text-xs font-semibold ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
+        {g.charAt(0).toUpperCase() + g.slice(1)}
+      </button>
+    ))}
+  </div>
+
   <div id="map-container" class="hidden mb-4 rounded-2xl overflow-hidden shadow-[var(--shadow-border)]" style="height: 480px;"></div>
 
   <p id="results-count" class="text-sm text-muted mb-4">{resources.length} results</p>
@@ -191,7 +199,9 @@ const groupLabels: Record<string, string> = {
   const viewMapBtn = document.getElementById('view-map');
   const mapContainer = document.getElementById('map-container');
   const resourceGrid = document.getElementById('resource-grid');
+  const mapLegend = document.getElementById('map-legend');
   let map = null;
+  let markers = [];
 
   function initMap() {
     if (map) return;
@@ -208,11 +218,35 @@ const groupLabels: Record<string, string> = {
       if (typeof r.lat !== 'number' || typeof r.lng !== 'number') return;
       const m = L.marker([r.lat, r.lng]).addTo(map);
       m.bindPopup('<strong>' + r.name + '</strong><br/>' + r.address + '<br/><a href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(r.address) + '&travelmode=transit" target="_blank" rel="noreferrer">Bus directions</a>');
+      m._group = r.group;
+      markers.push(m);
+    });
+  }
+
+  function filterMap(group) {
+    markers.forEach(m => {
+      if (group === 'all' || m._group === group) {
+        if (map && !map.hasLayer(m)) m.addTo(map);
+      } else {
+        if (map && map.hasLayer(m)) map.removeLayer(m);
+      }
+    });
+    // update legend chip styles
+    mapLegend?.querySelectorAll('.map-legend-chip').forEach(chip => {
+      const g = chip.getAttribute('data-mapgroup');
+      if (g === group) {
+        chip.classList.add('bg-fill','text-on-fill');
+        chip.classList.remove('bg-inset','text-body');
+      } else {
+        chip.classList.remove('bg-fill','text-on-fill');
+        chip.classList.add('bg-inset','text-body');
+      }
     });
   }
 
   function showList() {
     mapContainer?.classList.add('hidden');
+    mapLegend?.classList.add('hidden');
     resourceGrid?.classList.remove('hidden');
     viewListBtn?.classList.add('bg-fill','text-on-fill');
     viewListBtn?.classList.remove('bg-inset','text-body');
@@ -221,6 +255,7 @@ const groupLabels: Record<string, string> = {
   }
   function showMap() {
     mapContainer?.classList.remove('hidden');
+    mapLegend?.classList.remove('hidden');
     resourceGrid?.classList.add('hidden');
     viewMapBtn?.classList.add('bg-fill','text-on-fill');
     viewMapBtn?.classList.remove('bg-inset','text-body');
@@ -233,4 +268,9 @@ const groupLabels: Record<string, string> = {
 
   viewListBtn?.addEventListener('click', showList);
   viewMapBtn?.addEventListener('click', showMap);
+  mapLegend?.querySelectorAll('.map-legend-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterMap(chip.getAttribute('data-mapgroup') || 'all');
+    });
+  });
 </script>
