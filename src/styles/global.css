@@ -147,6 +147,7 @@ input[type="range"] {
 button:not(:disabled),
 [role="button"]:not(:disabled) {
   cursor: pointer;
+  touch-action: manipulation;
 }
 :focus-visible {
   outline: 3px solid var(--color-accent);
