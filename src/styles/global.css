@@ -170,21 +170,14 @@ input, select, textarea {
 }
 .chip-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-  padding-bottom: 0.125rem;
-  scroll-snap-type: x mandatory;
-  mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
 }
 .chip-row::-webkit-scrollbar {
   display: none;
 }
 .chip {
-  scroll-snap-align: start;
+  /* wrap chips naturally; no scroll snapping */
 }
 
 /* Site shell layout classes */

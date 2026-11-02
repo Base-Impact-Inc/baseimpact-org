@@ -80,6 +80,30 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
       </div>
     </div>
   </footer>
+
+  <script>
+    (function() {
+      var btn = document.getElementById('menu-btn');
+      var menu = document.getElementById('mobile-menu');
+      var backdrop = document.getElementById('mobile-menu-backdrop');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function() {
+        var open = menu.classList.contains('hidden');
+        menu.classList.toggle('hidden', !open);
+        if (backdrop) backdrop.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+      if (backdrop) {
+        backdrop.addEventListener('click', function() {
+          menu.classList.add('hidden');
+          backdrop.classList.add('hidden');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-label', 'Open menu');
+        });
+      }
+    })();
+  </script>
 </div>
 
 <script>
@@ -155,28 +179,6 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
       li.appendChild(a);
       mobileMore.appendChild(li);
     });
-  }
-
-  // Mobile menu toggle
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuBackdrop = document.getElementById('mobile-menu-backdrop');
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener('click', function() {
-      var open = mobileMenu.classList.contains('hidden');
-      mobileMenu.classList.toggle('hidden', !open);
-      if (menuBackdrop) menuBackdrop.classList.toggle('hidden', !open);
-      menuBtn.setAttribute('aria-expanded', String(open));
-      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    });
-    if (menuBackdrop) {
-      menuBackdrop.addEventListener('click', function() {
-        mobileMenu.classList.add('hidden');
-        menuBackdrop.classList.add('hidden');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', 'Open menu');
-      });
-    }
   }
 
   // Triage button (placeholder)
