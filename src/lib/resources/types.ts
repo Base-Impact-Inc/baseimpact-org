@@ -86,6 +86,10 @@ export type Resource = {
    */
   services: HelpService[];
   county: ResourceCounty;
+  /** City where the resource is located (for USA-wide filtering). */
+  city?: string;
+  /** US state abbreviation (e.g. "FL", "TX"). */
+  state?: string;
   /** ISO date the listing was last checked against the organization's own website. */
   lastVerified?: string;
   /**

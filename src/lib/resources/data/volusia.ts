@@ -21,6 +21,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "crisis",
     services: [],
     county: "Volusia",
+    city: "FL",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -44,6 +46,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Volusia",
+    city: "DeLand",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -66,6 +70,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Charity"],
     county: "Volusia",
+    city: "DeLand",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -88,6 +94,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -110,6 +118,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -132,6 +142,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -154,6 +166,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -175,6 +189,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -197,6 +213,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -219,6 +237,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -241,6 +261,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -263,6 +285,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "health",
     services: [],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -285,6 +309,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "money",
     services: [],
     county: "Volusia",
+    city: "DeLand",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -306,6 +332,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -328,6 +356,7 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Charity"],
     county: "Volusia",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -350,6 +379,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Volusia",
+    city: "Edgewater",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -372,6 +403,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Volusia",
+    city: "Daytona Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -394,6 +427,8 @@ export const VOLUSIA_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Volusia",
+    city: "Ormond Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
 ];

@@ -69,6 +69,12 @@ const groupLabels: Record<string, string> = {
       <input type="checkbox" id="open-now" class="rounded" />
       Open now
     </label>
+    <div class="mt-2">
+      <label for="state-filter" class="text-sm text-muted mr-2">State:</label>
+      <select id="state-filter" class="rounded-lg border border-line bg-card px-3 py-2 text-sm text-body min-h-11">
+        <option value="all">All states</option>
+      </select>
+    </div>
   </div>
 
   <div class="flex flex-wrap gap-2 mb-4" id="view-toggle">
@@ -91,7 +97,7 @@ const groupLabels: Record<string, string> = {
 
   <div class="grid gap-4 grid-cols-1 max-w-3xl" id="resource-grid">
     {resources.map((r: any) => (
-      <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'} data-lat={r.lat} data-lng={r.lng}>
+      <div class="resource-item h-full" data-resource-id={r.id} data-group={r.group} data-name={r.name.toLowerCase()} data-desc={r.description.toLowerCase()} data-tags={r.tags.join(' ').toLowerCase()} data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'} data-lat={r.lat} data-lng={r.lng} data-city={(r.city || '').toLowerCase()} data-state={(r.state || '').toUpperCase()}>
         <ResourceCard resource={r} />
       </div>
     ))}
@@ -121,6 +127,7 @@ const groupLabels: Record<string, string> = {
 <script>
   const searchInput = document.getElementById('search-input');
   const openNowCheckbox = document.getElementById('open-now');
+  const stateFilter = document.getElementById('state-filter');
   const chips = document.querySelectorAll('#filter-chips button');
   const items = document.querySelectorAll('.resource-item');
   const countEl = document.getElementById('results-count');
@@ -128,6 +135,19 @@ const groupLabels: Record<string, string> = {
   const grid = document.getElementById('resource-grid');
 
   let activeGroup = 'all';
+  let activeState = 'all';
+
+  // Populate state filter from data
+  const states = new Set();
+  items.forEach(item => { if (item.dataset.state) states.add(item.dataset.state); });
+  if (stateFilter) {
+    [...states].sort().forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = s;
+      stateFilter.appendChild(opt);
+    });
+  }
 
   function filter() {
     const query = (searchInput?.value || '').toLowerCase().trim();
@@ -141,12 +161,14 @@ const groupLabels: Record<string, string> = {
       const desc = el.dataset.desc || '';
       const tags = el.dataset.tags || '';
       const isOpen = el.dataset.open === '1';
+      const itemState = el.dataset.state || '';
 
       const matchesGroup = activeGroup === 'all' || group === activeGroup || (activeGroup === 'saved' && getSaved().includes(el.getAttribute('data-resource-id') || ''));
       const matchesSearch = !query || name.includes(query) || desc.includes(query) || tags.includes(query);
       const matchesOpen = !openOnly || isOpen;
+      const matchesState = activeState === 'all' || itemState === activeState;
 
-      if (matchesGroup && matchesSearch && matchesOpen) {
+      if (matchesGroup && matchesSearch && matchesOpen && matchesState) {
         el.style.display = '';
         visible++;
       } else {
@@ -163,6 +185,10 @@ const groupLabels: Record<string, string> = {
 
   searchInput?.addEventListener('input', filter);
   openNowCheckbox?.addEventListener('change', filter);
+  stateFilter?.addEventListener('change', () => {
+    activeState = stateFilter.value || 'all';
+    filter();
+  });
 
   chips.forEach(chip => {
     chip.addEventListener('click', () => {

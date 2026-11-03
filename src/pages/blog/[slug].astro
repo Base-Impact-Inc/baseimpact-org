@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={`${post.data.title} — Base Impact`} description={post.data.description}>
+  <article class="max-w-3xl mx-auto fade-in">
+    {post.data.image && (
+      <img src={post.data.image} alt={post.data.title} class="w-full h-64 object-cover rounded-2xl mb-6" loading="lazy" />
+    )}
+    <h1 class="font-display text-3xl font-semibold text-body mb-2">{post.data.title}</h1>
+    <p class="text-sm text-faint mb-6">
+      {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+      {post.data.categories.length > 0 && (
+        <span> · {post.data.categories.join(', ')}</span>
+      )}
+    </p>
+    <div class="prose text-muted leading-relaxed">
+      <Content />
+    </div>
+    <div class="mt-8">
+      <a href="/blog" class="text-accent underline text-sm">← Back to blog</a>
+    </div>
+  </article>
+</Base>

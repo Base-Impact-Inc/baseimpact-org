@@ -21,6 +21,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -43,6 +45,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -65,6 +69,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -87,6 +93,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Food", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -109,6 +117,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -131,6 +141,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -153,6 +165,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -175,6 +189,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -197,6 +213,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -219,6 +237,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -241,6 +261,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -263,6 +285,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "money",
     services: [],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -285,6 +309,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Orange",
+    city: "Orlando",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -307,6 +333,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "crisis",
     services: [],
     county: "Orange",
+    city: "FL",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -330,6 +358,8 @@ export const ORANGE_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Food", "Faith", "Charity"],
     county: "Orange",
+    city: "Winter Garden",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
 ];

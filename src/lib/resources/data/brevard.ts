@@ -21,6 +21,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -43,6 +45,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: ["Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -65,6 +69,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -87,6 +93,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -109,6 +117,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -131,6 +141,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -153,6 +165,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -175,6 +189,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -197,6 +213,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -219,6 +237,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -241,6 +261,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Mims",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -263,6 +285,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Mims",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -285,6 +309,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -307,6 +333,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -329,6 +357,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -351,6 +381,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -372,6 +404,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -394,6 +428,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -415,6 +451,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -436,6 +474,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Titusville",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -458,6 +498,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -480,6 +522,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "basics",
     services: ["Charity"],
     county: "Brevard",
+    city: "Mobile",
+    state: "FL",
     lastVerified: "2026-09-26",
     mobileOnly: true,
   },
@@ -503,6 +547,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -526,6 +572,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -548,6 +596,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -570,6 +620,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Faith", "Charity"],
     county: "Brevard",
+    city: "FL",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -593,6 +645,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -614,6 +668,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -635,6 +691,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Cocoa Beach",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -656,6 +714,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Food", "Faith", "Charity"],
     county: "Brevard",
+    city: "Merritt Island",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -678,6 +738,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "FL",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-09-26",
   },
@@ -701,6 +763,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: [],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -723,6 +787,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: [],
     county: "Brevard",
+    city: "Viera",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -745,6 +811,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: [],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -767,6 +835,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "health",
     services: ["Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -788,6 +858,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: ["Charity"],
     county: "Brevard",
+    city: "Rockledge",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -810,6 +882,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "money",
     services: [],
     county: "Brevard",
+    city: "Viera",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -832,6 +906,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "Cocoa",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
   {
@@ -854,6 +930,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "health",
     services: ["Food"],
     county: "Brevard",
+    city: "Viera",
+    state: "FL",
     lastVerified: "2026-09-26",
   },
 
@@ -877,6 +955,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "food",
     services: ["Food", "Charity"],
     county: "Brevard",
+    city: "Melbourne",
+    state: "FL",
     lastVerified: "2026-11-01",
   },
   {
@@ -899,6 +979,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "Palm Bay",
+    state: "FL",
     lastVerified: "2026-11-01",
   },
   {
@@ -921,6 +1003,8 @@ export const BREVARD_RESOURCES: Resource[] = [
     group: "shelter",
     services: ["Charity"],
     county: "Brevard",
+    city: "Rockledge",
+    state: "FL",
     mobileOnly: true,
     lastVerified: "2026-11-01",
   },
