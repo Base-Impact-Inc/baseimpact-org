@@ -4,100 +4,102 @@
 */
 
 :root {
-  --font-sans: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
 
-  /* surfaces */
-  --color-page: #f7f9fb;
-  --color-card: #ffffff;
-  --color-inset: #e5e7eb;
-  --color-band: #0a0f1a;
-  --color-band-deep: #000000;
+  /* surfaces — bottle green ground */
+  --color-page: #133621;
+  --color-card: #1a4429;
+  --color-inset: #1a4429;
+  --color-band: #133621;
+  --color-band-deep: #0a2014;
 
-  /* text */
-  --color-body: #111827;
-  --color-muted: #374151;
-  --color-faint: #374151;
-  --color-on-fill: #ffffff;
+  /* text — warm gold */
+  --color-body: #f6e58a;
+  --color-muted: #e0c87a;
+  --color-faint: #d4b96c;
+  --color-on-fill: #133621;
 
-  /* border */
-  --color-line: #cbd5e1;
+  /* border — tone step, no lines */
+  --color-line: #1a4429;
 
-  /* accents */
-  --color-accent: #1d4ed8;
-  --color-accent-hover: #1e40af;
-  --color-positive: #065f46;
-  --color-caution: #92400e;
-  --color-critical: #991b1b;
-  --color-inactive: #4b5563;
+  /* accents — gold is the one accent */
+  --color-accent: #f4d96c;
+  --color-accent-hover: #e6c95a;
+  --color-positive: #f4d96c;
+  --color-caution: #f4d96c;
+  --color-critical: #f4d96c;
+  --color-inactive: #b3a55e;
 
   /* fills */
-  --color-fill: #1d4ed8;
-  --color-fill-hover: #1e40af;
-  --color-fill-caution: #92400e;
-  --color-fill-critical: #991b1b;
-  --color-fill-positive: #065f46;
+  --color-fill: #f4d96c;
+  --color-fill-hover: #e6c95a;
+  --color-fill-caution: #f4d96c;
+  --color-fill-critical: #f4d96c;
+  --color-fill-positive: #f4d96c;
 
-  /* tints */
-  --color-tint-positive: #d1fae5;
-  --color-tint-caution: #fef3c7;
-  --color-tint-critical: #fee2e2;
-  --color-tint-inactive: #e5e7eb;
+  /* tints — tone steps */
+  --color-tint-positive: #1a4429;
+  --color-tint-caution: #1a4429;
+  --color-tint-critical: #1a4429;
+  --color-tint-inactive: #1a4429;
 
   --color-black: #000000;
   --color-white: #ffffff;
 
-  --radius-xs: 0.25rem;
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 1.75rem;
+  /* type scale — 5 steps */
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(5rem, 3rem + 9vw, 9.375rem);
 
-  --shadow-border:
-    0px 0px 0px 1px rgb(17 24 39 / 0.08),
-    0px 1px 2px -1px rgb(17 24 39 / 0.08),
-    0px 2px 4px 0px rgb(17 24 39 / 0.06);
-  --shadow-border-hover:
-    0px 0px 0px 1px rgb(17 24 39 / 0.14),
-    0px 1px 2px -1px rgb(17 24 39 / 0.12),
-    0px 2px 4px 0px rgb(17 24 39 / 0.1);
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+
+  --shadow-border: none;
+  --shadow-border-hover: none;
 }
 
 .dark {
-  --color-page: #000000;
-  --color-card: #111827;
-  --color-inset: #1f2937;
-  --color-band: #0b1220;
-  --color-band-deep: #000000;
+  /* Same palette — the design IS dark */
+  --color-page: #133621;
+  --color-card: #1a4429;
+  --color-inset: #1a4429;
+  --color-band: #133621;
+  --color-band-deep: #0a2014;
 
-  --color-body: #f8fafc;
-  --color-muted: #e2e8f0;
-  --color-faint: #e2e8f0;
-  --color-on-fill: #ffffff;
+  --color-body: #f6e58a;
+  --color-muted: #e0c87a;
+  --color-faint: #d4b96c;
+  --color-on-fill: #133621;
 
-  --color-line: #4b5563;
+  --color-line: #1a4429;
 
-  --color-accent: #60a5fa;
-  --color-accent-hover: #93c5fd;
-  --color-positive: #34d399;
-  --color-caution: #fbbf24;
-  --color-critical: #fca5a5;
-  --color-inactive: #cbd5e1;
+  --color-accent: #f4d96c;
+  --color-accent-hover: #e6c95a;
+  --color-positive: #f4d96c;
+  --color-caution: #f4d96c;
+  --color-critical: #f4d96c;
+  --color-inactive: #b3a55e;
 
-  --color-fill: #1d4ed8;
-  --color-fill-hover: #1e40af;
-  --color-fill-caution: #b45309;
-  --color-fill-critical: #b91c1c;
-  --color-fill-positive: #064e3b;
+  --color-fill: #f4d96c;
+  --color-fill-hover: #e6c95a;
+  --color-fill-caution: #f4d96c;
+  --color-fill-critical: #f4d96c;
+  --color-fill-positive: #f4d96c;
 
-  --color-tint-positive: #022c22;
-  --color-tint-caution: #451a03;
-  --color-tint-critical: #450a0a;
-  --color-tint-inactive: #1f2937;
+  --color-tint-positive: #1a4429;
+  --color-tint-caution: #1a4429;
+  --color-tint-critical: #1a4429;
+  --color-tint-inactive: #1a4429;
 
-  --shadow-border: 0 0 0 1px #ffffff14, 0 1px 2px -1px #ffffff0f, 0 2px 4px #ffffff0a;
-  --shadow-border-hover: 0 0 0 1px #ffffff1f, 0 1px 2px -1px #ffffff14, 0 2px 4px #ffffff0f;
+  --shadow-border: none;
+  --shadow-border-hover: none;
 }
 
 /* Base */
@@ -113,7 +115,7 @@ html {
   overflow-x: hidden;
 }
 html:not(.dark) {
-  color-scheme: light;
+  color-scheme: dark;
 }
 body {
   margin: 0;
@@ -122,12 +124,13 @@ body {
   color: inherit;
   font-family: inherit;
 }
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   text-wrap: balance;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
   color: inherit;
+  font-weight: 600;
 }
 p {
   text-wrap: pretty;
@@ -868,8 +871,7 @@ hr {
 
 /* Better skeleton loading */
 .skeleton {
-  background: linear-gradient(90deg, var(--color-inset) 25%, var(--color-card) 50%, var(--color-inset) 75%);
-  background-size: 200% 100%;
+  background: var(--color-inset);
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius-md);
 }

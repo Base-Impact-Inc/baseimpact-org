@@ -2,103 +2,388 @@
 import Base from '../layouts/Base.astro';
 
 const pillars = [
-  { title: "Technology access", body: "Helping neighbors get a working device and internet service — and learn to use them." },
+  { title: "Technology access", body: "Helping neighbors get a working device and internet service. Learn to use them." },
   { title: "Digital skills & job help", body: "Walk-throughs for housing portals, job applications, benefits, and staying safe online." },
   { title: "Tech for small nonprofits", body: "Free setup, security, and support for churches, pantries, and 1–5 person community groups." },
-  { title: "Local resource guide", body: "A simpler, local starting point that works alongside 211 — food, shelter, showers, and more." },
+  { title: "Local resource guide", body: "A simpler, local starting point that works alongside 211. Food, shelter, showers, and more." },
 ];
 ---
 
-<Base>
-  <div class="space-y-10">
-    <section class="overflow-hidden rounded-3xl bg-band px-5 py-8 text-on-fill sm:px-10 sm:py-12">
-      <p class="text-xs font-bold uppercase tracking-[0.16em] text-faint">
-        Scottsmoor, FL · Serving communities nationwide
-      </p>
-      <h1 class="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-5xl">
-        Technology help nationwide — devices, internet, and the skills to use them.
-      </h1>
-      <p class="mt-4 max-w-xl text-base leading-relaxed text-faint sm:text-lg">
-        Base Impact helps neighbors get connected and helps small local nonprofits keep their
-        technology working. Plus a local resource guide that works alongside 211.
-      </p>
-      <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <a href="/directory" class="flex w-full items-center justify-center gap-2 rounded-full bg-fill px-6 py-3 text-base font-semibold text-on-fill hover:bg-fill-hover sm:w-auto btn-pill">
-          Find help near me
-        </a>
-        <button type="button" class="flex w-full items-center justify-center gap-2 rounded-full bg-fill-caution px-6 py-3 text-base font-semibold text-on-fill hover:opacity-90 sm:w-auto btn-pill">
-          Need help?
-        </button>
+<Base title="Base Impact. Find help, get connected.">
+  <!-- Hero: type-only statement across two fields -->
+  <section class="hero-fields">
+    <div class="hero-lower">
+      <div class="mx-auto max-w-6xl px-4">
+        <h1 class="hero-headline">
+          <span class="hero-line-upper">Help.</span>
+        </h1>
+        <p class="hero-subtitle">Base Impact · Find food, shelter, and essentials nationwide</p>
+        <p class="hero-support">
+          Base Impact connects people with food, shelter, showers, and essentials. It also helps small nonprofits keep their technology working.
+        </p>
+        <div class="hero-action">
+          <a href="/directory" class="hero-btn">Find help near you</a>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="grid grid-cols-1 gap-3 sm:grid-cols-2 stagger-children">
-      <a href="tel:211" class="flex min-h-16 items-center justify-between rounded-2xl bg-card px-4 shadow-[var(--shadow-border)]">
-        <span>
-          <span class="block text-xs font-bold uppercase tracking-wide text-accent">24/7 local help</span>
-          <span class="font-display text-xl font-semibold">Call 211</span>
-        </span>
-      </a>
-      <a href="tel:+13213230999" class="flex min-h-16 items-center justify-between rounded-2xl bg-card px-4 shadow-[var(--shadow-border)]">
-        <span>
-          <span class="block text-xs font-bold uppercase tracking-wide text-accent">Base Impact · by appointment</span>
-          <span class="font-display text-xl font-semibold">(321) 323-0999</span>
-        </span>
-      </a>
-    </section>
-
-    <section class="grid grid-cols-2 gap-4 sm:grid-cols-4 stagger-children">
-      <div class="rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-border)]">
-        <p class="font-display text-2xl font-bold text-accent">83</p>
-        <p class="text-sm font-semibold text-body mt-1">Resources listed</p>
-        <p class="text-xs text-faint mt-1">Local services in our directory</p>
-      </div>
-      <div class="rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-border)]">
-        <p class="font-display text-2xl font-bold text-accent">6</p>
-        <p class="text-sm font-semibold text-body mt-1">Service types</p>
-        <p class="text-xs text-faint mt-1">Food, shelter, health, money, basics, crisis</p>
-      </div>
-      <div class="rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-border)]">
-        <p class="font-display text-2xl font-bold text-accent">Any</p>
-        <p class="text-sm font-semibold text-body mt-1">Languages</p>
-        <p class="text-xs text-faint mt-1">Use your browser's translate</p>
-      </div>
-      <div class="rounded-2xl bg-card p-4 text-center shadow-[var(--shadow-border)]">
-        <p class="font-display text-2xl font-bold text-accent">24/7</p>
-        <p class="text-sm font-semibold text-body mt-1">Help available</p>
-        <p class="text-xs text-faint mt-1">Call 211 anytime</p>
-      </div>
-    </section>
-
-    <section>
-      <h2 class="font-display text-2xl font-semibold sm:text-3xl">What we focus on</h2>
-      <p class="mt-2 max-w-2xl text-muted">
-        Immediate needs first. Then the skills and tools that keep people housed, employed, and
-        connected.
-      </p>
-      <div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {pillars.map((pillar) => (
-          <article class="rounded-2xl bg-card p-4 shadow-[var(--shadow-border)]">
-            <h3 class="font-display text-base font-semibold">{pillar.title}</h3>
-            <p class="mt-1 text-sm text-muted leading-snug">{pillar.body}</p>
-          </article>
-        ))}
-      </div>
-    </section>
-    <section class="rounded-3xl bg-band px-5 py-8 text-on-fill sm:px-10 sm:py-12">
-      <h2 class="font-display text-2xl font-semibold sm:text-3xl">Support our mission</h2>
-      <p class="mt-2 max-w-2xl text-faint">
-        Base Impact is a pre-filing nonprofit. Your support helps us provide devices, internet,
-        training, and tech support to neighbors and small nonprofits nationwide.
-      </p>
-      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-        <a href="/donate" class="flex w-full items-center justify-center gap-2 rounded-full bg-fill px-6 py-3 text-base font-semibold text-on-fill hover:bg-fill-hover sm:w-auto btn-pill">
-          Donate
-        </a>
-        <a href="/volunteer" class="flex w-full items-center justify-center gap-2 rounded-xl bg-fill-caution px-6 py-3 text-base font-semibold text-on-fill hover:opacity-90 sm:w-auto">
-          Volunteer
-        </a>
-      </div>
-    </section>
+  <!-- Picture band after hero -->
+  <div class="picture-band">
+    <img src="/assets/usda-foods-community-foodbank-of-new-jersey.jpg" alt="Community food bank volunteers distributing food" width="1920" height="1176" loading="lazy" decoding="async" />
   </div>
+  <section class="stats-section">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
+        <div>
+          <p class="stat-number">117</p>
+          <p class="stat-label">Resources listed</p>
+        </div>
+        <div>
+          <p class="stat-number">6</p>
+          <p class="stat-label">Service types</p>
+        </div>
+        <div>
+          <p class="stat-number">Any</p>
+          <p class="stat-label">Languages</p>
+        </div>
+        <div>
+          <p class="stat-number">24/7</p>
+          <p class="stat-label">Help available</p>
+        </div>
+      </div>
+      <p class="stat-receipt">Every resource verified against 211 Brevard and community partners. Updated November 2026.</p>
+    </div>
+  </section>
+
+  <!-- Picture band after stats -->
+  <div class="picture-band">
+    <img src="/assets/dorothy-day-shelter-homeless-shelter-campus-st.jpg" alt="Dorothy Day shelter campus" width="1920" height="1200" loading="lazy" decoding="async" />
+  </div>
+  <section class="capabilities-section">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="section-head">What we focus on</h2>
+      <p class="section-intro">Immediate needs first. Then the skills and tools that keep people housed, employed, and connected.</p>
+      <ul class="capability-list">
+        {pillars.map((pillar) => (
+          <li>
+            <span class="capability-title">{pillar.title}</span>
+            <span class="capability-body">{pillar.body}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Picture band after capabilities -->
+  <div class="picture-band">
+    <img src="/assets/rome-largo-di-torre-argentina-cat-sanctuary.jpg" alt="Community support" width="1920" height="2560" loading="lazy" decoding="async" />
+  </div>
+  <section class="statement-section">
+    <div class="mx-auto max-w-6xl px-4">
+      <p class="statement-text">
+        We believe everyone deserves a working device, a working connection, and someone to show them how.
+      </p>
+    </div>
+  </section>
+  <!-- Picture band after statement -->
+  <div class="picture-band">
+    <img src="/assets/delivering-relief-374th-airlift-wing-provides-lifesaving.jpg" alt="Delivering relief" width="1920" height="1280" loading="lazy" decoding="async" />
+  </div>
+  <section class="emergency-section">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <a href="tel:211" class="emergency-card">
+          <span class="emergency-label">24/7 local help</span>
+          <span class="emergency-number">Call 211</span>
+        </a>
+        <a href="tel:+13213230999" class="emergency-card">
+          <span class="emergency-label">Base Impact · by appointment</span>
+          <span class="emergency-number">(321) 323-0999</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA: one word is the button -->
+  <section class="cta-section">
+    <div class="mx-auto max-w-6xl px-4">
+      <p class="cta-word">Donate</p>
+      <p class="cta-support">Help us keep connecting people with the resources they need.</p>
+      <a href="/donate" class="cta-btn">Give now</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Picture band: full-width image */
+  .picture-band {
+    width: 100%;
+    overflow: hidden;
+    max-height: 50vh;
+  }
+  .picture-band img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Hero support text in upper field */
+  .hero-support-upper {
+    font-size: var(--step-body);
+    color: var(--color-muted);
+    max-width: 60ch;
+    line-height: 1.5;
+    padding: 2rem 0;
+  }
+  .hero-fields {
+    padding: 4rem 0 6rem;
+  }
+  .hero-lower {
+    background: var(--color-page);
+  }
+  .hero-headline {
+    font-size: var(--step-display);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.86;
+    margin: 0;
+  }
+  .hero-line-upper {
+    display: block;
+    color: var(--color-body);
+  }
+  .hero-line-lower {
+    display: block;
+    color: var(--color-muted);
+  }
+  .hero-support {
+    font-size: var(--step-body);
+    color: var(--color-muted);
+    max-width: 40ch;
+    margin-top: 2rem;
+    line-height: 1.5;
+  }
+  .hero-subtitle {
+    font-size: var(--step-lead);
+    color: var(--color-body);
+    margin-top: 1rem;
+    line-height: 1.3;
+  }
+  .hero-action {
+    margin-top: 2rem;
+  }
+  .hero-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-fill);
+    color: var(--color-on-fill);
+    font-weight: 600;
+    font-size: var(--step-body);
+    text-decoration: none;
+  }
+  .hero-btn:hover {
+    background: var(--color-fill-hover);
+  }
+
+  /* Stats section */
+  .stats-section {
+    padding: 4rem 0;
+    background: var(--color-card);
+  }
+  .stat-number {
+    font-size: var(--step-head);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    color: var(--color-body);
+    margin: 0;
+  }
+  .stat-label {
+    font-size: var(--step-body);
+    font-weight: 500;
+    color: var(--color-body);
+    margin-top: 0.5rem;
+  }
+  .stat-receipt {
+    font-size: var(--step-small);
+    color: var(--color-body);
+    margin-top: 2rem;
+    max-width: 50ch;
+    padding-right: 1rem;
+  }
+
+  /* Capabilities section */
+  .capabilities-section {
+    padding: 4rem 0;
+  }
+  .section-head {
+    font-size: var(--step-head);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+    color: var(--color-body);
+    margin: 0 0 1rem;
+  }
+  .section-intro {
+    font-size: var(--step-body);
+    color: var(--color-body);
+    max-width: 30ch;
+    margin: 0 0 2rem;
+    padding-right: 2rem;
+  }
+  .capability-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .capability-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 2rem 1rem;
+  }
+  .capability-title {
+    font-size: var(--step-lead);
+    font-weight: 600;
+    color: var(--color-body);
+    max-width: 40ch;
+    padding-right: 1.5rem;
+  }
+  .capability-body {
+    font-size: var(--step-body);
+    color: var(--color-body);
+    max-width: 60ch;
+  }
+
+  /* Statement section: full-width colour field */
+  .statement-section {
+    padding: 6rem 0;
+    background: var(--color-card);
+  }
+  .statement-text {
+    font-size: var(--step-lead);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--color-body);
+    max-width: 50ch;
+    padding-right: 1rem;
+  }
+  .emergency-section {
+    padding: 4rem 0;
+    background: var(--color-card);
+  }
+  .emergency-card {
+    display: block;
+    padding: 2rem;
+    background: var(--color-page);
+    text-decoration: none;
+  }
+  .emergency-card:hover {
+    background: var(--color-inset);
+  }
+  .emergency-label {
+    display: block;
+    font-size: var(--step-small);
+    color: var(--color-body);
+    margin-bottom: 0.5rem;
+  }
+  .emergency-number {
+    display: block;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    color: var(--color-body);
+  }
+
+  /* CTA section */
+  .cta-section {
+    padding: 6rem 0;
+    text-align: center;
+  }
+  .cta-word {
+    font-size: var(--step-display);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.86;
+    color: var(--color-body);
+    margin: 0;
+  }
+  .cta-support {
+    font-size: var(--step-body);
+    color: var(--color-body);
+    margin: 1.5rem 0 2rem;
+    max-width: 50ch;
+  }
+  .cta-btn {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: var(--color-fill);
+    color: var(--color-on-fill);
+    font-weight: 600;
+    font-size: var(--step-body);
+    text-decoration: none;
+  }
+  .cta-btn:hover {
+    background: var(--color-fill-hover);
+  }
+  /* Motion layer */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-headline, .hero-subtitle, .hero-support, .hero-action {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+  .hero-subtitle { animation-delay: 0.1s; }
+  .hero-support { animation-delay: 0.2s; }
+  .hero-action { animation-delay: 0.3s; }
+
+  .stats-section .stat-card {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+  .stats-section .stat-card:nth-child(1) { animation-delay: 0.1s; }
+  .stats-section .stat-card:nth-child(2) { animation-delay: 0.2s; }
+  .stats-section .stat-card:nth-child(3) { animation-delay: 0.3s; }
+  .stats-section .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .picture-band {
+    animation: fadeInUp 1s ease-out both;
+  }
+
+  .capabilities-section .capability-list li {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+  .capabilities-section .capability-list li:nth-child(1) { animation-delay: 0.1s; }
+  .capabilities-section .capability-list li:nth-child(2) { animation-delay: 0.2s; }
+  .capabilities-section .capability-list li:nth-child(3) { animation-delay: 0.3s; }
+  .capabilities-section .capability-list li:nth-child(4) { animation-delay: 0.4s; }
+
+  .statement-section {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+
+  .emergency-section .emergency-card {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+  .emergency-section .emergency-card:nth-child(1) { animation-delay: 0.1s; }
+  .emergency-section .emergency-card:nth-child(2) { animation-delay: 0.2s; }
+  .emergency-section .emergency-card:nth-child(3) { animation-delay: 0.3s; }
+  .emergency-section .emergency-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .cta-section {
+    animation: fadeInUp 0.8s ease-out both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-headline, .hero-subtitle, .hero-support, .hero-action,
+    .stats-section .stat-card, .picture-band,
+    .capabilities-section .capability-list li,
+    .statement-section, .emergency-section .emergency-card,
+    .cta-section {
+      animation: none;
+    }
+  }
+</style>
 </Base>
