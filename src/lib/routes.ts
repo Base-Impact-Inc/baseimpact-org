@@ -32,9 +32,9 @@ export const SITE_URL = "https://baseimpact.org";
 export const ROUTE_META: RouteMeta[] = [
   {
     path: "/",
-    title: "Base Impact — neighborhood help in Brevard County",
+    title: "Base Impact — neighborhood help across the USA",
     description:
-      "Tech help, food, shelter, and community support in Brevard County. Built for phones.",
+      "Tech help, food, shelter, and community support across the USA. Built for phones.",
   },
   {
     path: "/directory",
@@ -100,7 +100,7 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/contact",
     title: "Contact Base Impact",
     description:
-      "Phone, email, and contact details for Base Impact, a Florida nonprofit serving Brevard County.",
+      "Phone, email, and contact details for Base Impact, a Florida nonprofit serving communities nationwide.",
   },
   {
     path: "/feedback",
@@ -142,25 +142,25 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/donate",
     title: "Donate to Base Impact",
     description:
-      "Support Base Impact's technology access, digital skills, and community programs in Brevard County.",
+      "Support Base Impact's technology access, digital skills, and community programs nationwide.",
   },
   {
     path: "/events",
     title: "Events & Community Impact",
     description:
-      "Upcoming events, supply drives, shelter nights, and community impact stories from Base Impact in Brevard County.",
+      "Upcoming events, supply drives, shelter nights, and community impact stories from Base Impact nationwide.",
   },
   {
     path: "/grants",
     title: "Grants & Funding",
     description:
-      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving Brevard County.",
+      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving communities nationwide.",
   },
   {
     path: "/financials",
     title: "Financials",
     description:
-      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving Brevard County.",
+      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving communities nationwide.",
   },
   {
     path: "/programs",
@@ -172,7 +172,7 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/technology-access",
     title: "Technology Access",
     description:
-      "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for Brevard County neighbors in need.",
+      "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for neighbors in need nationwide.",
   },
   {
     path: "/es",
