@@ -4,8 +4,6 @@ import Base from '../layouts/Base.astro';
 const stats = [
   { label: "Resources listed", value: "80+", detail: "Local services in our directory" },
   { label: "Service categories", value: "12", detail: "Food, shelter, health, housing, recovery, and more" },
-  { label: "Coverage area", value: "Brevard County", detail: "Brevard County focus, county-wide directory" },
-  { label: "Languages", value: "Any", detail: "Use your browser's translate feature" },
 ];
 ---
 
@@ -17,7 +15,7 @@ const stats = [
       Here's what we're building and the impact we're having.
     </p>
 
-    <section class="grid grid-cols-2 gap-4 sm:grid-cols-4 stagger-children">
+    <section class="grid grid-cols-2 gap-4 sm:grid-cols-2 stagger-children">
       {stats.map((stat) => (
         <div class="rounded-2xl bg-card p-5 text-center shadow-[var(--shadow-border)]">
           <p class="font-display text-2xl font-bold text-accent">{stat.value}</p>
