@@ -1,0 +1,65 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Programs — Base Impact',
+  description: 'Base Impact programs include resource directories, technology access, nonprofit support, and community outreach across Central Florida.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Programs</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          Our programs are designed to meet real community needs. Each program is either active now
+          or in active development. We share progress openly so partners and neighbors know what's
+          available.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Resource Directory</h2>
+        <p>
+          Our searchable directory connects neighbors with 83 verified resources across Brevard, Volusia,
+          Orange, and statewide. Updated regularly.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Technology Access</h2>
+        <p>
+          Device distribution, internet help, and digital skills training for neighbors who need them.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Nonprofit Technology Support</h2>
+        <p>
+          Small nonprofits get help keeping their websites, email, and systems working so they can
+          focus on serving the community.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Events and Outreach</h2>
+        <p>
+          Monthly meetups, quarterly drives, and virtual orientations help us stay connected and
+          discover new needs.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 mt-8">
+          <a href="/grants" class="block p-6 rounded-xl border border-border dark:border-darkmode-border hover:border-primary transition">
+            <h3 class="text-xl font-semibold mb-2">Grants</h3>
+            <p class="text-sm">Funding opportunities and our current funding needs.</p>
+          </a>
+          <a href="/technology-access" class="block p-6 rounded-xl border border-border dark:border-darkmode-border hover:border-primary transition">
+            <h3 class="text-xl font-semibold mb-2">Technology Access</h3>
+            <p class="text-sm">Devices, internet help, and digital skills training.</p>
+          </a>
+          <a href="/events" class="block p-6 rounded-xl border border-border dark:border-darkmode-border hover:border-primary transition">
+            <h3 class="text-xl font-semibold mb-2">Events</h3>
+            <p class="text-sm">Meetups, drives, and community orientations.</p>
+          </a>
+          <a href="/volunteer" class="block p-6 rounded-xl border border-border dark:border-darkmode-border hover:border-primary transition">
+            <h3 class="text-xl font-semibold mb-2">Volunteer</h3>
+            <p class="text-sm">Join our team as a Community Connector or Tech Keeper.</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

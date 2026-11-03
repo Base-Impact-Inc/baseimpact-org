@@ -1,0 +1,49 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Privacy Policy — Base Impact',
+  description: 'Base Impact privacy policy for website visitors, volunteers, and program participants.',
+  noindex: true,
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Privacy Policy</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p><strong>Last updated:</strong> November 2026</p>
+        <p>
+          Base Impact Inc. respects your privacy. This policy explains what information we collect,
+          how we use it, and your rights.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Information We Collect</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Contact form submissions (name, email, message)</li>
+          <li>Volunteer application information</li>
+          <li>Usage data collected by Cloudflare Pages (logs, IP addresses)</li>
+          <li>Saved resource preferences stored in your browser (localStorage only)</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">How We Use Information</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>To respond to inquiries and volunteer applications</li>
+          <li>To improve our website and programs</li>
+          <li>We do not sell or share personal data with third parties for marketing</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Your Rights</h2>
+        <p>
+          You may request access to, correction of, or deletion of your personal information by contacting us.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Contact</h2>
+        <p>
+          For privacy questions, email us or use the <a href="/contact">contact form</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

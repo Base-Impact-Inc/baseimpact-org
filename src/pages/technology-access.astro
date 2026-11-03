@@ -1,0 +1,45 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Technology Access — Base Impact',
+  description: 'Base Impact helps neighbors get connected with devices, internet access, and digital skills training.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Technology Access</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          We believe everyone deserves a working device, reliable internet, and the skills to use them.
+          Our technology access programs connect neighbors with devices, internet subsidies, and digital
+          literacy training.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Get a Device</h2>
+        <p>
+          Through device drives and partner programs, we distribute refurbished laptops and tablets to
+          neighbors who need them. Check our resource directory for current availability and pickup locations.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Internet Help</h2>
+        <p>
+          We help neighbors apply for internet subsidy programs and connect with low-cost providers.
+          If you're unsure where to start, call 211 or browse our directory for local assistance.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Digital Skills</h2>
+        <p>
+          We partner with libraries and community centers to offer basic device and internet training.
+          Upcoming sessions are listed on our events page.
+        </p>
+
+        <div class="mt-8">
+          <a href="/events" class="btn btn-primary">View Upcoming Events</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

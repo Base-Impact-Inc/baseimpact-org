@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Financials — Base Impact',
+  description: 'Base Impact publishes annual reports and financial summaries so donors and partners can see our impact and stewardship.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Financials</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          As a Florida nonprofit corporation, Base Impact is committed to transparency. We publish annual
+          reports and financial summaries so donors, partners, and the community can see how we use resources.
+        </p>
+        <p>
+          Detailed financial statements are available upon request. Contact us if you would like a copy
+          of our most recent annual report or IRS filings.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Annual Reports</h2>
+        <p>
+          Reports will be posted here as they are finalized.
+        </p>
+
+        <a href="/contact" class="btn btn-primary mt-4 inline-block">Request Financial Information</a>
+      </div>
+    </div>
+  </section>
+</Base>

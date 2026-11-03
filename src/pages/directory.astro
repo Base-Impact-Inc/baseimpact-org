@@ -1,0 +1,221 @@
+---
+import Base from '@/layouts/Base.astro';
+import ResourceCard from '@/components/ResourceCard.astro';
+import { telHref, directionsHref } from '@/lib/resources/links';
+
+const metadata = {
+  title: 'Resource Directory — Base Impact',
+  description: 'Find food, shelter, health, housing, and recovery resources in Brevard, Volusia, Orange & Statewide Counties.',
+};
+
+const categories = ['All', 'Food', 'Shelter', 'Health', 'Money', 'Basics', 'Crisis'];
+const categorySlug = (c: string) => c.toLowerCase();
+
+// Load static data as fallback
+const { processResources } = await import('@/lib/resources/logic');
+const origin = { lat: 28.0836, lng: -80.6081 };
+const staticResources = processResources(origin, 200, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
+
+// Try D1 first
+const env = (Astro.locals as any)?.env;
+let resources: any[] = [];
+if (env?.baseimpact_verify) {
+  try {
+    const result = await env.baseimpact_verify.prepare('SELECT * FROM resources ORDER BY name ASC').all();
+    resources = (result.results || []).map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      category: row.category,
+      address: row.address,
+      lat: row.lat,
+      lng: row.lng,
+      phone: row.phone,
+      website: row.website || undefined,
+      serviceUrl: row.service_url || undefined,
+      sourceUrl: row.source_url || undefined,
+      description: row.description,
+      hoursText: row.hours_text,
+      schedule: JSON.parse(row.schedule || '{}'),
+      tags: JSON.parse(row.tags || '[]'),
+      partnerType: row.partner_type,
+      capacityStatus: row.capacity_status,
+      group: row.help_group,
+      services: JSON.parse(row.services || '[]'),
+      county: row.county,
+      lastVerified: row.last_verified || undefined,
+      mobileOnly: row.mobile_only === 1,
+      nextAvail: { status: 'UNKNOWN' },
+    }));
+  } catch (e) {
+    resources = staticResources;
+  }
+} else {
+  resources = staticResources;
+}
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container">
+      <div class="mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-text-dark dark:text-darkmode-text-light">Find Help</h1>
+        <p class="mt-2 text-lg text-text dark:text-darkmode-text">{resources.length} resources in Brevard, Volusia, Orange & Statewide Counties</p>
+      </div>
+
+      <!-- Search -->
+      <div class="relative mb-6">
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search by name, category, or service..."
+          class="w-full rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-4 pr-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400"
+        />
+      </div>
+
+      <!-- Category Filters -->
+      <div class="flex flex-wrap gap-2 mb-8" id="filter-chips">
+        {categories.map((cat) => {
+          const isActive = cat === 'All';
+          return (
+            <button
+              type="button"
+              data-category={categorySlug(cat)}
+              class={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                isActive
+                  ? 'bg-primary text-white'
+                  : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-600'
+              }`}
+            >
+              {cat}
+            </button>
+          );
+        })}
+      </div>
+
+      <!-- Resource Grid -->
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="resource-grid">
+        {resources.map((r: any) => (
+          <div
+            class="resource-item h-full"
+            data-resource-id={r.id}
+            data-category={r.group}
+            data-name={r.name.toLowerCase()}
+            data-desc={r.description.toLowerCase()}
+            data-tags={(r.tags || []).join(' ').toLowerCase()}
+          >
+            <ResourceCard resource={r} />
+          </div>
+        ))}
+      </div>
+
+      <div id="results-count" class="mt-4 text-sm text-gray-500 dark:text-slate-400">{resources.length} results</div>
+
+      <div id="empty-state" class="hidden text-center py-12">
+        <p class="text-lg text-gray-500 dark:text-slate-400">No resources found.</p>
+        <p class="text-sm text-gray-400 dark:text-slate-500 mt-2">Try a different search or filter.</p>
+      </div>
+
+      <div class="mt-8 rounded-2xl bg-blue-50 dark:bg-slate-800 p-6 text-center">
+        <p class="text-sm text-gray-600 dark:text-slate-300 mb-2">Need immediate help?</p>
+        <div class="flex gap-2 justify-center flex-wrap">
+          <a href="tel:211" class="inline-flex items-center gap-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary/90">Call 211</a>
+          <a href="tel:988" class="inline-flex items-center gap-1 rounded-lg bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">Crisis 988</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const searchInput = document.getElementById('search-input');
+  const chips = document.querySelectorAll('#filter-chips button');
+  const items = document.querySelectorAll('.resource-item');
+  const countEl = document.getElementById('results-count');
+  const emptyState = document.getElementById('empty-state');
+  const grid = document.getElementById('resource-grid');
+
+  let activeCategory = 'all';
+
+  function filter() {
+    const query = (searchInput?.value || '').toLowerCase().trim();
+    let visible = 0;
+
+    items.forEach(item => {
+      const el = item;
+      const category = el.dataset.category || '';
+      const name = el.dataset.name || '';
+      const desc = el.dataset.desc || '';
+      const tags = el.dataset.tags || '';
+
+      const matchesCategory = activeCategory === 'all' || category === activeCategory;
+      const matchesSearch = !query || name.includes(query) || desc.includes(query) || tags.includes(query);
+
+      if (matchesCategory && matchesSearch) {
+        el.style.display = '';
+        visible++;
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    if (countEl) countEl.textContent = visible + ' result' + (visible !== 1 ? 's' : '');
+    if (emptyState && grid) {
+      emptyState.classList.toggle('hidden', visible > 0);
+      grid.classList.toggle('hidden', visible === 0);
+    }
+  }
+
+  searchInput?.addEventListener('input', filter);
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      activeCategory = chip.getAttribute('data-category') || 'all';
+      chips.forEach(c => {
+        c.classList.remove('bg-primary', 'text-white');
+        c.classList.add('bg-gray-100', 'dark:bg-slate-700', 'text-gray-700', 'dark:text-slate-200');
+      });
+      chip.classList.remove('bg-gray-100', 'dark:bg-slate-700', 'text-gray-700', 'dark:text-slate-200');
+      chip.classList.add('bg-primary', 'text-white');
+      filter();
+    });
+  });
+
+  // Save button
+  const SAVED_KEY = 'baseimpact-saved';
+  function getSaved() {
+    try { return JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch { return []; }
+  }
+  function setSaved(ids) {
+    localStorage.setItem(SAVED_KEY, JSON.stringify(ids));
+  }
+  function updateSaveBtn(btn, saved) {
+    btn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+    btn.classList.toggle('text-primary', saved);
+    btn.classList.toggle('text-gray-400', !saved);
+    const svg = btn.querySelector('svg');
+    if (svg) svg.setAttribute('fill', saved ? 'currentColor' : 'none');
+  }
+
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    const id = btn.getAttribute('data-resource-id');
+    if (!id) return;
+
+    const saved = getSaved().includes(id);
+    updateSaveBtn(btn, saved);
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const current = getSaved();
+      const idx = current.indexOf(id);
+      if (idx >= 0) {
+        current.splice(idx, 1);
+        updateSaveBtn(btn, false);
+      } else {
+        current.push(id);
+        updateSaveBtn(btn, true);
+      }
+      setSaved(current);
+    });
+  });
+</script>

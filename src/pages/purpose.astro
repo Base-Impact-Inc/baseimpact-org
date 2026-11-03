@@ -1,0 +1,32 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Our Purpose — Base Impact',
+  description: 'Learn why Base Impact exists: to help neighbors get connected and small nonprofits keep their technology working.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Our Purpose</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          Technology is a bridge — to jobs, to services, to community. Too many neighbors in Brevard County
+          still don't have a working device, reliable internet, or someone to ask for help. At the same time,
+          the small nonprofits that serve them often lack the technical support to keep their websites, email,
+          and databases running.
+        </p>
+        <p>
+          Base Impact exists to close that gap. We connect people with resources, devices, and skills.
+          We help nonprofits keep their technology working so they can focus on their mission.
+        </p>
+        <p>
+          We believe local solutions scale. By starting in Brevard County, building real partnerships,
+          and documenting what works, we create a model that can expand to other communities.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

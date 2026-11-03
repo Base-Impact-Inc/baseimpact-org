@@ -1,11 +1,20 @@
 {
-  // Cloudflare Workers — Static Assets deployment
-  // Deploy:  npm run deploy:cf-workers
-  // Preview: npm run preview:cf-workers
-  "name": "geeky-astro",
-  "compatibility_date": "2026-03-01",
-  "assets": {
-    "directory": "./dist",
-    "not_found_handling": "404-page"
-  }
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "baseimpact-org",
+  "pages_build_output_dir": "dist",
+  "compatibility_date": "2026-10-23",
+  "compatibility_flags": [
+    "global_fetch_strictly_public"
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "baseimpact_verify",
+      "database_name": "baseimpact-verify",
+      "database_id": "d60b0270-bc07-445f-b4fc-da0bcaa2af24",
+      "migrations_dir": "src/migrations"
+    }
+  ]
 }

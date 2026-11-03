@@ -1,191 +1,97 @@
 ---
-import Pagination from "@/components/Pagination.astro";
-import Post from "@/components/post.astro";
-import { settings } from "@/config/config.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
-import Base from "@/layouts/Base.astro";
-import dateFormat from "@/lib/utils/dateFormat";
-import { sortByDate } from "@/lib/utils/sortFunctions";
-import { markdownify } from "@/lib/utils/textConverter";
-import Sidebar from "@/partials/Sidebar.astro";
-import { Image } from "astro:assets";
-import { type CollectionEntry, getCollection, getEntry } from "astro:content";
-const { post_folder, pagination } = settings;
+import Base from '@/layouts/Base.astro';
 
-const homepage = (await getEntry(
-  "homepage",
-  "-index"
-)) as CollectionEntry<"homepage">;
-
-const { banner, featured_posts, promotion, recent_posts } = homepage.data;
-const posts = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft
-);
-const sortedPost: CollectionEntry<"posts">[] = sortByDate(posts);
-const featuredPosts = posts.filter((post) => post.data.featured);
+const metadata = {
+  title: 'Base Impact — Connecting Neighbors, Empowering Nonprofits',
+  description: 'Base Impact Inc. is a Florida nonprofit corporation helping neighbors get connected and small nonprofits keep their technology working in Brevard County.',
+};
 ---
 
-<Base>
-  {/* Banner */}
-  <section class="section banner relative pb-0">
-    <Image
-      class="absolute bottom-0 left-0 z-[-1] w-full"
-      src={"/images/banner-bg-shape.png"}
-      width={1905}
-      height={351}
-      style={{ objectFit: "contain" }}
-      alt="banner-shape"
-      loading={"eager"}
-    />
-
-    <div class="container">
-      <div
-        class="row flex-wrap-reverse items-center justify-center lg:flex-row">
-        <div
-          class={banner.image_enable
-            ? "mt-12 text-center lg:mt-0 lg:text-left lg:col-6"
-            : "mt-12 text-center lg:mt-0 lg:text-left lg:col-12"}>
-          <div class="banner-title">
-            <h1 set:html={markdownify(banner.title)}></h1>
-            <span set:html={markdownify(banner.title_small)}></span>
-          </div>
-          <p class="mt-4" set:html={markdownify(banner.content)}></p>
-          {
-            banner.button.enable && (
-              <a class="btn btn-primary lg:mb-0 my-6" href={banner.button.link}>
-                {banner.button.label}
-              </a>
-            )
-          }
-        </div>
-        {
-          banner.image_enable && (
-            <div class="col-9 lg:col-6">
-              <Image
-                class="mx-auto object-contain"
-                src={banner.image}
-                width={548}
-                height={443}
-                format="webp"
-                alt="Banner"
-                loading="eager"
-              />
-            </div>
-          )
-        }
+<Base title={metadata.title} description={metadata.description}>
+  <!-- Hero -->
+  <section class="section pt-24 pb-16">
+    <div class="container text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">
+        Connecting Neighbors,<br />
+        <span class="text-primary">Empowering Nonprofits</span>
+      </h1>
+      <p class="max-w-2xl mx-auto text-lg text-text dark:text-darkmode-text mb-8">
+        We help neighbors get connected — devices, internet, and the skills to use them — and we help
+        small local nonprofits keep their technology working in Brevard County.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="/directory" class="btn btn-primary">Find Resources</a>
+        <a href="/about" class="btn btn-outline">Learn More</a>
       </div>
     </div>
   </section>
 
-  {/* Home main */}
+  <!-- Stats -->
+  <section class="section bg-light dark:bg-darkmode-body">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">83</div>
+          <div class="text-text dark:text-darkmode-text">Resources Listed</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">4</div>
+          <div class="text-text dark:text-darkmode-text">Counties Served</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">6</div>
+          <div class="text-text dark:text-darkmode-text">Service Types</div>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">100%</div>
+          <div class="text-text dark:text-darkmode-text">Community Focused</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
   <section class="section">
     <div class="container">
-      <div class="row items-start">
-        <div class="mb-12 lg:mb-0 lg:col-8">
-          {/* Featured posts */}
-          {
-            featured_posts.enable && (
-              <div class="section">
-                <h2
-                  class="section-title"
-                  set:html={markdownify(featured_posts.title)}
-                ></h2>
-                <div class="rounded border border-border p-6 dark:border-darkmode-border">
-                  <div class="row">
-                    <div class="md:col-6">
-                      <Post {...featuredPosts[0]} />
-                    </div>
-                    <div class="scrollbar-w-[10px] mt-8 md:max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-text-darkmode-dark overflow-y-auto md:mt-0 md:col-6">
-                      {featuredPosts
-                        .slice(1, featuredPosts.length)
-                        .map((post, index) => {
-                          const { image, title, date } = post.data;
-                          return (
-                            <div
-                              class={`mb-6 flex flex-col sm:flex-row sm:items-center pb-6 last:max-md:pb-0 last:mb-0`}>
-                              {/* Post Image */}
-                              {image && (
-                                <Image
-                                  class="sm:mr-3 max-sm:mb-2 max-sm:w-full sm:h-[85px] rounded object-cover"
-                                  src={image}
-                                  alt={title || "Post Image"}
-                                  width={105}
-                                  height={85}
-                                  format="webp"
-                                  loading={index === 0 ? "eager" : "lazy"}
-                                />
-                              )}
-                              <div>
-                                <h3 class="h5 mb-2">
-                                  <a
-                                    href={`/${post_folder}/${post.id}`}
-                                    class="block hover:text-primary">
-                                    {title}
-                                  </a>
-                                </h3>
-                                <p class="inline-flex items-center font-bold">
-                                  <DynamicIcon
-                                    className="mr-1.5"
-                                    icon="FaRegCalendar"
-                                  />
-                                  {dateFormat(date!)}
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          }
-
-          {/* Promotion */}
-          {
-            promotion.enable && (
-              <a href={promotion.link} class="section block pt-0">
-                <Image
-                  class="h-full w-full"
-                  height={115}
-                  width={800}
-                  src={promotion.image}
-                  alt="promotion"
-                  format="webp"
-                />
-              </a>
-            )
-          }
-
-          {/* Recent Posts */}
-          {
-            recent_posts.enable && (
-              <div class="section pt-0">
-                <h2
-                  class="section-title"
-                  set:html={markdownify(recent_posts.title)}
-                ></h2>
-                <div class="rounded border border-border px-6 pt-6 dark:border-darkmode-border">
-                  <div class="row">
-                    {sortedPost.slice(0, pagination).map((post) => (
-                      <div class="mb-8 md:col-6">
-                        <Post {...post} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )
-          }
-
-          <Pagination
-            totalPages={Math.ceil(posts.length / pagination)}
-            currentPage={1}
-          />
+      <h2 class="text-3xl font-bold text-center text-text-dark dark:text-darkmode-text-light mb-12">
+        What We Do
+      </h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center p-6">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Resource Directory</h3>
+          <p class="text-text dark:text-darkmode-text">83 verified resources across Brevard, Volusia, Orange, and Statewide counties.</p>
         </div>
-        <Sidebar className="lg:mt-[9.5rem]" posts={posts} />
+        <div class="text-center p-6">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Device Access</h3>
+          <p class="text-text dark:text-darkmode-text">Helping neighbors get connected with devices, internet, and digital skills.</p>
+        </div>
+        <div class="text-center p-6">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Nonprofit Support</h3>
+          <p class="text-text dark:text-darkmode-text">Keeping small nonprofits' technology working so they can focus on their mission.</p>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section bg-primary text-white">
+    <div class="container text-center">
+      <h2 class="text-3xl font-bold mb-4">Need Help Finding Resources?</h2>
+      <p class="max-w-xl mx-auto mb-8 text-white/90">
+        Our directory connects you with 83 verified resources across Central Florida.
+      </p>
+      <a href="/directory" class="btn bg-white text-primary hover:bg-gray-100">
+        Browse Directory
+      </a>
     </div>
   </section>
 </Base>

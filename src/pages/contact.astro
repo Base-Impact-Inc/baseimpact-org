@@ -1,136 +1,47 @@
 ---
-import config from "@/config/config.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
-import Base from "@/layouts/Base.astro";
-import { markdownify } from "@/lib/utils/textConverter";
-import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import Base from '@/layouts/Base.astro';
 
-const contact = (await getEntry(
-  "contact",
-  "-index"
-)) as CollectionEntry<"contact">;
-
-const { contact_form_action }: { contact_form_action: string } = config.params;
-const { title, social_links, meta_title, description } = contact.data;
+const metadata = {
+  title: 'Contact — Base Impact',
+  description: 'Contact Base Impact for partnerships, volunteer inquiries, event hosting, or general questions.',
+};
 ---
 
-<Base title={title} meta_title={meta_title} description={description}>
+<Base title={metadata.title} description={metadata.description}>
   <section class="section">
-    <div class="container">
-      <div class="row relative pb-16">
-        <Image
-          width={1280}
-          height={800}
-          class="-z-[1] object-cover object-top absolute inset-0"
-          src={"/images/map.png"}
-          alt="map bg"
-          format="webp"
-        />
-        <div class="lg:col-6">
-          <h1
-            class="my-10 lg:my-11 lg:pt-11 text-center lg:text-left lg:text-[64px]"
-            set:html={markdownify(title || "")}
-          />
-        </div>
-        <div
-          class="contact-form-wrapper rounded border border-border p-6 dark:border-darkmode-border lg:col-6">
-          <h2>
-            Send Us A
-            <span
-              class="ml-1.5 inline-flex items-center text-primary dark:text-darkmode-primary">
-              Message
-              <DynamicIcon icon="FaArrowRight" />
-            </span>
-          </h2>
-          <form
-            class="contact-form mt-12"
-            method="POST"
-            action={contact_form_action}>
-            <div class="mb-6">
-              <label class="mb-2 block font-secondary" for="name">
-                Full name
-                <small
-                  class="font-secondary text-sm text-primary dark:text-darkmode-primary">
-                  *</small
-                >
-              </label>
-              <input
-                class="form-input w-full"
-                name="name"
-                type="text"
-                placeholder="Thomas Milano"
-                required
-              />
-            </div>
-            <div class="mb-6">
-              <label class="mb-2 block font-secondary" for="email">
-                Email Address
-                <small
-                  class="font-secondary text-sm text-primary dark:text-darkmode-primary">
-                  *</small
-                >
-              </label>
-              <input
-                class="form-input w-full"
-                name="email"
-                type="email"
-                placeholder="example@gmail.com"
-                required
-              />
-            </div>
-            <div class="mb-6">
-              <label class="mb-2 block font-secondary" for="subject">
-                Subject
-                <small
-                  class="font-secondary text-sm text-primary dark:text-darkmode-primary">
-                  *</small
-                >
-              </label>
-              <input
-                class="form-input w-full"
-                name="subject"
-                type="text"
-                placeholder="Blog advertisement"
-                required
-              />
-            </div>
-            <div class="mb-6">
-              <label class="mb-2 block font-secondary" for="message">
-                Your Message Here
-                <small
-                  class="font-secondary text-sm text-primary dark:text-darkmode-primary">
-                  *</small
-                >
-              </label>
-              <textarea
-                class="form-textarea w-full"
-                placeholder="Hello I’m Mr ‘x’ from………….."
-                rows="7"></textarea>
-            </div>
-            <input class="btn btn-primary" type="submit" value="Send Now" />
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        {
-          social_links.map((link) => (
-            <div class="md:col-6 lg:col-4">
-              <span
-                class="relative my-4 flex h-[100px] items-center justify-center
-             rounded border border-border p-4 text-primary dark:text-darkmode-primary dark:border-darkmode-border">
-                <DynamicIcon icon={link.icon} />
-                <a
-                  href={link.link}
-                  target="_blank"
-                  class="after:absolute after:inset-0 ml-1.5 text-lg font-bold text-text-dark dark:text-darkmode-text-light">
-                  {link.content}
-                </a>
-              </span>
-            </div>
-          ))
-        }
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Contact</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          Use the form below or email us directly. We read every message and typically respond within
+          3 business days.
+        </p>
+
+        <form class="space-y-4" action="#" method="POST">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Full Name</label>
+            <input type="text" name="name" required class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Email</label>
+            <input type="email" name="email" required class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Subject</label>
+            <select name="subject" class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2">
+              <option value="general">General Question</option>
+              <option value="partnership">Partnership</option>
+              <option value="volunteer">Volunteer Inquiry</option>
+              <option value="event">Event Hosting</option>
+              <option value="resource">Resource Listing</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Message</label>
+            <textarea name="message" rows="6" required class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
       </div>
     </div>
   </section>

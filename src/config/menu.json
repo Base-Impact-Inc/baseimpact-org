@@ -5,32 +5,50 @@
       "url": "/"
     },
     {
-      "name": "Posts",
-      "url": "/posts"
+      "name": "Find Help",
+      "url": "/directory"
     },
     {
       "name": "About",
-      "url": "/about"
-    },
-
-    {
-      "name": "Contact",
-      "url": "/contact"
-    },
-    {
-      "name": "Pages",
-      "url": "",
+      "url": "/about",
       "hasChildren": true,
       "children": [
         {
-          "name": "Elements",
-          "url": "/elements"
+          "name": "Our Purpose",
+          "url": "/purpose"
         },
         {
-          "name": "Categories",
-          "url": "/categories"
+          "name": "Partners",
+          "url": "/partners"
+        },
+        {
+          "name": "Financials",
+          "url": "/financials"
         }
       ]
+    },
+    {
+      "name": "Programs",
+      "url": "/programs",
+      "hasChildren": true,
+      "children": [
+        {
+          "name": "Grants",
+          "url": "/grants"
+        },
+        {
+          "name": "Technology Access",
+          "url": "/technology-access"
+        },
+        {
+          "name": "Events",
+          "url": "/events"
+        }
+      ]
+    },
+    {
+      "name": "Donate",
+      "url": "/donate"
     }
   ],
   "footer": [
@@ -39,16 +57,20 @@
       "url": "/"
     },
     {
+      "name": "Find Help",
+      "url": "/directory"
+    },
+    {
       "name": "About",
       "url": "/about"
     },
     {
-      "name": "Contact",
-      "url": "/contact"
+      "name": "Privacy Policy",
+      "url": "/privacy"
     },
     {
-      "name": "Privacy Policy",
-      "url": "/privacy-policy"
+      "name": "Terms",
+      "url": "/terms"
     }
   ]
 }

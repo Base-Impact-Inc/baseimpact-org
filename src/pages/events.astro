@@ -1,0 +1,46 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Events — Base Impact',
+  description: 'Base Impact hosts community tech drives, resource fairs, and volunteer orientations across Central Florida.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Events</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          We host regular events to connect neighbors with resources, train volunteers, and support
+          local nonprofits. All events are free unless noted otherwise.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Upcoming Events</h2>
+        <div class="space-y-4">
+          <div class="p-6 rounded-xl border border-border dark:border-darkmode-border">
+            <p class="text-sm text-gray-500 mb-1">Date: TBD</p>
+            <h3 class="text-xl font-semibold mb-2">Tech Connect Meetup</h3>
+            <p>Monthly meetup for neighbors and nonprofits. Demos, Q&A, and resource sharing.</p>
+          </div>
+          <div class="p-6 rounded-xl border border-border dark:border-darkmode-border">
+            <p class="text-sm text-gray-500 mb-1">Date: TBD</p>
+            <h3 class="text-xl font-semibold mb-2">Impact Drive: Device Collection</h3>
+            <p>Drop off working laptops, tablets, and chargers. All devices are refurbished and redistributed.</p>
+          </div>
+          <div class="p-6 rounded-xl border border-border dark:border-darkmode-border">
+            <p class="text-sm text-gray-500 mb-1">Date: TBD</p>
+            <h3 class="text-xl font-semibold mb-2">Volunteer Orientation</h3>
+            <p>New volunteer onboarding for Community Connectors and Tech Keepers.</p>
+          </div>
+        </div>
+
+        <p class="mt-6">
+          Event details and RSVPs will be posted here as they are confirmed. Subscribe to our newsletter
+          or follow our social channels for updates.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,34 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Partners — Base Impact',
+  description: 'Base Impact partners with local nonprofits, libraries, shelters, and community organizations to expand access to technology and resources.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Partners</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          We work with local organizations — food pantries, shelters, churches, libraries, and schools —
+          to make sure technology and resources reach the people who need them most.
+        </p>
+        <p>
+          Partnerships are built on trust, not logos. We list partner organizations in our resource directory
+          when they provide verified services to the community. We do not use partnership language for
+          relationships that have not been formally established.
+        </p>
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Become a Partner</h2>
+        <p>
+          If your organization serves Brevard, Volusia, Orange, or statewide communities and wants to
+          connect with more people, reach out. We can add your services to our directory, co-host events,
+          or explore longer-term collaboration.
+        </p>
+        <a href="/contact" class="btn btn-primary mt-4 inline-block">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</Base>

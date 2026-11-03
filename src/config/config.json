@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Geeky Astro",
-    "base_url": "https://example.com",
+    "title": "Base Impact",
+    "base_url": "https://baseimpact.org",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
@@ -9,14 +9,14 @@
     "logo_darkmode": "/images/logo-darkmode.png",
     "logo_width": "150",
     "logo_height": "39",
-    "logo_text": "Geeky"
+    "logo_text": "Base Impact"
   },
 
   "settings": {
-    "search": true,
-    "sticky_header": false,
-    "theme_switcher": true,
-    "default_theme": "system",
+    "search": false,
+    "sticky_header": true,
+    "theme_switcher": false,
+    "default_theme": "light",
     "pagination": 6,
     "InnerPaginationOptions": {
       "enableTop": false,
@@ -28,47 +28,47 @@
 
   "params": {
     "contact_form_action": "#",
-    "footer_content": "Lorem ipsum dolor sit amt, conse adip iscing. donec iaculis tempasus laoreet. Libero ullam rgscper.",
-    "copyright": "Designed and Developed By [Statichunt](https://statichunt.com/)"
+    "footer_content": "Base Impact Inc. is a Florida nonprofit corporation helping neighbors get connected and small nonprofits keep their technology working in Brevard County.",
+    "copyright": "Base Impact Inc. All rights reserved."
   },
 
   "widgets": {
     "about": {
-      "enable": true,
-      "content": "Lorem ipsum dolor sit amet, conse tfctetur adipiscing elit. Vel in in donec iaculis tempasus odio nunc laoreet . Libero ullam rgscorper."
+      "enable": false,
+      "content": ""
     },
     "featured_posts": {
-      "enable": true,
+      "enable": false,
       "title": "Blog Categories",
       "showPost": 3
     },
     "categories": {
-      "enable": true,
+      "enable": false,
       "title": "Blog Categories"
     },
     "newsletter": {
-      "enable": true,
+      "enable": false,
       "title": "Newsletter",
-      "content": "Join thousands of Tiny Salt subscribers and get our best recipes delivered each week!",
+      "content": "",
       "privacy_policy_page": "/privacy-policy",
       "malichipm_url": ""
     }
   },
   "navigation_button": {
     "enable": true,
-    "label": "Get Started",
-    "link": "https://example.com"
+    "label": "Call 211",
+    "link": "tel:211"
   },
 
   "metadata": {
-    "meta_author": "statichunt",
+    "meta_author": "Base Impact",
     "meta_image": "/images/og-image.png",
-    "meta_description": "astro and tailwind boilerplate"
+    "meta_description": "Find food, shelter, health, housing, and recovery resources in Brevard, Volusia, Orange & Statewide Counties. Technology help for Brevard County."
   },
 
   "disqus": {
-    "enable": true,
-    "shortname": "themefisher-template",
+    "enable": false,
+    "shortname": "",
     "settings": {}
   }
 }

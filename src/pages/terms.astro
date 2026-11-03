@@ -1,0 +1,48 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Terms of Use — Base Impact',
+  description: 'Terms of use for the Base Impact website and resource directory.',
+  noindex: true,
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Terms of Use</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p><strong>Last updated:</strong> November 2026</p>
+        <p>
+          By using this site, you agree to these terms. If you do not agree, please do not use the site.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Resource Directory</h2>
+        <p>
+          Our resource directory is provided for informational purposes. We verify listings to the best of
+          our ability but do not guarantee accuracy, availability, or eligibility. Always contact the
+          resource provider directly to confirm hours, availability, and requirements.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Content</h2>
+        <p>
+          All content on this site is owned by Base Impact Inc. or used with permission. You may link to
+          our pages and share our content for noncommercial purposes with attribution.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Limitation of Liability</h2>
+        <p>
+          Base Impact is not liable for any damages arising from the use of this site or reliance on its
+          content. We provide this site as a public service without warranty.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Changes</h2>
+        <p>
+          We may update these terms from time to time. Continued use of the site means you accept the
+          updated terms.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

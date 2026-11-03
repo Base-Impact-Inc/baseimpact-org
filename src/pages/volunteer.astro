@@ -1,0 +1,81 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Volunteer — Base Impact',
+  description: 'Volunteer with Base Impact as a Community Connector or Tech Keeper. Help neighbors get connected and nonprofits keep their technology working.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Volunteer</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          We need two kinds of volunteers: people who can talk to neighbors and help them find resources,
+          and people who can help nonprofits keep their technology working.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Community Connector</h2>
+        <p>
+          You will help neighbors navigate our resource directory, answer questions, and connect them
+          with local services. No advanced tech skills required — just patience, empathy, and a willingness
+          to listen. Bilingual English/Spanish is a plus.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Tech Keeper</h2>
+        <p>
+          You will help small nonprofits with websites, email, databases, and device setup. Basic IT
+          experience required. This role is flexible — remote or in-person, one-time or ongoing.
+        </p>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">What to Expect</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>2-hour onboarding session</li>
+          <li>Clear playbooks for each role</li>
+          <li>Monthly check-ins and continued training</li>
+          <li>Flexible scheduling — remote and in-person options</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Apply</h2>
+        <p>
+          Tell us which role interests you, what skills you bring, and how much time you can give.
+          We review applications weekly and follow up within 5 business days.
+        </p>
+
+        <form class="mt-6 space-y-4" action="#" method="POST">
+          <div>
+            <label class="block text-sm font-semibold mb-1">Full Name</label>
+            <input type="text" name="name" required class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Email</label>
+            <input type="email" name="email" required class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Role</label>
+            <select name="role" class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2">
+              <option value="connector">Community Connector</option>
+              <option value="tech">Tech Keeper</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Availability</label>
+            <select name="availability" class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2">
+              <option value="few_hours">A few hours per month</option>
+              <option value="weekly">Weekly</option>
+              <option value="events">Events only</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">Notes</label>
+            <textarea name="notes" rows="4" class="w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>

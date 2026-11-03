@@ -1,0 +1,35 @@
+---
+import Base from '@/layouts/Base.astro';
+
+const metadata = {
+  title: 'Grants — Base Impact',
+  description: 'Base Impact pursues grants and funding to expand technology access, resource directories, and community support programs.',
+};
+---
+
+<Base title={metadata.title} description={metadata.description}>
+  <section class="section">
+    <div class="container max-w-3xl">
+      <h1 class="text-4xl font-bold text-text-dark dark:text-darkmode-text-light mb-6">Grants</h1>
+      <div class="prose dark:prose-invert space-y-6 text-text dark:text-darkmode-text">
+        <p>
+          Base Impact pursues grants and community funding to expand technology access, maintain our
+          resource directory, and support local nonprofits with technology services.
+        </p>
+        <p>
+          We prioritize grants that align with our mission: digital equity, community technology support,
+          and nonprofit capacity building. When we receive funding, we publish annual reports so donors
+          and partners can see the impact.
+        </p>
+        <h2 class="text-2xl font-bold text-text-dark dark:text-darkmode-text-light mt-8">Current Funding Needs</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Device refurbishment and distribution</li>
+          <li>Internet access subsidies for low-income neighbors</li>
+          <li>Nonprofit tech support hours</li>
+          <li>Resource directory maintenance and expansion</li>
+        </ul>
+        <a href="/donate" class="btn btn-primary mt-4 inline-block">Support Our Work</a>
+      </div>
+    </div>
+  </section>
+</Base>
