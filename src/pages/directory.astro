@@ -345,25 +345,30 @@ const groupLabels: Record<string, string> = {
   const sortDistanceBtn = document.getElementById('sort-distance');
   if (sortDistanceBtn) {
     sortDistanceBtn.addEventListener('click', () => {
-      if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser');
-        return;
-      }
       sortDistanceBtn.textContent = 'Locating...';
       sortDistanceBtn.disabled = true;
+      const fallback = () => {
+        // Default to Brevard County center if geolocation unavailable
+        sortByDistance(28.0836, -80.6081);
+        sortDistanceBtn.textContent = 'Sorted by distance';
+        sortDistanceBtn.classList.add('bg-fill', 'text-on-fill');
+        sortDistanceBtn.classList.remove('bg-inset', 'text-body');
+        sortDistanceBtn.disabled = false;
+      };
+      if (!navigator.geolocation) {
+        fallback();
+        return;
+      }
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const userLat = pos.coords.latitude;
-          const userLng = pos.coords.longitude;
-          sortByDistance(userLat, userLng);
+          sortByDistance(pos.coords.latitude, pos.coords.longitude);
           sortDistanceBtn.textContent = 'Sorted by distance';
           sortDistanceBtn.classList.add('bg-fill', 'text-on-fill');
           sortDistanceBtn.classList.remove('bg-inset', 'text-body');
+          sortDistanceBtn.disabled = false;
         },
         () => {
-          alert('Unable to retrieve your location');
-          sortDistanceBtn.textContent = 'Sort by distance';
-          sortDistanceBtn.disabled = false;
+          fallback();
         },
         { timeout: 10000 }
       );
