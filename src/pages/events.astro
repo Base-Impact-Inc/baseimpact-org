@@ -131,6 +131,14 @@ const categoryColors: Record<string, string> = {
       </a>
       <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="rounded-xl bg-card p-4 shadow-[var(--shadow-border)] group hover:shadow-lg transition-shadow">
         <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0" style="background:#2a5a3a"></span>
+          <p class="text-sm font-semibold text-body group-hover:text-accent">Lifepointe Fund Raiser Bingo</p>
+        </div>
+        <p class="text-xs text-muted ml-5">Every Monday · 11am-5pm</p>
+        <p class="text-xs text-muted ml-5">Setup & Events</p>
+      </a>
+      <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="rounded-xl bg-card p-4 shadow-[var(--shadow-border)] group hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
           <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
           <p class="text-sm font-semibold text-body group-hover:text-accent">Lifepointe Ministries</p>
         </div>
@@ -190,6 +198,7 @@ const categoryColors: Record<string, string> = {
         <select id="vshift" name="shift" required class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11">
           <option value="">Choose one…</option>
           <option value="monday-bridge">Monday — Under the Bridge Ministries (5-7pm)</option>
+          <option value="monday-bingo">Monday — Lifepointe Fund Raiser Bingo (11am-5pm)</option>
           <option value="thursday-lifepointe">Thursday — Lifepointe Ministries (4:30-7pm)</option>
           <option value="saturday-fumc">Saturday — FUMC Breakfast (8-9:30am)</option>
           <option value="any">Any / flexible</option>
@@ -267,6 +276,7 @@ const categoryColors: Record<string, string> = {
       height: 'auto',
       events: [
         { title: 'Under the Bridge Ministries', daysOfWeek: [1], startTime: '17:00', endTime: '19:00', color: '#133621' },
+        { title: 'Lifepointe Fund Raiser Bingo', daysOfWeek: [1], startTime: '11:00', endTime: '17:00', color: '#2a5a3a' },
         { title: 'Lifepointe — Showers & Dinner', daysOfWeek: [4], startTime: '16:30', endTime: '19:00', color: '#133621' },
         { title: 'FUMC Breakfast', daysOfWeek: [6], startTime: '08:00', endTime: '09:30', color: '#133621' }
       ],
