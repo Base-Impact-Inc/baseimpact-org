@@ -115,28 +115,66 @@ const categoryColors: Record<string, string> = {
 
   <!-- Calendar -->
   <section class="mb-10 fade-in">
-    <h2 class="font-display text-2xl font-semibold text-body mb-3">{monthName} {year} — Event calendar</h2>
-    <p class="text-sm text-muted mb-4">Tentative dates; will be confirmed as events are scheduled. Highlighted days have activity.</p>
-    <div class="grid grid-cols-7 gap-1 max-w-md">
-      {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
-        <div class="text-center text-xs font-bold uppercase text-muted py-1">{d}</div>
-      ))}
-      {cells.map((d) => (
-        d === null ? (
-          <div class="aspect-square"></div>
-        ) : (
-          <div class={`aspect-square flex flex-col items-center justify-center rounded-lg text-sm font-semibold ${dayLabel(d) ? 'bg-fill text-on-fill' : 'bg-inset text-body'}`} title={dayLabel(d) || ''}>
-            <span>{d}</span>
-            {dayLabel(d) && <span class="text-[9px] leading-none mt-0.5 opacity-90">{dayLabel(d)!.split(' ')[0]}</span>}
+    <h2 class="font-display text-2xl font-semibold text-body mb-1">{monthName} {year} — Event calendar</h2>
+    <p class="text-sm text-muted mb-6">Tentative dates; will be confirmed as events are scheduled. Highlighted days have activity.</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Calendar grid -->
+      <div class="lg:col-span-2">
+        <div class="rounded-2xl bg-card p-4 sm:p-6 shadow-[var(--shadow-border)]">
+          <div class="grid grid-cols-7 gap-1 mb-2">
+            {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
+              <div class="text-center text-xs font-bold uppercase text-muted py-2">{d}</div>
+            ))}
           </div>
-        )
-      ))}
+          <div class="grid grid-cols-7 gap-1">
+            {cells.map((d) => (
+              d === null ? (
+                <div class="aspect-square"></div>
+              ) : (
+                <div class={`aspect-square flex flex-col items-center justify-center rounded-xl text-sm font-semibold transition-colors ${dayLabel(d) ? 'bg-fill text-on-fill shadow-sm' : 'bg-inset text-body hover:bg-line'}`} title={dayLabel(d) || ''}>
+                  <span class="text-base">{d}</span>
+                  {dayLabel(d) && (
+                    <span class="text-[8px] leading-none mt-1 opacity-90 font-medium text-center px-0.5">
+                      {dayLabel(d)!.split(' ')[0]}
+                    </span>
+                  )}
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Recurring events legend -->
+      <div class="space-y-3">
+        <h3 class="font-display text-lg font-semibold text-body mb-2">Weekly schedule</h3>
+        <div class="rounded-2xl bg-card p-4 shadow-[var(--shadow-border)] space-y-3">
+          <a href="https://m.facebook.com/pages/Under-the-Bridge-Ministries/764143213725825" target="_blank" rel="noopener" class="flex items-start gap-3 group">
+            <span class="mt-0.5 flex-shrink-0 w-3 h-3 rounded-full bg-fill"></span>
+            <div>
+              <p class="text-sm font-semibold text-body group-hover:text-accent">Under the Bridge Ministries</p>
+              <p class="text-xs text-muted">Every Monday, 5-7pm</p>
+            </div>
+          </a>
+          <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="flex items-start gap-3 group">
+            <span class="mt-0.5 flex-shrink-0 w-3 h-3 rounded-full bg-fill"></span>
+            <div>
+              <p class="text-sm font-semibold text-body group-hover:text-accent">Lifepointe Ministries</p>
+              <p class="text-xs text-muted">Every Thursday, 4:30-7pm — Showers, Clothes, Dinner</p>
+            </div>
+          </a>
+          <a href="https://fumctitusville.com/" target="_blank" rel="noopener" class="flex items-start gap-3 group">
+            <span class="mt-0.5 flex-shrink-0 w-3 h-3 rounded-full bg-fill"></span>
+            <div>
+              <p class="text-sm font-semibold text-body group-hover:text-accent">FUMC Breakfast</p>
+              <p class="text-xs text-muted">Every Saturday, 8-9:30am</p>
+            </div>
+          </a>
+        </div>
+        <p class="text-xs text-muted italic">Dates are tentative and will be confirmed as events are scheduled.</p>
+      </div>
     </div>
-    <ul class="mt-4 space-y-1 text-sm text-muted">
-      <li><span class="font-semibold text-body">Every Monday:</span> <a href="https://m.facebook.com/pages/Under-the-Bridge-Ministries/764143213725825" target="_blank" rel="noopener" class="text-accent underline">Under the Bridge Ministries</a>, 5-7pm</li>
-      <li><span class="font-semibold text-body">Every Thursday:</span> <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="text-accent underline">Lifepointe Ministries</a> — Showers, Clothes, Dinner, 4:30-7pm</li>
-      <li><span class="font-semibold text-body">Every Saturday:</span> <a href="https://fumctitusville.com/" target="_blank" rel="noopener" class="text-accent underline">FUMC Breakfast</a>, 8-9:30am</li>
-    </ul>
   </section>
 
   <!-- Recent impact -->
