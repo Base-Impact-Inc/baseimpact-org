@@ -115,82 +115,37 @@ const categoryColors: Record<string, string> = {
 
   <!-- Calendar -->
   <section class="mb-10 fade-in">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="font-display text-2xl font-semibold text-body">{monthName} {year}</h2>
-      <span class="text-sm text-muted">Event calendar</span>
-    </div>
-    <p class="text-sm text-muted mb-6">Tentative dates; will be confirmed as events are scheduled. Highlighted days have activity.</p>
+    <h2 class="font-display text-2xl font-semibold text-body mb-1">Event calendar</h2>
+    <p class="text-sm text-muted mb-6">November {year}. Tentative dates; will be confirmed as events are scheduled.</p>
 
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <!-- Calendar grid — looks like a real calendar -->
-      <div class="lg:col-span-3">
-        <div class="rounded-2xl bg-card shadow-[var(--shadow-border)] overflow-hidden">
-          <!-- Weekday header -->
-          <div class="grid grid-cols-7 border-b border-line">
-            {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d, i) => (
-              <div class={`text-center text-xs font-bold uppercase py-3 ${i === 0 || i === 6 ? 'text-muted' : 'text-body'}`}>{d}</div>
-            ))}
-          </div>
-          <!-- Day cells -->
-          <div class="grid grid-cols-7">
-            {cells.map((d, idx) => {
-              const isToday = d === now.getDate();
-              const label = d ? dayLabel(d) : null;
-              const isWeekend = idx % 7 === 0 || idx % 7 === 6;
-              return d === null ? (
-                <div class="min-h-[80px] sm:min-h-[100px] border-b border-r border-line/50 bg-page/30"></div>
-              ) : (
-                <div class={`min-h-[80px] sm:min-h-[100px] border-b border-r border-line/50 p-1.5 sm:p-2 flex flex-col ${isToday ? 'bg-fill/10' : ''} ${isWeekend ? 'bg-page/20' : ''}`}>
-                  <span class={`text-sm font-semibold mb-1 ${isToday ? 'inline-flex items-center justify-center w-7 h-7 rounded-full bg-fill text-on-fill' : 'text-body'}`}>{d}</span>
-                  {label && (
-                    <div class="mt-auto">
-                      <div class="rounded-md bg-fill px-1.5 py-0.5 text-[10px] font-semibold text-on-fill leading-tight truncate" title={label}>
-                        {label.split(' (')[0]}
-                      </div>
-                      <div class="text-[9px] text-muted mt-0.5 truncate">
-                        {label.match(/\(([^)]+)\)/)?.[1] || ''}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+    <div id="calendar" class="rounded-2xl bg-card shadow-[var(--shadow-border)] p-2 sm:p-4"></div>
 
-      <!-- Recurring events sidebar -->
-      <div class="space-y-4">
-        <h3 class="font-display text-lg font-semibold text-body">Weekly schedule</h3>
-        <div class="rounded-2xl bg-card p-4 shadow-[var(--shadow-border)] space-y-4">
-          <a href="https://m.facebook.com/pages/Under-the-Bridge-Ministries/764143213725825" target="_blank" rel="noopener" class="block group">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
-              <p class="text-sm font-semibold text-body group-hover:text-accent">Under the Bridge Ministries</p>
-            </div>
-            <p class="text-xs text-muted ml-5">Every Monday · 5-7pm</p>
-          </a>
-          <div class="border-t border-line/50"></div>
-          <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="block group">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
-              <p class="text-sm font-semibold text-body group-hover:text-accent">Lifepointe Ministries</p>
-            </div>
-            <p class="text-xs text-muted ml-5">Every Thursday · 4:30-7pm</p>
-            <p class="text-xs text-muted ml-5">Showers, Clothes, Dinner</p>
-          </a>
-          <div class="border-t border-line/50"></div>
-          <a href="https://fumctitusville.com/" target="_blank" rel="noopener" class="block group">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
-              <p class="text-sm font-semibold text-body group-hover:text-accent">FUMC Breakfast</p>
-            </div>
-            <p class="text-xs text-muted ml-5">Every Saturday · 8-9:30am</p>
-          </a>
+    <!-- Weekly schedule -->
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <a href="https://m.facebook.com/pages/Under-the-Bridge-Ministries/764143213725825" target="_blank" rel="noopener" class="rounded-xl bg-card p-4 shadow-[var(--shadow-border)] group hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
+          <p class="text-sm font-semibold text-body group-hover:text-accent">Under the Bridge Ministries</p>
         </div>
-        <p class="text-xs text-muted italic">Dates are tentative and will be confirmed as events are scheduled.</p>
-      </div>
+        <p class="text-xs text-muted ml-5">Every Monday · 5-7pm</p>
+      </a>
+      <a href="https://titusvilleciviccenter.com/lifepointe-ministries" target="_blank" rel="noopener" class="rounded-xl bg-card p-4 shadow-[var(--shadow-border)] group hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
+          <p class="text-sm font-semibold text-body group-hover:text-accent">Lifepointe Ministries</p>
+        </div>
+        <p class="text-xs text-muted ml-5">Every Thursday · 4:30-7pm</p>
+        <p class="text-xs text-muted ml-5">Showers, Clothes, Dinner</p>
+      </a>
+      <a href="https://fumctitusville.com/" target="_blank" rel="noopener" class="rounded-xl bg-card p-4 shadow-[var(--shadow-border)] group hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2.5 h-2.5 rounded-full bg-fill flex-shrink-0"></span>
+          <p class="text-sm font-semibold text-body group-hover:text-accent">FUMC Breakfast</p>
+        </div>
+        <p class="text-xs text-muted ml-5">Every Saturday · 8-9:30am</p>
+      </a>
     </div>
+    <p class="text-xs text-muted italic mt-4">Dates are tentative and will be confirmed as events are scheduled.</p>
   </section>
 
   <!-- Recent impact -->
@@ -260,4 +215,35 @@ const categoryColors: Record<string, string> = {
       <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Get in touch</a>
     </div>
   </section>
+
+<script is:inline>
+  // FullCalendar will be loaded from CDN
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    if (!calendarEl || typeof FullCalendar === 'undefined') return;
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      initialDate: new Date().toISOString().slice(0, 10).slice(0, 7) + '-01',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: ''
+      },
+      height: 'auto',
+      events: [
+        { title: 'Under the Bridge Ministries', daysOfWeek: [1], startTime: '17:00', endTime: '19:00', color: '#133621' },
+        { title: 'Lifepointe — Showers & Dinner', daysOfWeek: [4], startTime: '16:30', endTime: '19:00', color: '#133621' },
+        { title: 'FUMC Breakfast', daysOfWeek: [6], startTime: '08:00', endTime: '09:30', color: '#133621' }
+      ],
+      eventDisplay: 'block',
+      dayMaxEvents: 3
+    });
+    calendar.render();
+  });
+</script>
+
 </Base>
