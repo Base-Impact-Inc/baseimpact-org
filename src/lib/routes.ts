@@ -32,9 +32,9 @@ export const SITE_URL = "https://baseimpact.org";
 export const ROUTE_META: RouteMeta[] = [
   {
     path: "/",
-    title: "Base Impact — neighborhood help everywhere",
+    title: "Base Impact — neighborhood help",
     description:
-      "Tech help, food, shelter, and community support everywhere. Built for phones.",
+      "Tech help, food, shelter, and community support. Built for phones.",
   },
   {
     path: "/directory",
@@ -100,7 +100,7 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/contact",
     title: "Contact Base Impact",
     description:
-      "Phone, email, and contact details for Base Impact, a Florida nonprofit serving communities worldwide.",
+      "Phone, email, and contact details for Base Impact, a Florida nonprofit serving communities.",
   },
   {
     path: "/feedback",
@@ -142,25 +142,25 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/donate",
     title: "Donate to Base Impact",
     description:
-      "Support Base Impact's technology access, digital skills, and community programs worldwide.",
+      "Support Base Impact's technology access, digital skills, and community programs.",
   },
   {
     path: "/events",
     title: "Events & Community Impact",
     description:
-      "Upcoming events, supply drives, shelter nights, and community impact stories from Base Impact worldwide.",
+      "Upcoming events, supply drives, shelter nights, and community impact stories from Base Impact.",
   },
   {
     path: "/grants",
     title: "Grants & Funding",
     description:
-      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving communities worldwide.",
+      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving communities.",
   },
   {
     path: "/financials",
     title: "Financials",
     description:
-      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving communities worldwide.",
+      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving communities.",
   },
   {
     path: "/programs",
@@ -172,7 +172,7 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/technology-access",
     title: "Technology Access",
     description:
-      "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for neighbors in need worldwide.",
+      "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for neighbors in need.",
   },
   {
     path: "/es",

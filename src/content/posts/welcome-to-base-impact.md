@@ -1,6 +1,6 @@
 ---
 title: "Welcome to Base Impact"
-description: "Introducing Base Impact Inc. — a nonprofit bringing technology help to communities everywhere."
+description: "Introducing Base Impact Inc. — a nonprofit bringing technology help to communities."
 date: 2026-11-02
 image: /images/post/welcome.png
 categories: ["Community News"]
@@ -18,7 +18,7 @@ To connect people with the technology they need to thrive — from refurbished p
 ## What we do
 
 - **Technology setup & support** — Free device setup, security, and ongoing support for 1–5 person community groups.
-- **Resource sharing** — Our directory lists local services alongside 211, making it easier for neighbors to find help.
+- **Resource sharing** — Our directory lists local services, making it easier for neighbors to find help.
 - **Volunteer coordination** — We connect skilled volunteers with organizations that need tech help.
 
 ## Get involved
