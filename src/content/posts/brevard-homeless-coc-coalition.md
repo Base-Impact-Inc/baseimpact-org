@@ -6,7 +6,7 @@ image: /assets/homeless-shelter-community.jpg
 categories: ["Community News"]
 tags: ["coalition", "homelessness", "partnership", "Brevard County", "CoC"]
 featured: false
-draft: true
+draft: false
 ---
 
 Base Impact is now a member of the Brevard Homeless Continuum of Care (CoC) coalition. This membership connects us with the network of organizations, agencies, and advocates working together to end homelessness in Brevard County.

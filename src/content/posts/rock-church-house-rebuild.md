@@ -6,7 +6,7 @@ image: /assets/community-food-support.jpg
 categories: ["Impact Stories"]
 tags: ["community", "home repair", "church", "grief support", "volunteers"]
 featured: false
-draft: true
+draft: false
 ---
 
 Base Impact joined a group from Rock Church to help a member finish rebuilding their home after the loss of a family member. This is a story about community showing up in a time of grief — not just with words, but with hands and tools.

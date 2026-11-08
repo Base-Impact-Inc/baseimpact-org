@@ -6,7 +6,7 @@ image: /assets/homeless-shelter-community.jpg
 categories: ["Impact Stories"]
 tags: ["housing", "shelter", "rent assistance", "family support"]
 featured: false
-draft: true
+draft: false
 ---
 
 Base Impact is currently walking alongside a family in Brevard County who is facing housing instability. We're connecting them with shelter resources, rental assistance programs, and the information they need to find stable housing.

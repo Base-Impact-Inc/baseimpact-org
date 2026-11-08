@@ -6,7 +6,7 @@ image: /assets/community-food-support.jpg
 categories: ["Impact Stories"]
 tags: ["internet", "utility assistance", "connectivity", "community"]
 featured: false
-draft: true
+draft: false
 ---
 
 Base Impact stepped in to help a neighbor who was at risk of losing their internet service over an unpaid bill. For many families, internet isn't a luxury — it's how they apply for jobs, attend school, access telehealth, and stay in touch with loved ones.
