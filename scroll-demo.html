@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base Impact — Scroll Animation Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<style>
+  :root {
+    --pine: #133621;
+    --pine-light: #1a4a2e;
+    --gold: #f4d96c;
+    --gold-dim: #d4b94c;
+    --bg: #0f1a14;
+    --card: #1a2e22;
+    --text: #e8ede9;
+    --muted: #a0b4a6;
+    --line: rgba(244, 217, 108, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  }
+
+  body { overflow-x: hidden; }
+
+  /* Scroll progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-dim));
+    z-index: 9999;
+    transition: width 0.1s linear;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(244, 217, 108, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(19, 54, 33, 0.4) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-eyebrow {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(60px) rotateX(-15deg);
+    transform-origin: bottom;
+  }
+
+  .hero-sub {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--pine);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(244, 217, 108, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.05);
+    transform: translateY(-2px);
+  }
+
+  /* Stats strip */
+  .stats-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+  }
+
+  .stat-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Section */
+  .section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Focus pillars */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .pillar {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .pillar:hover {
+    transform: translateY(-6px);
+    border-color: var(--gold);
+    box-shadow: 0 12px 40px rgba(244, 217, 108, 0.1);
+  }
+
+  .pillar-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(244, 217, 108, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .pillar h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Photo band */
+  .photo-band {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    overflow: hidden;
+    margin: 4rem 0;
+  }
+
+  .photo-band img {
+    width: 100%;
+    height: 120%;
+    object-fit: cover;
+    position: absolute;
+    top: -10%;
+    will-change: transform;
+  }
+
+  .photo-band-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .photo-band-text {
+    text-align: center;
+    padding: 2rem;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .photo-band-text h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .photo-band-text p {
+    color: var(--muted);
+    font-size: 1.125rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* Story cards */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .story-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .story-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+  }
+
+  .story-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .story-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .story-card-body {
+    padding: 1.5rem;
+  }
+
+  .story-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .story-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  /* CTA section */
+  .cta-section {
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(244, 217, 108, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .cta-section p {
+    color: var(--muted);
+    font-size: 1.125rem;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Footer */
+  footer {
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .hero-title .word, .hero-eyebrow, .hero-sub, .hero-cta,
+    .stat-card, .section-title, .section-sub, .pillar,
+    .photo-band-text, .story-card, .cta-section h2,
+    .cta-section p, .cta-buttons {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* Noise texture overlay */
+  .noise {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="noise"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">Base Impact · Scottsmoor, FL</p>
+    <h1 class="hero-title">
+      <span class="word">Help.</span><br>
+      <span class="word">Find</span> <span class="word">food,</span> <span class="word">shelter,</span><br>
+      <span class="word">and</span> <span class="word">essentials.</span>
+    </h1>
+    <p class="hero-sub">
+      Base Impact connects people with food, shelter, showers, and essentials.
+      It also helps small nonprofits keep their technology working.
+    </p>
+    <div class="hero-cta">
+      <a href="/directory" class="btn btn-primary">Find help near you →</a>
+      <a href="/donate" class="btn btn-ghost">Donate</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-strip">
+  <div class="stat-card" data-count="115">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Resources listed</div>
+  </div>
+  <div class="stat-card" data-count="6">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Service types</div>
+  </div>
+  <div class="stat-card" data-count="24">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Hours / 7 days</div>
+  </div>
+  <div class="stat-card" data-count="50">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Donors supporting us</div>
+  </div>
+</div>
+
+<!-- SVG wave divider -->
+<div style="overflow: hidden; line-height: 0; margin: 0;">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none" style="width: 100%; height: 80px; display: block;">
+    <path d="M0,40 C300,80 600,0 900,40 C1050,60 1150,20 1200,40 L1200,80 L0,80 Z" fill="var(--card)" opacity="0.5"/>
+    <path d="M0,50 C200,10 400,70 600,40 C800,10 1000,60 1200,30 L1200,80 L0,80 Z" fill="var(--card)" opacity="0.3"/>
+  </svg>
+</div>
+<section class="section">
+  <h2 class="section-title">What we focus on</h2>
+  <p class="section-sub">Immediate needs first. Then the skills and tools that keep people housed, employed, and connected.</p>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+      </svg>
+    </div>
+      <h3>Technology access</h3>
+      <p>Helping neighbors get a working device and internet service. Learn to use them.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+      </svg>
+    </div>
+      <h3>Digital skills & job help</h3>
+      <p>Walk-throughs for housing portals, job applications, benefits, and staying safe online.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    </div>
+      <h3>Tech for small nonprofits</h3>
+      <p>Free setup, security, and support for churches, pantries, and 1–5 person community groups.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+    </div>
+      <h3>Local resource guide</h3>
+      <p>A simpler, local starting point. Food, shelter, showers, and more.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Photo band with parallax -->
+<div class="photo-band">
+  <img src="https://baseimpact.org/assets/homeless-shelter-community.jpg" alt="Community shelter" id="parallaxImg">
+  <div class="photo-band-overlay">
+    <div class="photo-band-text">
+      <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom: 1.5rem; opacity: 0;" id="houseIcon">
+        <path d="M40 10 L10 35 L10 70 L70 70 L70 35 Z" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M30 70 L30 45 L50 45 L50 70" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M40 10 L75 35" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M40 10 L5 35" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="36" y="50" width="8" height="12" fill="none" stroke="var(--gold)" stroke-width="1.5"/>
+      </svg>
+      <h2>We believe everyone deserves a working device, a working connection, and someone to show them how.</h2>
+      <p>Base Impact · Scottsmoor, FL</p>
+    </div>
+  </div>
+</div>
+
+<!-- Stories -->
+<section class="section">
+  <h2 class="section-title">Stories of impact</h2>
+  <p class="section-sub">Real neighbors. Real help. Real change.</p>
+  <div class="stories-grid">
+    <div class="story-card">
+      <img src="/assets/warehouse-racking.jpg" alt="Nonprofit warehouse racking being built">
+      <div class="story-card-body">
+        <h3>Nonprofit Warehouse Racking Built</h3>
+        <p>Base Impact helped build storage racking for a local nonprofit's warehouse — organizing donated supplies for faster distribution to neighbors in need.</p>
+      </div>
+    </div>
+    <div class="story-card">
+      <img src="/assets/house-rebuild.jpg" alt="Rock Church house rebuild">
+      <div class="story-card-body">
+        <h3>Helping a Family Rebuild After Loss</h3>
+        <p>Partnering with Rock Church to help a family member finish their home after losing a loved one — community coming together to rebuild.</p>
+      </div>
+    </div>
+    <div class="story-card">
+      <img src="/assets/cold-weather-training.jpg" alt="Cold weather shelter training">
+      <div class="story-card-body">
+        <h3>Cold Weather Shelter Training</h3>
+        <p>Training volunteers for cold weather shelter operations — preparing to keep neighbors warm and safe during Florida cold snaps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Help us keep connecting people with the resources they need.</h2>
+  <p>Your support provides devices, internet service, digital skills training, and tech support to neighbors and small nonprofits.</p>
+  <div class="cta-buttons">
+    <a href="/donate" class="btn btn-primary">Give now</a>
+    <a href="/volunteer" class="btn btn-ghost">Volunteer</a>
+  </div>
+</section>
+
+<!-- Emergency contacts -->
+<section class="section" style="padding-top: 2rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+    <a href="tel:211" class="pillar" style="text-decoration: none; color: inherit;">
+      <div class="pillar-icon" style="background: rgba(244, 217, 108, 0.15);">📞</div>
+      <h3>24/7 local help</h3>
+      <p style="color: var(--gold); font-weight: 600;">Call 211</p>
+    </a>
+    <a href="tel:+13213230999" class="pillar" style="text-decoration: none; color: inherit;">
+      <div class="pillar-icon" style="background: rgba(244, 217, 108, 0.15);">📱</div>
+      <h3>Base Impact · by appointment</h3>
+      <p style="color: var(--gold); font-weight: 600;">(321) 323-0999</p>
+    </a>
+  </div>
+</section>
+
+<!-- Share Your Story -->
+<section class="section" style="max-width: 700px;">
+  <h2 class="section-title">Share your story</h2>
+  <p class="section-sub">Did Base Impact help you? Tell us how. With your permission, we'll feature your story to inspire others.</p>
+  <form id="storyForm" style="display: flex; flex-direction: column; gap: 1.25rem;">
+    <div>
+      <label style="display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem;">Your name (or "Anonymous")</label>
+      <input type="text" name="name" required style="width: 100%; padding: 0.75rem 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 0.5rem; color: var(--text); font-family: inherit; font-size: 1rem;" placeholder="Jane D.">
+    </div>
+    <div>
+      <label style="display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem;">Email (for verification only, not published)</label>
+      <input type="email" name="email" required style="width: 100%; padding: 0.75rem 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 0.5rem; color: var(--text); font-family: inherit; font-size: 1rem;" placeholder="jane@example.com">
+    </div>
+    <div>
+      <label style="display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 0.5rem;">How did Base Impact help you?</label>
+      <textarea name="story" required rows="5" style="width: 100%; padding: 0.75rem 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 0.5rem; color: var(--text); font-family: inherit; font-size: 1rem; resize: vertical;" placeholder="Base Impact helped me by..."></textarea>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+      <input type="checkbox" name="consent" id="consent" required style="margin-top: 0.25rem; accent-color: var(--gold);">
+      <label for="consent" style="font-size: 0.875rem; color: var(--muted); line-height: 1.5;">
+        I give Base Impact permission to publish my story on their website and social media. I understand my email will never be shared publicly. I can request removal at any time by contacting Base Impact.
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Submit your story</button>
+    <p id="formStatus" style="font-size: 0.875rem; color: var(--gold); display: none;"></p>
+  </form>
+</section>
+
+<!-- Floating 211 button -->
+<a href="tel:211" id="helpNowBtn" style="
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--gold);
+  color: var(--pine);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(244, 217, 108, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+  </svg>
+  Get Help: Call 211
+</a>
+  <p>© 2026 Base Impact Inc. · Scottsmoor, FL 32775 · EIN 43-2200667</p>
+  <p style="margin-top: 0.5rem;">Privacy · Terms · <a href="/contact" style="color: var(--gold);">Contact</a></p>
+</footer>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    document.getElementById('scrollProgress').style.width = progress + '%';
+  });
+
+  // Hero entrance — staggered word reveal
+  const heroTl = gsap.timeline({ delay: 0.3 });
+  heroTl
+    .to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
+    .to('.hero-title .word', {
+      opacity: 1,
+      y: 0,
+      rotationX: 0,
+      duration: 0.8,
+      stagger: 0.08,
+      ease: 'power3.out'
+    }, '-=0.3')
+    .to('.hero-sub', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
+    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3');
+
+  // Stat cards — staggered reveal + count-up
+  gsap.utils.toArray('.stat-card').forEach((card, i) => {
+    gsap.to(card, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.6,
+      delay: i * 0.1,
+      ease: 'back.out(1.4)',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    // Count-up animation
+    const valueEl = card.querySelector('.stat-value');
+    const target = parseInt(card.dataset.count);
+    const suffix = card.dataset.count === '24' ? '/7' : '';
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 85%',
+      onEnter: () => {
+        gsap.to({ val: 0 }, {
+          val: target,
+          duration: 1.5,
+          ease: 'power2.out',
+          onUpdate: function() {
+            valueEl.textContent = Math.round(this.targets()[0].val) + (suffix === '/7' ? '/7' : '');
+          }
+        });
+      },
+      once: true
+    });
+  });
+
+  // Section titles & subs
+  gsap.utils.toArray('.section-title').forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+  });
+
+  gsap.utils.toArray('.section-sub').forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      delay: 0.15,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // SVG icon draw-in animation
+  gsap.utils.toArray('.pillar-icon svg').forEach((svg, i) => {
+    const paths = svg.querySelectorAll('path, rect, circle, line');
+    paths.forEach(path => {
+      const length = path.getTotalLength ? path.getTotalLength() : 50;
+      gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 1.2,
+        delay: i * 0.15,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: svg.closest('.pillar'), start: 'top 85%', toggleActions: 'play none none none' }
+      });
+    });
+  });
+  gsap.utils.toArray('.pillar').forEach((el, i) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      delay: i * 0.12,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Photo band parallax
+  gsap.to('#parallaxImg', {
+    yPercent: -20,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.photo-band',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: true
+    }
+  });
+
+  // House icon draw-in
+  const houseSvg = document.getElementById('houseIcon');
+  if (houseSvg) {
+    const housePaths = houseSvg.querySelectorAll('path, rect');
+    housePaths.forEach(path => {
+      const length = path.getTotalLength ? path.getTotalLength() : 60;
+      gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+    });
+    gsap.to('#houseIcon', { opacity: 1, duration: 0.3, scrollTrigger: { trigger: '.photo-band', start: 'top 60%', toggleActions: 'play none none none' } });
+    housePaths.forEach((path, i) => {
+      const length = path.getTotalLength ? path.getTotalLength() : 60;
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 1.5,
+        delay: i * 0.2,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: '.photo-band', start: 'top 60%', toggleActions: 'play none none none' }
+      });
+    });
+  }
+  gsap.to('.photo-band-text', {
+    opacity: 1,
+    scale: 1,
+    duration: 0.8,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.photo-band', start: 'top 60%', toggleActions: 'play none none none' }
+  });
+
+  // Story cards — staggered reveal
+  gsap.utils.toArray('.story-card').forEach((el, i) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      delay: i * 0.15,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+    });
+  });
+
+  // Floating 211 button — show after scrolling past hero
+  const helpBtn = document.getElementById('helpNowBtn');
+  ScrollTrigger.create({
+    trigger: '.stats-strip',
+    start: 'top 80%',
+    onEnter: () => { helpBtn.style.opacity = '1'; helpBtn.style.transform = 'translateY(0)'; },
+    onLeaveBack: () => { helpBtn.style.opacity = '0'; helpBtn.style.transform = 'translateY(20px)'; }
+  });
+
+  // Story form submission
+  const storyForm = document.getElementById('storyForm');
+  const formStatus = document.getElementById('formStatus');
+  if (storyForm) {
+    storyForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const formData = new FormData(storyForm);
+      const data = Object.fromEntries(formData);
+      // In production: POST to Cloudflare Worker endpoint /api/stories
+      // For demo: show success message
+      formStatus.style.display = 'block';
+      formStatus.textContent = '✓ Thank you! Your story has been submitted for review. We\'ll reach out if we feature it.';
+      storyForm.reset();
+      // Scroll to status
+      formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  }
+  gsap.utils.toArray('.cta-section h2, .cta-section p, .cta-buttons').forEach((el, i) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      delay: i * 0.15,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: '.cta-section', start: 'top 75%', toggleActions: 'play none none none' }
+    });
+  });
+</script>
+
+</body>
+</html>
