@@ -154,13 +154,13 @@ export const ROUTE_META: RouteMeta[] = [
     path: "/grants",
     title: "Grants & Funding",
     description:
-      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a pre-filing nonprofit serving communities.",
+      "Funding opportunities, impact metrics, and budget transparency for Base Impact Inc. — a Florida nonprofit corporation serving communities.",
   },
   {
     path: "/financials",
     title: "Financials",
     description:
-      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a pre-filing nonprofit serving communities.",
+      "Budget, financial statements, and IRS Form 990 for Base Impact Inc. — a Florida nonprofit corporation serving communities.",
   },
   {
     path: "/programs",

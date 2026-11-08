@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Reports — Base Impact" description="Review reports about directory resources.">
+  <div class="mb-6">
+    <h1 class="font-display text-3xl font-semibold text-body mb-2">Resource Reports</h1>
+    <p class="text-muted max-w-2xl">Reports from visitors about incorrect, closed, or suspicious resources. Each report is reviewed by a real person before any change is made to the directory.</p>
+  </div>
+
+  <div class="mb-4 flex flex-wrap items-center gap-3">
+    <label for="status-filter" class="text-sm text-muted">Status:</label>
+    <select id="status-filter" class="rounded-lg border border-line bg-card px-3 py-2 text-sm text-body min-h-11">
+      <option value="all">All reports</option>
+      <option value="open">Open</option>
+      <option value="reviewed">Reviewed</option>
+      <option value="resolved">Resolved</option>
+      <option value="dismissed">Dismissed</option>
+    </select>
+    <span id="reports-count" class="text-sm text-muted"></span>
+  </div>
+
+  <div id="reports-list" class="space-y-4 max-w-3xl"></div>
+  <div id="reports-empty" class="hidden text-center py-12">
+    <p class="text-lg text-muted">No reports found.</p>
+  </div>
+
+  <div class="mt-8 rounded-2xl bg-inset p-6">
+    <h2 class="font-display text-lg font-semibold text-body mb-2">How reports work</h2>
+    <ul class="text-sm text-muted space-y-1 list-disc pl-5">
+      <li>Every report is stored and reviewed by a person — nothing is deleted automatically.</li>
+      <li>Reports are checked against the organization's own website before any change.</li>
+      <li>Verified corrections are made to the listing and the report is marked resolved.</li>
+      <li>Reports that are not valid are dismissed with a note.</li>
+    </ul>
+  </div>
+</Base>
+
+<script is:inline>
+  const listEl = document.getElementById('reports-list');
+  const emptyEl = document.getElementById('reports-empty');
+  const countEl = document.getElementById('reports-count');
+  const filterEl = document.getElementById('status-filter');
+
+  const ISSUE_LABELS = {
+    'wrong-phone': 'Wrong phone number',
+    'wrong-address': 'Wrong address',
+    'wrong-hours': 'Wrong hours',
+    'closed-or-moved': 'Closed or moved',
+    'not-real-resource': 'Not a real resource / possible scam',
+    'other': 'Other',
+  };
+
+  const STATUS_LABELS = {
+    'open': 'Open',
+    'reviewed': 'Reviewed',
+    'resolved': 'Resolved',
+    'dismissed': 'Dismissed',
+  };
+
+  async function loadReports() {
+    const status = filterEl?.value || 'all';
+    const res = await fetch(`/api/report?status=${encodeURIComponent(status)}`);
+    const data = await res.json();
+    const reports = data.reports || [];
+
+    if (countEl) countEl.textContent = reports.length + ' report' + (reports.length !== 1 ? 's' : '');
+    if (!listEl) return;
+
+    if (reports.length === 0) {
+      listEl.innerHTML = '';
+      emptyEl?.classList.remove('hidden');
+      return;
+    }
+    emptyEl?.classList.add('hidden');
+
+    listEl.innerHTML = reports.map((r) => {
+      const issue = ISSUE_LABELS[r.issue_type] || r.issue_type;
+      const statusLabel = STATUS_LABELS[r.status] || r.status;
+      const date = new Date(r.created_at).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+      return `
+        <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-display text-lg font-semibold text-body">${escapeHtml(r.resource_name)}</h3>
+              <p class="text-sm text-muted mt-0.5">${escapeHtml(issue)} · ${escapeHtml(statusLabel)}</p>
+            </div>
+            <span class="text-xs text-faint whitespace-nowrap">${escapeHtml(date)}</span>
+          </div>
+          ${r.details ? `<p class="mt-2 text-sm text-muted">${escapeHtml(r.details)}</p>` : ''}
+          ${r.email ? `<p class="mt-2 text-xs text-faint">Contact: ${escapeHtml(r.email)}</p>` : ''}
+          <p class="mt-2 text-xs text-faint">Resource ID: ${escapeHtml(r.resource_id)}</p>
+        </article>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(str) {
+    // All user-submitted report content passes through this before innerHTML,
+    // so no report text can inject markup or script into the page.
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  filterEl?.addEventListener('change', loadReports);
+  loadReports();
+</script>

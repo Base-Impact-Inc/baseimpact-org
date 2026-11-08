@@ -518,6 +518,13 @@ p {
   height: 1px;
   background-color: var(--color-signal);
 }
+.prose-content p {
+  line-height: 1.7;
+}
+.prose-content h2:first-child,
+.prose-content h3:first-child {
+  margin-top: 0;
+}
 
 /* Shell container (Kairo-style max-width) */
 .shell {
@@ -1312,4 +1319,104 @@ html {
   margin-top: 0.5rem;
   color: var(--color-muted);
   max-width: 42rem;
+}
+
+/* Picture band: full-width image */
+.picture-band {
+  width: 100%;
+  overflow: hidden;
+  max-height: 40vh;
+  margin: 2rem 0;
+}
+.picture-band img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================
+   PRINT STYLES — clean, text-first resource list for case workers
+   ============================================================ */
+@media print {
+  /* Hide interactive chrome */
+  .chip-row,
+  #location-bar,
+  #view-toggle,
+  #map-container,
+  #map-legend,
+  #report-dialog,
+  #open-now,
+  .copy-addr-btn,
+  .save-btn,
+  .report-issue-btn,
+  #filter-chips,
+  #search-input,
+  #state-filter,
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Force light, high-contrast print colors */
+  :root {
+    --color-page: #ffffff;
+    --color-card: #ffffff;
+    --color-inset: #f5f5f5;
+    --color-body: #000000;
+    --color-muted: #333333;
+    --color-faint: #555555;
+    --color-line: #cccccc;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Stack cards in a single column */
+  #resource-grid {
+    display: block !important;
+  }
+
+  .resource-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    box-shadow: none !important;
+  }
+
+  /* Show full details on print */
+  .resource-item .distance-miles,
+  .resource-item dl {
+    display: block !important;
+  }
+
+  /* Expand all details sections */
+  .resource-item dl {
+    background: #f5f5f5 !important;
+    padding: 0.5rem !important;
+  }
+
+  /* Ensure links show their URLs */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #555555;
+  }
+
+  /* Hide map and directions buttons */
+  a[href*="google.com/maps"],
+  a[href*="321transit.com"] {
+    display: none !important;
+  }
+
+  /* Print header */
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
 }

@@ -11,7 +11,8 @@ for (const r of ALL_RESOURCES) {
   const cols = [
     'id','name','category','address','lat','lng','phone','website','service_url','source_url',
     'description','hours_text','schedule','tags','partner_type','capacity_status','help_group',
-    'services','county','last_verified','mobile_only'
+    'services','county','last_verified','mobile_only',
+    'eligibility','documents','languages','accessibility'
   ];
   const vals = [
     sqlStr(r.id),
@@ -35,6 +36,10 @@ for (const r of ALL_RESOURCES) {
     sqlStr(r.county),
     sqlStr(r.lastVerified),
     r.mobileOnly ? '1' : '0',
+    sqlStr(r.eligibility),
+    sqlStr(r.documents),
+    sqlStr(JSON.stringify(r.languages || [])),
+    sqlStr(r.accessibility),
   ];
   lines.push(`INSERT INTO resources (${cols.join(',')}) VALUES (${vals.join(',')});`);
 }

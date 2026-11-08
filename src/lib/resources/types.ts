@@ -22,7 +22,7 @@ export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Statewide";
  * runs it", and conflating the two is what put children's health insurance under a
  * jobs heading.
  */
-export type HelpGroup = "food" | "shelter" | "health" | "money" | "basics" | "crisis";
+export type HelpGroup = "food" | "shelter" | "health" | "money" | "basics" | "crisis" | "technology";
 
 export type HelpService = "Food" | "Faith" | "Charity";
 
@@ -92,6 +92,17 @@ export type Resource = {
   state?: string;
   /** ISO date the listing was last checked against the organization's own website. */
   lastVerified?: string;
+  /**
+   * Who qualifies for this resource — income limits, age, residency, disability, etc.
+   * Written in plain language for the person who needs to know "can I use this?"
+   */
+  eligibility?: string;
+  /** What to bring: ID, proof of income, SNAP letter, etc. Plain language. */
+  documents?: string;
+  /** Languages the organization can serve, beyond English. */
+  languages?: string[];
+  /** Accessibility notes: wheelchair access, transit proximity, etc. */
+  accessibility?: string;
   /**
    * True when the organization has no public walk-in location, or is a phone-based
    * service. Distance and street directions are meaningless for these entries, so the
