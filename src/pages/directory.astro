@@ -1,9 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
 import ResourceCard from '../components/ResourceCard.astro';
+import TurnstileWidget from '../components/TurnstileWidget.astro';
 
-const runtime = (Astro.locals as any)?.runtime;
-const env = runtime?.env;
+let env: any;
+try {
+  const { env: cfEnv } = await import('cloudflare:workers');
+  env = cfEnv;
+} catch {
+  env = undefined;
+}
 let resources: any[] = [];
 if (env?.baseimpact_verify) {
   const result = await env.baseimpact_verify.prepare('SELECT * FROM resources ORDER BY name ASC').all();
@@ -38,10 +44,10 @@ if (env?.baseimpact_verify) {
   resources = processResources(origin, 200, { category: 'All', tag: 'All', query: '', onlySaved: false, savedIds: [] });
 }
 
-const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'crisis', 'saved'];
+const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'technology', 'crisis', 'saved'];
 const groupLabels: Record<string, string> = {
   all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
-  money: 'Money', basics: 'Basics', crisis: 'Crisis', saved: 'Saved',
+  money: 'Money', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
 };
 ---
 
@@ -65,6 +71,37 @@ const groupLabels: Record<string, string> = {
       ))}
     </div>
 
+    <!-- Location awareness bar -->
+    <div class="mb-4 rounded-2xl bg-inset p-4" id="location-bar">
+      <div class="flex flex-wrap items-end gap-3">
+        <div class="flex-1 min-w-[180px]">
+          <label for="zip-input" class="block text-sm font-semibold text-body mb-1">Your location</label>
+          <input type="text" id="zip-input" placeholder="ZIP code" autocomplete="postal-code"
+            inputmode="numeric" maxlength="5" pattern="[0-9]{5}"
+            class="w-full rounded-lg border border-line bg-card px-3 py-2 text-sm text-body min-h-11" />
+        </div>
+        <button type="button" id="use-location-btn"
+          class="rounded-lg border border-line bg-card px-4 py-2 text-sm font-semibold text-body hover:bg-line min-h-11">
+          Use my location
+        </button>
+        <div>
+          <label for="radius-select" class="block text-sm font-semibold text-body mb-1">Distance</label>
+          <select id="radius-select" class="rounded-lg border border-line bg-card px-3 py-2 text-sm text-body min-h-11">
+            <option value="0">Any distance</option>
+            <option value="5">Within 5 miles</option>
+            <option value="10" selected>Within 10 miles</option>
+            <option value="25">Within 25 miles</option>
+            <option value="50">Within 50 miles</option>
+            <option value="100">Within 100 miles</option>
+          </select>
+        </div>
+      </div>
+      <p id="location-status" class="mt-2 text-xs text-muted" role="status"></p>
+      <p class="mt-1 text-xs text-faint">
+        Your location is used only to sort and filter results in your browser. It is never stored on our servers, never shared, and never saved after you close this tab.
+      </p>
+    </div>
+
     <label class="flex items-center gap-2 text-sm text-muted cursor-pointer">
       <input type="checkbox" id="open-now" class="rounded" />
       Open now
@@ -81,10 +118,11 @@ const groupLabels: Record<string, string> = {
     <button type="button" id="view-list" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm">List</button>
     <button type="button" id="view-map" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm">Map</button>
     <button type="button" id="sort-distance" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm">Sort by distance</button>
+    <button type="button" id="print-list" class="chip flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm no-print">Print list</button>
   </div>
 
   <div id="map-legend" class="hidden flex flex-wrap gap-2 mb-3">
-    {['all','food','shelter','health','money','basics','crisis'].map(g => (
+    {['all','food','shelter','health','money','basics','technology','crisis'].map(g => (
       <button type="button" data-mapgroup={g} class={`map-legend-chip px-3 py-1.5 rounded-full text-xs font-semibold ${g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}`}>
         {g.charAt(0).toUpperCase() + g.slice(1)}
       </button>
@@ -122,6 +160,41 @@ const groupLabels: Record<string, string> = {
       <a href="tel:988" class="inline-flex items-center gap-1 rounded-lg bg-fill-caution px-4 py-2 text-sm font-semibold text-on-fill">Crisis 988</a>
     </div>
   </div>
+
+  <!-- Report an issue dialog -->
+  <dialog id="report-dialog" class="report-dialog rounded-2xl p-0 w-full max-w-md border-0 bg-transparent">
+    <form id="report-form" class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] space-y-4">
+      <h2 class="font-display text-xl font-semibold text-body">Report an issue</h2>
+      <p class="text-sm text-muted">Resource: <span id="report-resource-name" class="font-semibold text-body"></span></p>
+      <input type="hidden" id="report-resource-id" />
+      <div>
+        <label for="report-issue-type" class="block text-sm font-semibold text-body mb-1">What's wrong?</label>
+        <select id="report-issue-type" required class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11">
+          <option value="">Choose one…</option>
+          <option value="wrong-phone">Wrong phone number</option>
+          <option value="wrong-address">Wrong address</option>
+          <option value="wrong-hours">Wrong hours</option>
+          <option value="closed-or-moved">Closed or moved</option>
+          <option value="not-real-resource">Not a real resource / possible scam</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="report-details" class="block text-sm font-semibold text-body mb-1">Details (optional)</label>
+        <textarea id="report-details" rows="3" class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body" placeholder="Tell us what you found"></textarea>
+      </div>
+      <div>
+        <label for="report-email" class="block text-sm font-semibold text-body mb-1">Email (optional, for follow-up only)</label>
+        <input type="email" id="report-email" class="w-full rounded-lg border border-line bg-card px-3 py-3 text-body min-h-11" placeholder="you@example.com" />
+      </div>
+      <TurnstileWidget />
+      <div class="flex gap-2 pt-2">
+        <button type="button" id="report-cancel" class="flex-1 rounded-xl border border-line bg-card px-4 py-3 text-sm font-semibold text-body hover:bg-inset">Cancel</button>
+        <button type="submit" id="report-submit" class="flex-1 rounded-xl bg-fill px-4 py-3 text-sm font-semibold text-on-fill hover:bg-fill-hover">Send report</button>
+      </div>
+      <p id="report-status" class="text-sm text-center" role="status"></p>
+    </form>
+  </dialog>
 </Base>
 
 <script is:inline>
@@ -184,6 +257,22 @@ const groupLabels: Record<string, string> = {
   }
 
   searchInput?.addEventListener('input', filter);
+  // Log anonymized searches (debounced) so we know what people look for but cannot find.
+  let searchLogTimer = null;
+  searchInput?.addEventListener('input', () => {
+    clearTimeout(searchLogTimer);
+    searchLogTimer = setTimeout(() => {
+      const q = (searchInput.value || '').trim();
+      if (q.length < 2) return;
+      const visible = Array.from(document.querySelectorAll('.resource-item'))
+        .filter(el => el.style.display !== 'none').length;
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, results_count: visible }),
+      }).catch(() => {});
+    }, 1500);
+  });
   openNowCheckbox?.addEventListener('change', filter);
   stateFilter?.addEventListener('change', () => {
     activeState = stateFilter.value || 'all';
@@ -343,6 +432,10 @@ const groupLabels: Record<string, string> = {
 
   // Distance sorting via browser geolocation
   const sortDistanceBtn = document.getElementById('sort-distance');
+  const printListBtn = document.getElementById('print-list');
+  if (printListBtn) {
+    printListBtn.addEventListener('click', () => window.print());
+  }
   if (sortDistanceBtn) {
     sortDistanceBtn.addEventListener('click', () => {
       sortDistanceBtn.textContent = 'Locating...';
@@ -408,4 +501,179 @@ const groupLabels: Record<string, string> = {
     items.forEach((item) => grid.appendChild(item));
     if (countEl) countEl.textContent = items.length + ' results';
   }
+
+  // === Location awareness ===
+  const LOCATION_KEY = 'baseimpact-location';
+  const RADIUS_KEY = 'baseimpact-radius';
+  const zipInput = document.getElementById('zip-input');
+  const useLocationBtn = document.getElementById('use-location-btn');
+  const radiusSelect = document.getElementById('radius-select');
+  const locationStatus = document.getElementById('location-status');
+
+  function getStoredLocation() {
+    try { return JSON.parse(sessionStorage.getItem(LOCATION_KEY) || 'null'); } catch { return null; }
+  }
+
+  function setStoredLocation(loc, label) {
+    sessionStorage.setItem(LOCATION_KEY, JSON.stringify({ lat: loc.lat, lng: loc.lng, label }));
+    if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label}` : '';
+    applyLocationFilter();
+  }
+
+  function applyLocationFilter() {
+    const loc = getStoredLocation();
+    const radius = parseInt(radiusSelect?.value || '0');
+    const allItems = Array.from(document.querySelectorAll('.resource-item'));
+
+    if (!loc) {
+      allItems.forEach(item => { item.removeAttribute('data-distance'); });
+      return;
+    }
+
+    allItems.forEach(item => {
+      const rLat = parseFloat(item.getAttribute('data-lat'));
+      const rLng = parseFloat(item.getAttribute('data-lng'));
+      if (!rLat || !rLng) return;
+      const dist = calculateDistanceMiles(loc.lat, loc.lng, rLat, rLng);
+      item.setAttribute('data-distance', dist.toFixed(1));
+      const distSpan = item.querySelector('.distance-miles');
+      if (distSpan) distSpan.textContent = dist.toFixed(1) + ' miles away (straight line)';
+      if (radius > 0 && dist > radius) {
+        item.style.display = 'none';
+      }
+    });
+
+    sortByDistance(loc.lat, loc.lng);
+    filter();
+  }
+
+  async function geocodeZip(zip) {
+    const res = await fetch(`https://api.zippopotam.us/us/${encodeURIComponent(zip)}`);
+    if (!res.ok) throw new Error('ZIP not found');
+    const data = await res.json();
+    const place = data.places && data.places[0];
+    if (!place) throw new Error('ZIP not found');
+    return {
+      lat: parseFloat(place.latitude),
+      lng: parseFloat(place.longitude),
+      label: `${place['place name']}, ${place['state abbreviation']}`,
+    };
+  }
+
+  zipInput?.addEventListener('keydown', async (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const zip = zipInput.value.trim();
+    if (!/^\d{5}$/.test(zip)) {
+      if (locationStatus) locationStatus.textContent = 'Enter a valid 5-digit ZIP code.';
+      return;
+    }
+    try {
+      const loc = await geocodeZip(zip);
+      setStoredLocation(loc, loc.label);
+    } catch {
+      if (locationStatus) locationStatus.textContent = 'Could not find that ZIP code. Please try again.';
+    }
+  });
+
+  useLocationBtn?.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      if (locationStatus) locationStatus.textContent = 'Geolocation is not supported by your browser.';
+      return;
+    }
+    if (locationStatus) locationStatus.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setStoredLocation(
+          { lat: pos.coords.latitude, lng: pos.coords.longitude },
+          'your current location'
+        );
+      },
+      () => {
+        if (locationStatus) locationStatus.textContent = 'Could not get your location. Enter a ZIP code instead.';
+      },
+      { timeout: 10000 }
+    );
+  });
+
+  radiusSelect?.addEventListener('change', () => {
+    sessionStorage.setItem(RADIUS_KEY, radiusSelect.value);
+    applyLocationFilter();
+  });
+
+  // Restore location and radius on load
+  const storedLoc = getStoredLocation();
+  if (storedLoc && locationStatus) locationStatus.textContent = `Showing results near ${storedLoc.label}`;
+  const storedRadius = sessionStorage.getItem(RADIUS_KEY);
+  if (storedRadius && radiusSelect) radiusSelect.value = storedRadius;
+  if (storedLoc) {
+    applyLocationFilter();
+  }
+</script>
+
+<script is:inline>
+  (() => {
+    const dialog = document.getElementById('report-dialog');
+    const form = document.getElementById('report-form');
+    const cancelBtn = document.getElementById('report-cancel');
+    const submitBtn = document.getElementById('report-submit');
+    const statusEl = document.getElementById('report-status');
+    const resourceIdEl = document.getElementById('report-resource-id');
+    const resourceNameEl = document.getElementById('report-resource-name');
+    const issueTypeEl = document.getElementById('report-issue-type');
+    const detailsEl = document.getElementById('report-details');
+    const emailEl = document.getElementById('report-email');
+
+    if (!dialog || !form) return;
+
+    document.querySelectorAll('.report-issue-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        resourceIdEl.value = btn.dataset.resourceId || '';
+        resourceNameEl.textContent = btn.dataset.resourceName || '';
+        form.reset();
+        statusEl.textContent = '';
+        dialog.showModal();
+      });
+    });
+
+    cancelBtn?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.querySelector('.cf-turnstile input[name="cf-turnstile-response"]')?.value || '';
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Sending…';
+      try {
+        const res = await fetch('/api/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            resource_id: resourceIdEl.value,
+            resource_name: resourceNameEl.textContent,
+            issue_type: issueTypeEl.value,
+            details: detailsEl.value,
+            email: emailEl.value,
+            turnstile_token: token,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          statusEl.textContent = 'Thanks — your report was received. A real person will review it.';
+          statusEl.className = 'text-sm text-center text-green-700';
+          setTimeout(() => dialog.close(), 1800);
+        } else {
+          statusEl.textContent = data.error || 'Something went wrong. Please try again.';
+          statusEl.className = 'text-sm text-center text-red-700';
+        }
+      } catch {
+        statusEl.textContent = 'Network error. Please try again.';
+        statusEl.className = 'text-sm text-center text-red-700';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  })();
 </script>
