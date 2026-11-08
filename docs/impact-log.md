@@ -18,12 +18,12 @@ Living document tracking all projects, people helped, and events. Updated as new
 
 | # | Story | Date | Notes | Status |
 |---|-------|------|-------|--------|
-| 8 | Internet bill fund assistance (published news story) | TBD | Recipient has published news story | Needs post + link to news article |
-| 9 | Family seeking shelter/rent funds | Ongoing | Currently being helped with resources/info | Needs post when appropriate (privacy) |
-| 10 | Cold weather shelter training | TBD | Photos exist | Needs photo gallery post |
-| 11 | Nonprofit warehouse storage racking build | 2026-09-17 | Photos exist (IMG20260917121740) | Needs photo gallery post |
-| 12 | Brevard Homeless CoC coalition meeting (membership) | 2026-10-29 | Photos exist (IMG20261029140358) | Needs post + consent check |
-| 13 | Rock Church house rebuild (loss of family member) | 2026-09-24 | Photos exist (IMG20260924105719) | Needs post + consent check |
+| 8 | Internet bill fund assistance (published news story) | 2026-10-21 | Drafted (draft: true) — needs news article link + consent | Needs post + link to news article |
+| 9 | Family seeking shelter/rent funds | 2026-10-20 | Drafted (draft: true) — privacy, get consent before publishing | Needs post when appropriate (privacy) |
+| 10 | Cold weather shelter training | 2026-09-19 | Drafted (draft: false) — photos ready (IMG20260919110829) | Needs photo gallery post |
+| 11 | Nonprofit warehouse storage racking build | 2026-09-17 | Drafted (draft: false) — photos ready (IMG20260917121740) | Needs photo gallery post |
+| 12 | Brevard Homeless CoC coalition meeting (membership) | 2026-10-29 | Drafted (draft: true) — photos ready (IMG20261029140358, Titusville) | Needs post + consent check |
+| 13 | Rock Church house rebuild (loss of family member) | 2026-09-24 | Drafted (draft: true) — photos ready (IMG20260924105719) | Needs post + consent check |
 
 ## Design & Web Improvement Tracking
 
