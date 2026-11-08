@@ -78,29 +78,60 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 
 <script>
   const NAV = [
-    { to: '/', label: 'Base Impact' },
+    { to: '/', label: 'Home' },
     { to: '/directory', label: 'Find help' },
     { to: '/about', label: 'About' },
     { to: '/programs', label: 'Programs' },
+    { to: '/blog', label: 'Stories' },
     { to: '/donate', label: 'Donate' },
   ];
-  const MORE = [
-    { to: '/events', label: 'Events' },
-    { to: '/blog', label: 'Blog' },
-    { to: '/photos', label: 'Photos' },
-    { to: '/how-to-help', label: 'How to help' },
-    { to: '/purpose', label: 'Our purpose' },
-    { to: '/join', label: 'Join us' },
-    { to: '/donate', label: 'Donate' },
-    { to: '/financials', label: 'Financials' },
-    { to: '/technology-access', label: 'Technology access' },
-    { to: '/grants', label: 'Grants & funding' },
-    { to: '/contact', label: 'Contact' },
-    { to: '/feedback', label: 'Feedback' },
-    { to: '/connect', label: 'Connect' },
-    { to: '/socials', label: 'Socials' },
-    { to: '/privacy', label: 'Privacy' },
-    { to: '/terms', label: 'Terms' },
+  const MORE_GROUPS = [
+    {
+      label: 'Get involved',
+      items: [
+        { to: '/volunteer', label: 'Volunteer' },
+        { to: '/join', label: 'Join us' },
+        { to: '/how-to-help', label: 'How to help' },
+        { to: '/donate', label: 'Donate' },
+      ],
+    },
+    {
+      label: 'Resources',
+      items: [
+        { to: '/directory', label: 'Resource directory' },
+        { to: '/events', label: 'Events' },
+        { to: '/photos', label: 'Photos' },
+        { to: '/guide', label: 'Resource guide' },
+        { to: '/technology-access', label: 'Technology access' },
+      ],
+    },
+    {
+      label: 'About Base Impact',
+      items: [
+        { to: '/about', label: 'About us' },
+        { to: '/purpose', label: 'Our purpose' },
+        { to: '/impact', label: 'Impact' },
+        { to: '/partners', label: 'Partners' },
+        { to: '/financials', label: 'Financials' },
+        { to: '/grants', label: 'Grants & funding' },
+      ],
+    },
+    {
+      label: 'Connect',
+      items: [
+        { to: '/contact', label: 'Contact' },
+        { to: '/feedback', label: 'Feedback' },
+        { to: '/connect', label: 'Connect' },
+        { to: '/socials', label: 'Socials' },
+      ],
+    },
+    {
+      label: 'Legal',
+      items: [
+        { to: '/privacy', label: 'Privacy' },
+        { to: '/terms', label: 'Terms' },
+      ],
+    },
   ];
 
   const path = window.location.pathname.replace(/\/$/, '') || '/';
@@ -137,16 +168,23 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
   // Mobile more
   const mobileMore = document.getElementById('mobile-more');
   if (mobileMore) {
-    MORE.forEach(item => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = item.to;
-      a.className = 'flex min-h-12 items-center rounded-xl px-3 text-base font-semibold ' +
-        (path === item.to ? 'bg-fill text-on-fill' : 'text-body hover:bg-inset');
-      a.textContent = item.label;
-      a.addEventListener('click', () => { document.getElementById('mobile-menu')?.classList.add('hidden'); });
-      li.appendChild(a);
-      mobileMore.appendChild(li);
+    MORE_GROUPS.forEach(group => {
+      const header = document.createElement('li');
+      header.className = 'px-3 pt-3 pb-1 text-xs font-semibold uppercase tracking-wide';
+      header.style.color = 'var(--color-muted)';
+      header.textContent = group.label;
+      mobileMore.appendChild(header);
+      group.items.forEach(item => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.to;
+        a.className = 'flex min-h-12 items-center rounded-xl px-3 text-base font-semibold ' +
+          (path === item.to ? 'bg-fill text-on-fill' : 'text-body hover:bg-inset');
+        a.textContent = item.label;
+        a.addEventListener('click', () => { document.getElementById('mobile-menu')?.classList.add('hidden'); });
+        li.appendChild(a);
+        mobileMore.appendChild(li);
+      });
     });
   }
 
