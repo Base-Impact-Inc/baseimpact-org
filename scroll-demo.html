@@ -407,7 +407,39 @@
     font-size: 0.875rem;
   }
 
-  /* Reduced motion */
+  /* Demo mega menu */
+  .demo-mega { position: relative; }
+  .demo-mega-trigger {
+    padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
+    color: var(--text); background: none; border: none; cursor: pointer;
+    border-radius: 0.5rem; transition: background 0.15s;
+  }
+  .demo-mega-trigger:hover { background: rgba(255,255,255,0.08); }
+  .demo-mega-panel {
+    position: absolute; top: 100%; left: 0; min-width: 200px;
+    padding: 0.5rem; background: var(--card);
+    border: 1px solid var(--line); border-radius: 0.75rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    opacity: 0; visibility: hidden; transform: translateY(-8px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+    z-index: 50;
+  }
+  .demo-mega.open .demo-mega-panel {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  .demo-mega-panel a {
+    display: block; padding: 0.5rem 0.75rem; font-size: 0.875rem;
+    color: var(--text); text-decoration: none; border-radius: 0.5rem;
+    transition: background 0.1s;
+  }
+  .demo-mega-panel a:hover { background: rgba(255,255,255,0.08); }
+  .demo-highlight { color: var(--gold) !important; font-weight: 600; }
+  .demo-link {
+    padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
+    color: var(--text); text-decoration: none; border-radius: 0.5rem;
+    transition: background 0.15s;
+  }
+  .demo-link:hover { background: rgba(255,255,255,0.08); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -439,6 +471,60 @@
 
 <div class="scroll-progress" id="scrollProgress"></div>
 <div class="noise"></div>
+
+<!-- Navigation -->
+<header style="position: sticky; top: 0; z-index: 100; background: rgba(15, 26, 20, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line);">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px;">
+    <a href="/" style="font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none;">Base Impact</a>
+    <nav style="display: flex; gap: 0.25rem; align-items: center;">
+      <div class="demo-mega" data-group="help">
+        <button class="demo-mega-trigger">Find Help ▾</button>
+        <div class="demo-mega-panel">
+          <a href="/directory">Resource Directory</a>
+          <a href="/technology-access">Technology Access</a>
+          <a href="/guide">Resource Guide</a>
+          <a href="/directory?filter=crisis" class="demo-highlight">Crisis Help (211)</a>
+        </div>
+      </div>
+      <div class="demo-mega" data-group="about">
+        <button class="demo-mega-trigger">About ▾</button>
+        <div class="demo-mega-panel">
+          <a href="/about">About Us</a>
+          <a href="/purpose">Our Purpose</a>
+          <a href="/impact">Impact</a>
+          <a href="/partners">Partners</a>
+        </div>
+      </div>
+      <div class="demo-mega" data-group="involved">
+        <button class="demo-mega-trigger">Get Involved ▾</button>
+        <div class="demo-mega-panel">
+          <a href="/volunteer">Volunteer</a>
+          <a href="/join">Join Us</a>
+          <a href="/how-to-help">How to Help</a>
+          <a href="/donate" class="demo-highlight">Donate</a>
+        </div>
+      </div>
+      <a href="/blog" class="demo-link">Stories</a>
+      <div class="demo-mega" data-group="resources">
+        <button class="demo-mega-trigger">Resources ▾</button>
+        <div class="demo-mega-panel">
+          <a href="/events">Events</a>
+          <a href="/photos">Photos</a>
+          <a href="/programs">Programs</a>
+        </div>
+      </div>
+      <div class="demo-mega" data-group="connect">
+        <button class="demo-mega-trigger">Connect ▾</button>
+        <div class="demo-mega-panel">
+          <a href="/contact">Contact</a>
+          <a href="/share-your-story">Share Your Story</a>
+          <a href="/socials">Socials</a>
+        </div>
+      </div>
+    </nav>
+    <a href="/directory" class="btn btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.875rem;">Find Help</a>
+  </div>
+</header>
 
 <!-- Hero -->
 <section class="hero">
@@ -664,7 +750,23 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  // Scroll progress bar
+  // Demo mega menu toggle
+  document.querySelectorAll('.demo-mega').forEach(group => {
+    const trigger = group.querySelector('.demo-mega-trigger');
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = group.classList.contains('open');
+      document.querySelectorAll('.demo-mega.open').forEach(g => {
+        if (g !== group) g.classList.remove('open');
+      });
+      group.classList.toggle('open', !isOpen);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.demo-mega')) {
+      document.querySelectorAll('.demo-mega.open').forEach(g => g.classList.remove('open'));
+    }
+  });
   window.addEventListener('scroll', () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;

@@ -548,16 +548,11 @@ const groupLabels: Record<string, string> = {
   }
 
   async function geocodeZip(zip) {
-    const res = await fetch(`https://api.zippopotam.us/us/${encodeURIComponent(zip)}`);
+    const res = await fetch(`/api/geocode?zip=${encodeURIComponent(zip)}`);
     if (!res.ok) throw new Error('ZIP not found');
     const data = await res.json();
-    const place = data.places && data.places[0];
-    if (!place) throw new Error('ZIP not found');
-    return {
-      lat: parseFloat(place.latitude),
-      lng: parseFloat(place.longitude),
-      label: `${place['place name']}, ${place['state abbreviation']}`,
-    };
+    if (data.error) throw new Error(data.error);
+    return data;
   }
 
   zipInput?.addEventListener('keydown', async (e) => {
