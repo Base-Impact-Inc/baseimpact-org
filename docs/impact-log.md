@@ -13,17 +13,20 @@ Living document tracking all projects, people helped, and events. Updated as new
 | 5 | Donated 2XL Jackets | 2026-11-01 | Community News | `src/content/posts/donated-2xl-jackets.md` |
 | 6 | Community Technology Day (photo) | 2026-10-15 | Photos | `src/content/photos/first-community-event.md` |
 | 7 | Cold-Night Shelter Supply Drive (event) | 2026-11-15 | Events | `src/content/events/cold-weather-supply-drive.md` |
+| 8 | Internet Bill Fund Assistance | 2026-10-21 | Impact Stories | `src/content/posts/internet-bill-fund-assistance.md` (published) |
+| 9 | Family Seeking Shelter/Rent Funds | 2026-10-20 | Impact Stories | `src/content/posts/family-seeking-shelter-rent-funds.md` (published) |
+| 10 | Cold Weather Shelter Training | 2026-09-19 | Impact Stories | `src/content/posts/cold-weather-shelter-training.md` (published) |
+| 11 | Nonprofit Warehouse Racking Build | 2026-09-17 | Impact Stories | `src/content/posts/nonprofit-warehouse-racking.md` (published) |
+| 12 | Brevard Homeless CoC Coalition (membership) | 2026-10-29 | Community News | `src/content/posts/brevard-homeless-coc-coalition.md` (published) |
+| 13 | Rock Church House Rebuild | 2026-09-24 | Impact Stories | `src/content/posts/rock-church-house-rebuild.md` (published) |
+| 14 | Willem Family — Crohn's & Community Support | 2026-10-28 | Impact Stories | `src/content/posts/willem-family-medical-crisis-support.md` (published, featured, real names + news link + GoFundMe) |
 
 ## Pending / Undocumented Stories (need to be added)
 
-| # | Story | Date | Notes | Status |
-|---|-------|------|-------|--------|
-| 8 | Internet bill fund assistance (published news story) | 2026-10-21 | Drafted (draft: true) — needs news article link + consent | Needs post + link to news article |
-| 9 | Family seeking shelter/rent funds | 2026-10-20 | Drafted (draft: true) — privacy, get consent before publishing | Needs post when appropriate (privacy) |
-| 10 | Cold weather shelter training | 2026-09-19 | Drafted (draft: false) — photos ready (IMG20260919110829) | Needs photo gallery post |
-| 11 | Nonprofit warehouse storage racking build | 2026-09-17 | Drafted (draft: false) — photos ready (IMG20260917121740) | Needs photo gallery post |
-| 12 | Brevard Homeless CoC coalition meeting (membership) | 2026-10-29 | Drafted (draft: true) — photos ready (IMG20261029140358, Titusville) | Needs post + consent check |
-| 13 | Rock Church house rebuild (loss of family member) | 2026-09-24 | Drafted (draft: true) — photos ready (IMG20260924105719) | Needs post + consent check |
+All previously pending stories are now drafted and published (see Documented Impact Stories above). Remaining follow-ups:
+- Copy photos from `/home/eric/Pictures/Photos for BaseImpact/` to `public/assets/` and update image paths in posts
+- Identify the 4 unidentified photos (Scottsmoor Oct 20, Titusville Oct 21/29, Rockledge Nov 4) and create posts if applicable
+- Add GoFundMe/news links to other stories where permission is granted
 
 ## Design & Web Improvement Tracking
 
