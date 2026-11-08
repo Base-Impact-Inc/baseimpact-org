@@ -14,12 +14,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Access D1 binding
-    const env = (locals as any).runtime?.env;
-    const db = env?.baseimpact_verify;
+    // Access D1 binding via cloudflare:workers
+    let db: any;
+    try {
+      const { env } = await import('cloudflare:workers');
+      db = env?.baseimpact_verify;
+    } catch {
+      db = undefined;
+    }
 
     if (db) {
-      // Create table if not exists
       await db.prepare(`
         CREATE TABLE IF NOT EXISTS stories (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
