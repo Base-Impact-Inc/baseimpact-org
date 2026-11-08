@@ -14,6 +14,12 @@
 	"observability": {
 		"enabled": true
 	},
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "fbd1bc49ebdf4f4a88a75268c5d792bd"
+		}
+	],
 	"d1_databases": [
 		{
 			"binding": "baseimpact_verify",
