@@ -131,7 +131,7 @@ const groupLabels: Record<string, string> = {
 
   <div id="map-container" class="hidden mb-4 rounded-2xl overflow-hidden shadow-[var(--shadow-border)]" style="height: 480px;"></div>
 
-  <p id="results-count" class="text-sm text-muted mb-4">{resources.length} results</p>
+  <p id="results-count" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} results</p>
 
   <div class="grid gap-4 grid-cols-1 max-w-3xl" id="resource-grid">
     {resources.map((r: any) => (
