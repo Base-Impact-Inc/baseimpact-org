@@ -33,7 +33,7 @@
 
   /* fills */
   --color-fill: #f4d96c;
-  --color-fill-hover: #e6c95a;
+  --color-fill-hover: #d4b84a;
   --color-fill-caution: #f4d96c;
   --color-fill-critical: #f4d96c;
   --color-fill-positive: #f4d96c;
@@ -88,7 +88,7 @@
   --color-inactive: #b3a55e;
 
   --color-fill: #f4d96c;
-  --color-fill-hover: #e6c95a;
+  --color-fill-hover: #d4b84a;
   --color-fill-caution: #f4d96c;
   --color-fill-critical: #f4d96c;
   --color-fill-positive: #f4d96c;
@@ -242,9 +242,9 @@ input, select, textarea {
 .border { border: 1px solid var(--color-line); }
 .border-line\/60 { border-color: rgb(203 213 225 / 0.6); }
 .border-line\/80 { border-color: rgb(203 213 225 / 0.8); }
-.bg-card\/40 { background: rgb(255 255 255 / 0.4); }
+.bg-card\/40 { background: rgb(255 255 255 / 0.6); }
 .bg-card\/60 { background: rgb(255 255 255 / 0.6); }
-.hover\:bg-card\/60:hover { background: rgb(255 255 255 / 0.6); }
+.hover\:bg-card\/60:hover { background: rgb(255 255 255 / 0.85); }
 .hover\:bg-band-deep:hover { background: var(--color-band-deep); }
 .hover\:text-on-fill:hover { color: var(--color-on-fill); }
 .hover\:underline:hover { text-decoration: underline; }
@@ -697,12 +697,12 @@ p {
 
 .bg-band { background: var(--color-band); }
 .bg-card { background: var(--color-card); }
-.bg-card\/40 { background: rgb(255 255 255 / 0.4); }
+.bg-card\/40 { background: rgb(255 255 255 / 0.6); }
 .bg-fill { background: var(--color-fill); }
 .bg-fill-caution { background: var(--color-fill-caution); }
 .bg-inset { background: var(--color-inset); }
 .bg-page { background: var(--color-page); }
-.hover\:bg-card\/60:hover { background: rgb(255 255 255 / 0.6); }
+.hover\:bg-card\/60:hover { background: rgb(255 255 255 / 0.85); }
 .hover\:bg-fill-hover:hover { background: var(--color-fill-hover); }
 .hover\:bg-inset:hover { background: var(--color-inset); }
 .hover\:bg-line:hover { background: var(--color-line); }
@@ -831,7 +831,8 @@ nav a {
   transition: color 0.2s var(--ease-out-expo), opacity 0.2s var(--ease-out-expo);
 }
 nav a:hover {
-  opacity: 0.8;
+  opacity: 0.95;
+  color: var(--color-accent);
 }
 
 /* Footer improvements */
