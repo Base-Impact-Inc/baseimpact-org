@@ -2,7 +2,7 @@
 title: "Helping a Rock Church Member Rebuild After Loss"
 description: "Base Impact joined a group from Rock Church to help a member finish rebuilding their home after the loss of a family member — a community coming together in a time of grief."
 date: 2026-09-24
-image: /assets/community-food-support.jpg
+image: /assets/baseimpact-rock-church-rebuild-2026-09-24.jpg
 categories: ["Impact Stories"]
 tags: ["community", "home repair", "church", "grief support", "volunteers"]
 featured: false

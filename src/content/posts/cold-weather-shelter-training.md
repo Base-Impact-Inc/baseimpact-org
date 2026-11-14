@@ -2,7 +2,7 @@
 title: "Cold Weather Shelter Training — Preparing to Serve"
 description: "Base Impact participated in cold weather shelter training — learning how to set up cots, welcome guests, and provide safe overnight shelter when temperatures drop."
 date: 2026-09-19
-image: /assets/community-food-support.jpg
+image: /assets/baseimpact-cold-weather-training-2026-09-19.jpg
 categories: ["Impact Stories"]
 tags: ["shelter", "cold weather", "training", "volunteers", "community"]
 featured: false

@@ -2,7 +2,7 @@
 title: "Helping a New Florida Resident Find Work and Get Connected"
 description: "Base Impact helped a new Florida resident apply for jobs online, set up her donated computer, and provided on-site training — all in one visit."
 date: 2026-10-20
-image: /assets/tech-support-session.jpg
+image: /assets/baseimpact-job-help-scottsmoor-2026-10-20.jpg
 categories: ["Impact Stories"]
 tags: ["job search", "technology", "training", "new resident"]
 featured: false

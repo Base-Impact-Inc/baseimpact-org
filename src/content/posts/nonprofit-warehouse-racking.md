@@ -2,7 +2,7 @@
 title: "Building Storage Racking for a Nonprofit Warehouse"
 description: "Base Impact volunteers helped build storage racking in a nonprofit warehouse — creating organized space for donated goods, supplies, and community resources."
 date: 2026-09-17
-image: /assets/community-food-support.jpg
+image: /assets/baseimpact-warehouse-racking-2026-09-17.jpg
 categories: ["Impact Stories"]
 tags: ["warehouse", "storage", "nonprofit", "volunteers", "infrastructure"]
 featured: false
