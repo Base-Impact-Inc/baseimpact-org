@@ -2,23 +2,85 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Volunteer — Base Impact" description="Volunteer with Base Impact to help neighbors get connected and help small nonprofits keep their technology working.">
+<Base title="Volunteer — Base Impact" description="Volunteer with Base Impact: current shifts in Brevard County, ways to help, what to expect, and how to sign up.">
   <div class="picture-band">
     <img src="/assets/volunteers-needed.jpg" alt="Volunteers needed sign at a community organization" width="1920" height="1280" loading="lazy" decoding="async" />
   </div>
   <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">Volunteer</h1>
-  <div class="max-w-2xl space-y-6 text-muted leading-relaxed fade-in">
-    <p>Base Impact runs on volunteer energy. If you have skills to share — or just want to help — we'd love to have you.</p>
-    <h2 class="font-display text-xl font-semibold text-body mt-6">Ways to volunteer</h2>
-    <ul class="list-disc pl-5 space-y-2">
+  <p class="max-w-2xl text-muted leading-relaxed fade-in">
+    Base Impact runs on volunteer energy. If you have skills to share — or just want to help —
+    we'd love to have you. Most service happens alongside our partner organizations in North
+    Brevard County, and everything is scheduled so you can plan ahead.
+  </p>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">Current shifts</h2>
+    <div class="space-y-3 max-w-3xl">
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h3 class="font-display text-base font-semibold text-body">Monday — Under the Bridge Ministries</h3>
+          <p class="text-sm text-muted">Hot meals, blankets, and supplies under the A. Max Brewer Bridge, Titusville.</p>
+        </div>
+        <span class="text-sm font-semibold text-accent shrink-0">5–7 pm</span>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h3 class="font-display text-base font-semibold text-body">Monday — Lifepointe Fund Raiser Bingo</h3>
+          <p class="text-sm text-muted">Community fundraiser supporting local outreach.</p>
+        </div>
+        <span class="text-sm font-semibold text-accent shrink-0">11 am – 5 pm</span>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h3 class="font-display text-base font-semibold text-body">Thursday — Lifepointe Ministries</h3>
+          <p class="text-sm text-muted">Thursday evening dinners and outreach at the Titusville Civic Center.</p>
+        </div>
+        <span class="text-sm font-semibold text-accent shrink-0">4:30 – 7 pm</span>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h3 class="font-display text-base font-semibold text-body">Saturday — FUMC Breakfast</h3>
+          <p class="text-sm text-muted">Community breakfast, essentials, and a safe place to warm up.</p>
+        </div>
+        <span class="text-sm font-semibold text-accent shrink-0">8 – 9:30 am</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">Ways to help</h2>
+    <ul class="list-disc pl-5 space-y-2 text-muted leading-relaxed max-w-2xl">
+      <li><strong>Serve on a shift</strong> — Food service, clothing distribution, setup and cleanup.</li>
       <li><strong>Tech setup</strong> — Help neighbors set up devices, internet, and accounts.</li>
       <li><strong>Digital skills training</strong> — Walk people through housing portals, job applications, and benefits.</li>
       <li><strong>Nonprofit support</strong> — Help small community groups with security, backups, and basic IT.</li>
+      <li><strong>Cold-night shelter support</strong> — Setup, welcome, and safety during extreme weather.</li>
+      <li><strong>Senior assistance</strong> — Transportation help, technology patience, and daily needs.</li>
       <li><strong>Resource verification</strong> — Visit local organizations and confirm what services they offer.</li>
       <li><strong>Directory maintenance</strong> — Help keep resource listings accurate and up to date.</li>
     </ul>
-    <h2 class="font-display text-xl font-semibold text-body mt-6">No experience needed</h2>
-    <p>We'll train you. What matters most is patience, kindness, and a willingness to help.</p>
-    <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Get involved</a>
-  </div>
+  </section>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">What to expect</h2>
+    <ul class="list-disc pl-5 space-y-2 text-muted leading-relaxed max-w-2xl">
+      <li><strong>No experience needed</strong> — We'll train you. Patience and kindness matter most.</li>
+      <li><strong>Short, scheduled commitments</strong> — Most shifts run two to four hours.</li>
+      <li><strong>All ages and abilities welcome</strong> — There's a role whether you want to be hands-on or behind the scenes.</li>
+      <li><strong>One-on-one tech help</strong> — By appointment only, at no charge to the neighbor.</li>
+    </ul>
+  </section>
+
+  <section class="mt-8 rounded-2xl bg-band p-6 text-on-fill fade-in">
+    <h2 class="font-display text-xl font-semibold mb-2">Sign up</h2>
+    <p class="text-sm opacity-90 mb-4">
+      Pick a shift on our <a href="/events" class="underline font-semibold">events page</a>, or reach out directly and
+      we'll find a role that fits you.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a href="/events" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">See events &amp; sign up</a>
+      <a href="tel:+132****0999" class="inline-flex min-h-11 items-center rounded-lg border border-on-fill/30 px-5 py-2 text-sm font-semibold hover:bg-on-fill/10">Call or text (321) 323-0999</a>
+      <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-on-fill/30 px-5 py-2 text-sm font-semibold hover:bg-on-fill/10">Contact us</a>
+    </div>
+  </section>
 </Base>

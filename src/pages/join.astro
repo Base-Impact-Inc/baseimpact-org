@@ -2,22 +2,66 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Join Us — Base Impact" description="Join Base Impact as a member, volunteer, or partner. Help bring technology help to Brevard County, FL.">
+<Base title="Join Us — Base Impact" description="Join Base Impact as a volunteer, partner, donor, or community advocate in Brevard County, FL.">
   <div class="picture-band">
     <img src="/assets/volunteers-needed.jpg" alt="Volunteers needed sign at a community organization" width="1920" height="1280" loading="lazy" decoding="async" />
   </div>
   <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">Join Us</h1>
-  <div class="max-w-2xl space-y-6 text-muted leading-relaxed fade-in">
-    <p>Base Impact is growing, and we want you to be part of it.</p>
-    <h2 class="font-display text-xl font-semibold text-body mt-6">Ways to join</h2>
-    <ul class="list-disc pl-5 space-y-2">
-      <li><strong>Volunteer</strong> — Share your time and skills. See our <a href="/volunteer" class="text-accent font-semibold">volunteer page</a>.</li>
-      <li><strong>Partner</strong> — If your organization serves Brevard County, let's work together. See our <a href="/partners" class="text-accent font-semibold">partners page</a>.</li>
-      <li><strong>Donate</strong> — Support our mission financially. See <a href="/how-to-help" class="text-accent font-semibold">how to help</a>.</li>
-      <li><strong>Spread the word</strong> — Tell neighbors, churches, and community groups about the resource directory.</li>
+  <p class="max-w-2xl text-muted leading-relaxed fade-in">
+    Base Impact is growing, and we want you to be part of it. Whether you have an hour a week,
+    a device to donate, or an organization that serves the same neighbors we do, there is a way
+    in.
+  </p>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">Who we're looking for</h2>
+    <ul class="list-disc pl-5 space-y-2 text-muted leading-relaxed max-w-2xl">
+      <li>Neighbors who are patient with technology and people</li>
+      <li>Students, retirees, and professionals with an hour or two to give</li>
+      <li>Churches, pantries, and 1–5 person nonprofits who need tech help or want to collaborate</li>
+      <li>Repair shops, refurbishers, and technology companies able to donate devices or expertise</li>
+      <li>Anyone willing to tell their community about the resource directory</li>
     </ul>
-    <h2 class="font-display text-xl font-semibold text-body mt-6">Stay connected</h2>
-    <p>Follow us for updates on new resources, events, and opportunities to get involved.</p>
-    <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Contact us</a>
-  </div>
+  </section>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">Ways to join</h2>
+    <div class="grid gap-4 sm:grid-cols-2 max-w-3xl">
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-base font-semibold text-body mb-1">Volunteer</h3>
+        <p class="text-sm text-muted leading-relaxed mb-3">Share your time and skills — serve a shift, help with devices, or teach digital skills.</p>
+        <a href="/volunteer" class="text-accent font-semibold text-sm">Volunteer details →</a>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-base font-semibold text-body mb-1">Partner</h3>
+        <p class="text-sm text-muted leading-relaxed mb-3">If your organization serves Brevard County, let's work together on programs and outreach.</p>
+        <a href="/partners" class="text-accent font-semibold text-sm">Partners page →</a>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-base font-semibold text-body mb-1">Donate</h3>
+        <p class="text-sm text-muted leading-relaxed mb-3">Fund devices, connectivity, supplies, and one-on-one training sessions.</p>
+        <a href="/donate" class="text-accent font-semibold text-sm">How to give →</a>
+      </article>
+      <article class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
+        <h3 class="font-display text-base font-semibold text-body mb-1">Spread the word</h3>
+        <p class="text-sm text-muted leading-relaxed mb-3">Tell neighbors, churches, and community groups about the free resource directory.</p>
+        <a href="/directory" class="text-accent font-semibold text-sm">Open the directory →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="mt-8 fade-in">
+    <h2 class="font-display text-xl font-semibold text-body mb-3">Stay connected</h2>
+    <p class="text-muted leading-relaxed max-w-2xl mb-3">
+      Follow us for updates on new resources, events, and opportunities to get involved.
+    </p>
+    <ul class="space-y-2 text-muted max-w-2xl">
+      <li><strong>X:</strong> <a href="https://x.com/baseimpactorg" target="_blank" rel="noopener noreferrer" class="text-accent font-semibold">@baseimpactorg</a></li>
+      <li><strong>Facebook:</strong> <a href="https://www.facebook.com/baseimpactorg" target="_blank" rel="noopener noreferrer" class="text-accent font-semibold">@baseimpactorg</a></li>
+      <li class="text-faint">Instagram is being set up and will be linked here once it is live.</li>
+    </ul>
+    <p class="mt-4">
+      <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Contact us</a>
+    </p>
+  </section>
 </Base>
