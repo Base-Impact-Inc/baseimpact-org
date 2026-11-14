@@ -1,24 +1,33 @@
 ---
+/**
+ * Directorio de recursos — en vivo desde Cloudflare D1 (con respaldo del
+ * listado incluido en el sitio si la base de datos no está disponible).
+ */
 import Base from '../../layouts/Base.astro';
-import ResourceCard from '../../components/ResourceCard.astro';
+import DirectoryApp from '../../components/DirectoryApp.astro';
+import { loadResources } from '../../lib/resources/load';
 import { processResources } from '../../lib/resources/logic';
 
+export const prerender = false;
+
+const { resources, source } = await loadResources();
+
 const origin = { lat: 28.0836, lng: -80.6081 };
-const resources = processResources(origin, 50, {
+const processed = processResources(origin, 200, {
   category: 'All',
   tag: 'All',
   query: '',
   onlySaved: false,
   savedIds: [],
+  openNow: false,
 });
+
+processed.sort((a, b) => a.distanceMiles - b.distanceMiles);
 ---
 
-<Base>
-  <h1 class="font-display text-3xl font-semibold text-body mb-4">Buscar Ayuda</h1>
-  <p class="text-muted mb-6">{resources.length} recursos en el Condado de Brevard, FL</p>
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    {resources.map((r: any) => (
-      <ResourceCard resource={r} />
-    ))}
-  </div>
+<Base
+  title="Directorio de recursos — Busca ayuda cerca de ti"
+  description="Busca comida, refugio, duchas, salud y asistencia en el condado de Brevard, Volusia, Orange y Florida — ordenados por distancia desde ti."
+>
+  <DirectoryApp locale="es" resources={processed} source={source} />
 </Base>

@@ -25,7 +25,7 @@
 			"binding": "baseimpact_verify",
 			"database_name": "baseimpact-verify",
 			"database_id": "d60b0270-bc07-445f-b4fc-da0bcaa2af24",
-			"migrations_dir": "../../migrations"
+			"migrations_dir": "migrations"
 		}
 	]
 }

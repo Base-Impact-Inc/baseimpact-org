@@ -1,0 +1,308 @@
+---
+/**
+ * DirectoryApp — the shared, interactive resource finder.
+ *
+ * Rendered by /directory and /es/directory with a locale. All listing data
+ * arrives already processed (distance + availability) from the page, which
+ * reads D1 first and falls back to the bundled snapshot. The client script
+ * (`/js/directory.js`) is self-contained: every hook it needs has a stable id
+ * or class in this markup.
+ */
+
+import ResourceCard from './ResourceCard.astro';
+import TurnstileWidget from './TurnstileWidget.astro';
+import type { ProcessedResource } from '../lib/resources/types';
+
+interface Props {
+  locale?: 'en' | 'es';
+  resources: ProcessedResource[];
+  source?: 'database' | 'snapshot';
+}
+
+const { locale = 'en', resources, source = 'snapshot' } = Astro.props;
+
+const COPY: Record<string, Record<string, string>> = {
+  en: {
+    eyebrow: 'Find Help. Near You.',
+    titleA: 'Help',
+    titleB: 'Find what you need, today.',
+    lead: 'Food, shelter, health care, and more — every verified resource in your area, sorted by distance so nothing is out of reach.',
+    datasource: 'Live database',
+    snapshot: 'Snapshot',
+    search: 'Search resources…',
+    zip: 'ZIP code',
+    useLocation: 'Use my location',
+    anyDistance: 'Any distance',
+    within: 'Within',
+    miles: 'mi',
+    all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
+    money: 'Money Help', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
+    openNow: 'Only show open now',
+    list: 'List', map: 'Map', print: 'Print list',
+    loadMore: 'Load more', showAll: 'Show all',
+    results: 'results', empty: 'No resources found.', emptyHint: 'Try a different search or filter.',
+    needHelp: 'Need immediate help?', call211: 'Call 211 — 24/7', crisis988: 'Crisis 988 — 24/7',
+    reportTitle: 'Report an issue', whatWrong: "What's wrong?", details: 'Details (optional)',
+    email: 'Email (optional, for follow-up only)', cancel: 'Cancel', send: 'Send report',
+    resourceLabel: 'Resource:', chooseOne: 'Choose one…',
+    wrongPhone: 'Wrong phone number', wrongAddress: 'Wrong address', wrongHours: 'Wrong hours',
+    closedMoved: 'Closed or moved', notReal: 'Not a real resource / possible scam', other: 'Other',
+    tellUs: 'Tell us what you found', near: 'Showing results near',
+  },
+  es: {
+    eyebrow: 'Encuentra ayuda. Cerca de ti.',
+    titleA: 'Ayuda',
+    titleB: 'Encuentra lo que necesitas, hoy.',
+    lead: 'Comida, refugio, atención médica y más — cada recurso verificado en tu área, ordenado por distancia para que nada quede fuera de alcance.',
+    datasource: 'Base de datos activa',
+    snapshot: 'Copia de seguridad',
+    search: 'Buscar recursos…',
+    zip: 'Código postal',
+    useLocation: 'Usar mi ubicación',
+    anyDistance: 'Cualquier distancia',
+    within: 'Dentro de',
+    miles: 'mi',
+    all: 'Todos', food: 'Comida', shelter: 'Refugio', health: 'Salud',
+    money: 'Ayuda económica', basics: 'Básicos', technology: 'Tecnología', crisis: 'Crisis', saved: 'Guardados',
+    openNow: 'Mostrar solo abiertos ahora',
+    list: 'Lista', map: 'Mapa', print: 'Imprimir lista',
+    loadMore: 'Cargar más', showAll: 'Mostrar todo',
+    results: 'resultados', empty: 'No se encontraron recursos.', emptyHint: 'Prueba con otra búsqueda o filtro.',
+    needHelp: '¿Necesitas ayuda inmediata?', call211: 'Llama al 211 — 24/7', crisis988: 'Crisis 988 — 24/7',
+    reportTitle: 'Reportar un problema', whatWrong: '¿Qué está mal?', details: 'Detalles (opcional)',
+    email: 'Correo electrónico (opcional, solo para seguimiento)', cancel: 'Cancelar', send: 'Enviar reporte',
+    resourceLabel: 'Recurso:', chooseOne: 'Elige una opción…',
+    wrongPhone: 'Número de teléfono incorrecto', wrongAddress: 'Dirección incorrecta', wrongHours: 'Horario incorrecto',
+    closedMoved: 'Cerrado o mudado', notReal: 'No es un recurso real / posible estafa', other: 'Otro',
+    tellUs: 'Cuéntanos qué encontraste', near: 'Mostrando resultados cerca de',
+  },
+};
+
+const t = COPY[locale] ?? COPY.en;
+
+const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'technology', 'crisis', 'saved'];
+
+// Unique states, derived server-side so the filter works even without JS.
+const states = Array.from(new Set(resources.map((r) => r.state).filter(Boolean))).sort() as string[];
+
+const cardData = resources.map((r) => ({
+  id: r.id,
+  name: r.name,
+  address: r.address,
+  lat: r.lat,
+  lng: r.lng,
+  phone: r.phone || '',
+  website: r.website || '',
+  serviceUrl: r.serviceUrl || '',
+  sourceUrl: r.sourceUrl || '',
+  tags: r.tags,
+  description: r.description,
+  hoursText: r.hoursText,
+  category: r.category,
+  group: r.group,
+  city: r.city,
+  state: r.state,
+  nextAvail: r.nextAvail,
+}));
+
+const mapData = JSON.stringify(cardData);
+---
+
+<section class="py-vh-3">
+  <div class="text-center max-w-3xl mx-auto">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1 class="display-4 mt-3" style="color: var(--color-body);">
+      {t.titleA}<span style="color: var(--color-accent);">.</span> {t.titleB}
+    </h1>
+    <p class="section-lead mx-auto" style="text-align:center;">{t.lead}</p>
+    <p class="mt-4">
+      <span class="badge" style="background: rgba(23,23,229,.16); color: #a3a3f7;">
+        {resources.length} {t.results} · {source === 'database' ? t.datasource : t.snapshot}
+      </span>
+    </p>
+  </div>
+</section>
+
+<section id="directory" class="py-vh-2">
+  <div class="lp-card p-5 sm:p-6 mb-4">
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:items-end">
+      <div class="lg:col-span-2">
+        <label for="search-input" class="sr-only">{t.search}</label>
+        <div class="relative">
+          <input
+            type="search"
+            id="search-input"
+            placeholder={t.search}
+            autocomplete="off"
+            class="w-full rounded-xl border-line px-4 py-3 pl-10"
+            style="background: var(--color-page); color: var(--color-body);"
+          />
+          <svg class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+      </div>
+      <div>
+        <label for="zip-input" class="sr-only">{t.zip}</label>
+        <input
+          type="text"
+          id="zip-input"
+          placeholder={t.zip}
+          autocomplete="postal-code"
+          inputmode="numeric"
+          maxlength="5"
+          pattern="[0-9]{5}"
+          class="w-full rounded-xl border-line px-4 py-3"
+          style="background: var(--color-page); color: var(--color-body);"
+        />
+      </div>
+      <div class="flex gap-2">
+        <button type="button" id="use-location-btn" class="btn btn-outline-light flex-1">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+          {t.useLocation}
+        </button>
+      </div>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:items-end mt-4">
+      <div>
+        <label for="radius-select" class="sr-only">{t.anyDistance}</label>
+        <select id="radius-select" class="w-full rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
+          <option value="0">{t.anyDistance}</option>
+          <option value="5">{t.within} 5 {t.miles}</option>
+          <option value="10" selected>{t.within} 10 {t.miles}</option>
+          <option value="25">{t.within} 25 {t.miles}</option>
+          <option value="50">{t.within} 50 {t.miles}</option>
+          <option value="100">{t.within} 100 {t.miles}</option>
+        </select>
+      </div>
+      <div>
+        <label for="state-filter" class="sr-only">State</label>
+        <select id="state-filter" class="w-full rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
+          <option value="all">All states</option>
+          {states.map((s) => <option value={s}>{s}</option>)}
+        </select>
+      </div>
+      <label class="flex items-center gap-2 text-sm text-muted cursor-pointer min-h-11">
+        <input type="checkbox" id="open-now" class="rounded" />
+        {t.openNow}
+      </label>
+      <p id="location-status" class="text-sm text-accent" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mt-5" id="filter-chips">
+      {groups.map((g) => (
+        <button
+          type="button"
+          data-group={g}
+          class:list={['rounded-full px-3 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm transition-colors', g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line']}
+        >
+          {t[g] ?? g}
+        </button>
+      ))}
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 mt-5">
+      <div class="flex flex-wrap gap-2" id="view-toggle">
+        <button type="button" id="view-list" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.list}</button>
+        <button type="button" id="view-map" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.map}</button>
+      </div>
+      <button type="button" id="save-all-btn" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">
+        <svg class="size-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        {t.saved}
+      </button>
+      <button type="button" id="print-list" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">
+        {t.print}
+      </button>
+    </div>
+  </div>
+
+  <!-- Map starts hidden: list is the default view, so there is no empty band
+       between the filters and the results. "Map" reveals it. -->
+  <div id="map-container" class="mb-4 rounded-5 overflow-hidden border-line hidden" style="height: 440px;"></div>
+  <div id="map-legend" class="hidden flex flex-wrap gap-2 mb-4">
+    {groups.filter((g) => g !== 'saved').map((g) => (
+      <button type="button" data-mapgroup={g} class:list={['map-legend-chip rounded-full px-3 py-1 text-xs font-semibold', g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body']}>
+        {t[g] ?? g}
+      </button>
+    ))}
+  </div>
+
+  <p id="results-count" class="text-sm text-muted mb-4">{resources.length} {t.results}</p>
+
+  <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl" id="resource-grid">
+    {resources.map((r) => (
+      <div
+        class="resource-item h-full"
+        data-resource-id={r.id}
+        data-group={r.group}
+        data-name={r.name.toLowerCase()}
+        data-desc={r.description.toLowerCase()}
+        data-tags={r.tags.join(' ').toLowerCase()}
+        data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}
+        data-lat={r.lat}
+        data-lng={r.lng}
+        data-city={(r.city || '').toLowerCase()}
+        data-state={(r.state || '').toUpperCase()}
+      >
+        <ResourceCard resource={r} />
+      </div>
+    ))}
+  </div>
+
+  <div id="pagination" class="mt-6 flex justify-center gap-3">
+    <button type="button" id="load-more" class="btn btn-soft">{t.loadMore}</button>
+  </div>
+
+  <div id="empty-state" class="hidden text-center py-12">
+    <p class="text-lg text-muted">{t.empty}</p>
+    <p class="text-sm text-faint mt-2">{t.emptyHint}</p>
+  </div>
+</section>
+
+<div class="py-6 bg-fill-caution text-on-fill" style="color:#111;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-3 text-center">
+    <span class="text-lg font-semibold">{t.needHelp}</span>
+    <a href="tel:211" class="btn btn-black">{t.call211}</a>
+    <a href="tel:988" class="btn btn-outline-light" style="border-color:#111; color:#111;">{t.crisis988}</a>
+  </div>
+</div>
+
+<dialog id="report-dialog" class="rounded-5 p-0 w-full max-w-md border-0 bg-transparent" role="dialog" aria-labelledby="report-dialog-title" aria-describedby="report-dialog-description">
+  <form id="report-form" class="rounded-5 bg-card p-6 space-y-4 border-line" method="post" style="border:1px solid var(--color-line);">
+    <h2 id="report-dialog-title" class="text-xl font-semibold" style="color:var(--color-body);">{t.reportTitle}</h2>
+    <p id="report-dialog-description" class="text-sm text-muted">{t.resourceLabel} <span id="report-resource-name" class="font-semibold" style="color:var(--color-body);"></span></p>
+    <input type="hidden" id="report-resource-id" />
+    <div>
+      <label for="report-issue-type" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.whatWrong}</label>
+      <select id="report-issue-type" required class="w-full rounded-lg border-line px-3 py-3 min-h-11" style="background:var(--color-page); color:var(--color-body);">
+        <option value="">{t.chooseOne}</option>
+        <option value="wrong-phone">{t.wrongPhone}</option>
+        <option value="wrong-address">{t.wrongAddress}</option>
+        <option value="wrong-hours">{t.wrongHours}</option>
+        <option value="closed-or-moved">{t.closedMoved}</option>
+        <option value="not-real-resource">{t.notReal}</option>
+        <option value="other">{t.other}</option>
+      </select>
+    </div>
+    <div>
+      <label for="report-details" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.details}</label>
+      <textarea id="report-details" rows="3" class="w-full rounded-lg border-line px-3 py-3" style="background:var(--color-page); color:var(--color-body);" placeholder={t.tellUs}></textarea>
+    </div>
+    <div>
+      <label for="report-email" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.email}</label>
+      <input type="email" id="report-email" class="w-full rounded-lg border-line px-3 py-3 min-h-11" style="background:var(--color-page); color:var(--color-body);" placeholder="you@example.com" />
+    </div>
+    <TurnstileWidget />
+    <div class="flex gap-2 pt-2">
+      <button type="button" id="report-cancel" class="flex-1 rounded-xl border-line bg-card px-4 py-3 text-sm font-semibold text-body hover:bg-inset transition-colors">{t.cancel}</button>
+      <button type="submit" id="report-submit" class="flex-1 rounded-xl bg-fill px-4 py-3 text-sm font-semibold text-on-fill hover:bg-fill-hover transition-colors">{t.send}</button>
+    </div>
+    <p id="report-status" class="text-sm text-center" role="status"></p>
+  </form>
+</dialog>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer is:inline></script>
+<script src="/js/directory.js" defer is:inline></script>
+<script src="/js/report.js" defer is:inline></script>
+
+<script type="application/json" id="resource-data" set:html={mapData} is:inline></script>

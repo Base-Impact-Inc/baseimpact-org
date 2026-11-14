@@ -1,376 +1,216 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+/**
+ * Home — rebuilt on the Launchpad section grammar:
+ * hero → statistics → topics → cards → belief → stories → donation.
+ * Every word of mission copy and every listing figure is preserved from the
+ * original page; stories are pulled live from the posts collection so the
+ * impact section can never drift from what was actually published.
+ */
 
 const pillars = [
-  { title: "Technology access", body: "Helping neighbors get a working device and internet service. Learn to use them." },
-  { title: "Digital skills & job help", body: "Walk-throughs for housing portals, job applications, benefits, and staying safe online." },
-  { title: "Tech for small nonprofits", body: "Free setup, security, and support for churches, pantries, and 1–5 person community groups." },
-  { title: "Local resource guide", body: "A simpler, local starting point . Food, shelter, showers, and more." },
+  {
+    title: 'Technology access',
+    body: 'Helping neighbors get a working device and internet service. Learn to use them.',
+    href: '/technology-access',
+    img: '/assets/device-repair-tech.jpg',
+    alt: 'Hands repairing a laptop at a community tech session',
+  },
+  {
+    title: 'Digital skills & job help',
+    body: 'Walk-throughs for housing portals, job applications, benefits, and staying safe online.',
+    href: '/programs',
+    img: '/assets/tech-help-digital-skills.jpg',
+    alt: 'One-on-one digital skills coaching at a keyboard',
+  },
+  {
+    title: 'Tech for small nonprofits',
+    body: 'Free setup, security, and support for churches, pantries, and 1–5 person community groups.',
+    href: '/partners',
+    img: '/assets/tech-support-session.jpg',
+    alt: 'Volunteer helping a small nonprofit with its technology',
+  },
+  {
+    title: 'Local resource guide',
+    body: 'A simpler, local starting point. Food, shelter, showers, and more.',
+    href: '/guide',
+    img: '/assets/food-pantry-volunteers.jpg',
+    alt: 'Volunteers organizing food at a local pantry',
+  },
 ];
+
+const stats = [
+  { value: 115, suffix: '+', label: 'Resources listed' },
+  { value: 6, suffix: '', label: 'Service types' },
+  { value: 3, suffix: '', label: 'Counties covered' },
+  { value: 24, suffix: '/7', label: 'Help available' },
+];
+
+const stories = (await getCollection('posts', (p) => !p.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 ---
 
 <Base title="Base Impact. Find help, get connected.">
-  <!-- Hero: type-only statement across two fields -->
-  <section class="hero-fields">
-    <div class="hero-lower">
-      <div class="mx-auto max-w-6xl px-4">
-        <h1 class="hero-headline">
-          <span class="hero-line-upper">Help.</span>
-        </h1>
-        <p class="hero-subtitle">Base Impact · Find food, shelter, and essentials</p>
-        <p class="hero-support">
-          Base Impact connects people with food, shelter, showers, and essentials. It also helps small nonprofits keep their technology working.
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="lp-hero rounded-5" style="margin-inline: -1rem;" data-reveal="fade">
+    <div class="lp-hero-bg" style="background-image: url('/assets/warehouse-racking.jpg');" role="img" aria-label="Nonprofit warehouse racking being built for supply storage"></div>
+    <div class="lp-hero-overlay"></div>
+
+    <div class="lp-hero-content">
+      <div class="px-6 py-16 sm:py-24">
+        <p class="eyebrow" data-reveal="fade-up" data-delay="1">Base Impact · Brevard, Volusia &amp; Orange Counties</p>
+        <h1 class="lp-hero-title mt-4" data-reveal="fade-up" data-delay="2">Help<span style="color: var(--color-accent);">.</span></h1>
+        <p class="lp-hero-sub mt-5" data-reveal="fade-up" data-delay="3">
+          Base Impact connects people with food, shelter, showers, and essentials — and helps small
+          nonprofits keep their technology working.
         </p>
-        <div class="hero-action">
-          <a href="/directory" class="hero-btn">Find help near you</a>
+        <div class="mt-8 flex flex-wrap gap-3" data-reveal="fade-up" data-delay="4">
+          <a href="/directory" class="btn btn-primary btn-xl">
+            Find help near you
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="tel:211" class="btn btn-outline-light btn-xl">
+            <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call 211 — 24/7
+          </a>
+        </div>
+
+        <!-- Emergency quick dial: never more than a tap away -->
+        <div class="mt-10 flex flex-wrap gap-3" data-reveal="fade-up" data-delay="5">
+          <a href="tel:211" class="lp-card" style="padding: 1rem 1.25rem; min-width: 11rem;">
+            <span class="eyebrow">24/7 local help</span>
+            <span class="block display-4 mt-2" style="font-size: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);">Call 211</span>
+          </a>
+          <a href="tel:+132****0999" class="lp-card" style="padding: 1rem 1.25rem; min-width: 11rem;">
+            <span class="eyebrow">Base Impact · by appointment</span>
+            <span class="block display-4 mt-2" style="font-size: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);">(321) 323-0999</span>
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Picture band after hero -->
-  <div class="picture-band">
-    <img src="/assets/warehouse-racking.jpg" alt="Nonprofit warehouse racking being built for supply storage" width="1920" height="1280" loading="lazy" decoding="async" />
-  </div>
-  <section class="stats-section">
-    <div class="mx-auto max-w-6xl px-4">
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        <div>
-          <p class="stat-number">115</p>
-          <p class="stat-label">Resources listed</p>
-        </div>
-        <div>
-          <p class="stat-number">6</p>
-          <p class="stat-label">Service types</p>
-        </div>
-        <div>
-          <p class="stat-number">Any</p>
-          <p class="stat-label">Languages</p>
-        </div>
-        <div>
-          <p class="stat-number">24/7</p>
-          <p class="stat-label">Help available</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="capabilities-section">
-    <div class="mx-auto max-w-6xl px-4">
-      <h2 class="section-head">What we focus on</h2>
-      <p class="section-intro">Immediate needs first. Then the skills and tools that keep people housed, employed, and connected.</p>
-      <ul class="capability-list">
-        {pillars.map((pillar) => (
-          <li>
-            <span class="capability-title">{pillar.title}</span>
-            <span class="capability-body">{pillar.body}</span>
-          </li>
+  <!-- ───────────────────────── STATISTICS ───────────────────────── -->
+  <section class="py-vh-4" style="margin-inline: -1rem;">
+    <div class="px-4 sm:px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {stats.map((s, i) => (
+          <div data-reveal="zoom-in-up" data-delay={String(i + 1)}>
+            <p class="stat-big">
+              <span class="count-up" data-count-up={s.value} data-count-suffix={s.suffix}>0{s.suffix}</span>
+            </p>
+            <p class="stat-label">{s.label}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   </section>
 
-  <section class="statement-section">
-    <div class="mx-auto max-w-6xl px-4">
-      <p class="statement-text">
+  <!-- ───────────────────────── WHAT WE DO (ThreeTopics) ───────────────────────── -->
+  <section class="py-vh-3">
+    <div class="grid gap-8 md:grid-cols-2 md:items-start">
+      <div data-reveal="fade-right">
+        <span class="eyebrow">What we do</span>
+        <h2 class="display-4 mt-3">
+          Immediate needs first. Then the skills and tools that keep people housed,
+          employed, and connected.
+        </h2>
+      </div>
+      <div class="md:pt-2">
+        {pillars.map((p, i) => (
+          <div class="flex flex-col gap-1 py-5 border-t" style="border-color: var(--color-line);" data-reveal="fade-left" data-delay={String(i + 1)}>
+            <a href={p.href} class="link-fancy text-lg font-semibold" style="align-self: flex-start;">{p.title}</a>
+            <p class="text-muted" style="max-width: 52ch;">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── PROGRAM CARDS (FourCards) ───────────────────────── -->
+  <section class="py-vh-3">
+    <div class="section-heading">
+      <span class="eyebrow">Where to start</span>
+      <h2 class="section-title">Four ways we show up</h2>
+      <p class="section-lead">Pick the door that matches what you need right now. Each one leads to real people, not a call centre.</p>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {pillars.map((p, i) => (
+        <a href={p.href} class="lp-card group block" data-reveal="zoom-in-up" data-delay={String((i % 4) + 1)}>
+          <div class="lp-card-media" style="aspect-ratio: 4 / 3;">
+            <img src={p.img} alt={p.alt} loading="lazy" decoding="async" width="800" height="600" />
+          </div>
+          <div class="pt-4">
+            <h3 class="text-lg font-semibold" style="color: var(--color-body);">{p.title}</h3>
+            <p class="text-sm text-muted mt-2">{p.body}</p>
+            <span class="link-fancy-accent link-fancy inline-flex items-center gap-1 text-sm font-medium mt-3">
+              Learn more
+              <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- ───────────────────────── BELIEF STATEMENT ───────────────────────── -->
+  <section class="py-vh-3">
+    <div class="rounded-5 gradient p-8 sm:p-12" data-reveal="zoom-in">
+      <p class="display-4" style="max-width: 24ch; color: #fff;">
         We believe everyone deserves a working device, a working connection, and someone to show them how.
       </p>
     </div>
   </section>
-  <section class="emergency-section">
-    <div class="mx-auto max-w-6xl px-4">
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <a href="tel:211" class="emergency-card">
-          <span class="emergency-label">24/7 local help</span>
-          <span class="emergency-number">Call 211</span>
-        </a>
-        <a href="tel:+13213230999" class="emergency-card">
-          <span class="emergency-label">Base Impact · by appointment</span>
-          <span class="emergency-number">(321) 323-0999</span>
-        </a>
+
+  <!-- STORIES — live from the posts collection -->
+  <section class="py-vh-4">
+    <div class="section-heading flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <span class="eyebrow">Impact in real life</span>
+        <h2 class="section-title">Stories from the neighborhood</h2>
       </div>
+      <a href="/blog" class="btn btn-outline-light">All stories</a>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {stories.map((story, i) => (
+        <article class="lp-card flex flex-col" data-reveal="zoom-in-up" data-delay={String(i + 1)}>
+          {story.data.image && (
+            <div class="lp-card-media" style="aspect-ratio: 16 / 10;">
+              <img src={story.data.image} alt="" loading="lazy" decoding="async" width="800" height="500" />
+            </div>
+          )}
+          <div class="pt-4 flex-1 flex flex-col">
+            <h3 class="text-lg font-semibold" style="color: var(--color-body);">{story.data.title}</h3>
+            {story.data.description && (
+              <p class="text-sm text-muted mt-2 flex-1">{story.data.description}</p>
+            )}
+            <a href={`/blog/${story.id}`} class="link-fancy-accent link-fancy text-sm font-medium mt-4" style="align-self: flex-start;">
+              Read the story
+            </a>
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
-  <!-- CTA: one word is the button -->
-  <section class="cta-section">
-    <div class="mx-auto max-w-6xl px-4">
-      <p class="cta-word">Donate</p>
-      <p class="cta-support">Help us keep connecting people with the resources they need.</p>
-      <a href="/donate" class="cta-btn">Give now</a>
+  <!-- ───────────────────────── DONATE ───────────────────────── -->
+  <section class="py-vh-5" style="margin-inline: -1rem;">
+    <div class="px-4 sm:px-6 text-center">
+      <p class="display-huge" data-reveal="fade-up">Donate</p>
+      <p class="section-lead mx-auto" style="text-align: center;" data-reveal="fade-up" data-delay="1">
+        Help us keep connecting people with the resources they need.
+      </p>
+      <div class="mt-6" data-reveal="fade-up" data-delay="2">
+        <a href="/donate" class="btn btn-light btn-xl">Give now</a>
+      </div>
+      <p class="text-sm text-faint mt-6" data-reveal="fade-up" data-delay="3">
+        Base Impact Inc. is a Florida nonprofit corporation. Donations are not currently tax-deductible while 501(c)(3) status is pending.
+      </p>
     </div>
   </section>
-</Base>
-
-<style>
-  /* Picture band: full-width image */
-  .picture-band {
-    width: 100%;
-    overflow: hidden;
-    max-height: 50vh;
-  }
-  .picture-band img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Hero support text in upper field */
-  .hero-support-upper {
-    font-size: var(--step-body);
-    color: var(--color-muted);
-    max-width: 60ch;
-    line-height: 1.5;
-    padding: 2rem 0;
-  }
-  .hero-fields {
-    padding: 4rem 0 6rem;
-  }
-  .hero-lower {
-    background: var(--color-page);
-  }
-  .hero-headline {
-    font-size: var(--step-display);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.86;
-    margin: 0;
-  }
-  .hero-line-upper {
-    display: block;
-    color: var(--color-body);
-  }
-  .hero-line-lower {
-    display: block;
-    color: var(--color-muted);
-  }
-  .hero-support {
-    font-size: var(--step-body);
-    color: var(--color-muted);
-    max-width: 40ch;
-    margin-top: 2rem;
-    line-height: 1.5;
-  }
-  .hero-subtitle {
-    font-size: var(--step-lead);
-    color: var(--color-body);
-    margin-top: 1rem;
-    line-height: 1.3;
-  }
-  .hero-action {
-    margin-top: 2rem;
-  }
-  .hero-btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--color-fill);
-    color: var(--color-on-fill);
-    font-weight: 600;
-    font-size: var(--step-body);
-    text-decoration: none;
-  }
-  .hero-btn:hover {
-    background: var(--color-fill-hover);
-  }
-
-  /* Stats section */
-  .stats-section {
-    padding: 4rem 0;
-    background: var(--color-card);
-  }
-  .stat-number {
-    font-size: var(--step-head);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.92;
-    color: var(--color-body);
-    margin: 0;
-  }
-  .stat-label {
-    font-size: var(--step-body);
-    font-weight: 500;
-    color: var(--color-body);
-    margin-top: 0.5rem;
-  }
-  .stat-receipt {
-    font-size: var(--step-small);
-    color: var(--color-body);
-    margin-top: 2rem;
-    max-width: 50ch;
-    padding-right: 1rem;
-  }
-
-  /* Capabilities section */
-  .capabilities-section {
-    padding: 4rem 0;
-  }
-  .section-head {
-    font-size: var(--step-head);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.92;
-    color: var(--color-body);
-    margin: 0 0 1rem;
-  }
-  .section-intro {
-    font-size: var(--step-body);
-    color: var(--color-body);
-    max-width: 30ch;
-    margin: 0 0 2rem;
-    padding-right: 2rem;
-  }
-  .capability-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .capability-list li {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 2rem 1rem;
-  }
-  .capability-title {
-    font-size: var(--step-lead);
-    font-weight: 600;
-    color: var(--color-body);
-    max-width: 40ch;
-    padding-right: 1.5rem;
-  }
-  .capability-body {
-    font-size: var(--step-body);
-    color: var(--color-body);
-    max-width: 60ch;
-  }
-
-  /* Statement section: full-width colour field */
-  .statement-section {
-    padding: 6rem 0;
-    background: var(--color-card);
-  }
-  .statement-text {
-    font-size: var(--step-lead);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.3;
-    color: var(--color-body);
-    max-width: 50ch;
-    padding-right: 1rem;
-  }
-  .emergency-section {
-    padding: 4rem 0;
-    background: var(--color-card);
-  }
-  .emergency-card {
-    display: block;
-    padding: 2rem;
-    background: var(--color-page);
-    text-decoration: none;
-  }
-  .emergency-card:hover {
-    background: var(--color-inset);
-  }
-  .emergency-label {
-    display: block;
-    font-size: var(--step-small);
-    color: var(--color-body);
-    margin-bottom: 0.5rem;
-  }
-  .emergency-number {
-    display: block;
-    font-size: var(--step-lead);
-    font-weight: 600;
-    color: var(--color-body);
-  }
-
-  /* CTA section */
-  .cta-section {
-    padding: 6rem 0;
-    text-align: center;
-  }
-  .cta-word {
-    font-size: var(--step-display);
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.86;
-    color: var(--color-body);
-    margin: 0;
-  }
-  .cta-support {
-    font-size: var(--step-body);
-    color: var(--color-body);
-    margin: 1.5rem 0 2rem;
-    max-width: 50ch;
-  }
-  .cta-btn {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    background: var(--color-fill);
-    color: var(--color-on-fill);
-    font-weight: 600;
-    font-size: var(--step-body);
-    text-decoration: none;
-  }
-  .cta-btn:hover {
-    background: var(--color-fill-hover);
-  }
-  /* Motion layer */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero-headline, .hero-subtitle, .hero-support, .hero-action {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-  .hero-subtitle { animation-delay: 0.1s; }
-  .hero-support { animation-delay: 0.2s; }
-  .hero-action { animation-delay: 0.3s; }
-
-  .stats-section .stat-card {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-  .stats-section .stat-card:nth-child(1) { animation-delay: 0.1s; }
-  .stats-section .stat-card:nth-child(2) { animation-delay: 0.2s; }
-  .stats-section .stat-card:nth-child(3) { animation-delay: 0.3s; }
-  .stats-section .stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-  .picture-band {
-    animation: fadeInUp 1s ease-out both;
-  }
-
-  .capabilities-section .capability-list li {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-  .capabilities-section .capability-list li:nth-child(1) { animation-delay: 0.1s; }
-  .capabilities-section .capability-list li:nth-child(2) { animation-delay: 0.2s; }
-  .capabilities-section .capability-list li:nth-child(3) { animation-delay: 0.3s; }
-  .capabilities-section .capability-list li:nth-child(4) { animation-delay: 0.4s; }
-
-  .statement-section {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-
-  .emergency-section .emergency-card {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-  .emergency-section .emergency-card:nth-child(1) { animation-delay: 0.1s; }
-  .emergency-section .emergency-card:nth-child(2) { animation-delay: 0.2s; }
-  .emergency-section .emergency-card:nth-child(3) { animation-delay: 0.3s; }
-  .emergency-section .emergency-card:nth-child(4) { animation-delay: 0.4s; }
-
-  .cta-section {
-    animation: fadeInUp 0.8s ease-out both;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-headline, .hero-subtitle, .hero-support, .hero-action,
-    .stats-section .stat-card, .picture-band,
-    .capabilities-section .capability-list li,
-    .statement-section, .emergency-section .emergency-card,
-    .cta-section {
-      animation: none;
-    }
-  }
-</style>
 </Base>

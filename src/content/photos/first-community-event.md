@@ -1,6 +1,6 @@
 ---
 title: "Community Technology Day"
-image: /images/photos/community-tech-day.jpg
+image: /assets/device-repair-tech.jpg
 caption: "Volunteers helping neighbors set up refurbished tablets at the Titusville Civic Center."
 date: 2026-10-15
 location: "Titusville Civic Center"

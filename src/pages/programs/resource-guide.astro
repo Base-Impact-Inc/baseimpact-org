@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+
+/**
+ * Program detail — Local Resource Guide.
+ * Content carried over from the Programs page, pointing at the live directory.
+ */
+---
+
+<Base
+  title="Local Resource Guide"
+  description="A verified local starting point for food, shelter, showers, health care, and essentials across Brevard, Volusia, Orange, and statewide Florida."
+>
+  <section class="py-vh-3">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Program · Local Resource Guide</p>
+      <h1 class="display-4 mt-3">A simpler, local starting point.</h1>
+      <p class="section-lead">
+        Food, shelter, showers, and more — a verified directory that people can actually use,
+        sorted by distance and available any hour.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/directory" class="btn btn-primary btn-xl">Open the directory</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid gap-5 md:grid-cols-2 md:items-start">
+    <figure class="lp-card-media" data-reveal="fade-right">
+      <img src="/assets/food-pantry-volunteers.jpg" alt="Volunteers organizing food at a local pantry" loading="lazy" decoding="async" width="800" height="520" />
+    </figure>
+    <div class="lp-card" data-reveal="fade-left">
+      <h2 class="text-xl font-semibold" style="color: var(--color-body);">What's inside</h2>
+      <ul class="list-disc pl-5 text-muted mt-3 space-y-1">
+        <li>Food, shelter, showers, health, housing, and recovery listings</li>
+        <li>Open/closed status, phone numbers, hours, and eligibility</li>
+        <li>Directions, transit, bus, and walking options</li>
+        <li>GPS distance sorting and ZIP search</li>
+        <li>A per-listing “report an issue” loop to keep data honest</li>
+      </ul>
+      <p class="text-sm text-faint mt-4"><strong style="color:var(--color-body);">Impact:</strong> resources listed, searches performed, people connected to services.</p>
+    </div>
+  </section>
+
+  <section class="py-vh-3">
+    <div class="rounded-5 gradient p-8 sm:p-10 text-center">
+      <h2 class="display-4" style="color:#fff;">Know a resource we're missing?</h2>
+      <p class="section-lead mx-auto" style="text-align:center; color:rgba(255,255,255,.85);">
+        Tell us about it, or report a listing that has changed. Every entry is checked against
+        the organization's own information.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="/feedback" class="btn btn-light">Send feedback</a>
+        <a href="/directory" class="btn btn-outline-light">Browse the guide</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title mb-4">Other programs</h2>
+    <div class="grid gap-3 sm:grid-cols-3">
+      <a href="/programs/digital-skills" class="lp-card block">Digital Skills &amp; Job Help</a>
+      <a href="/programs/nonprofit-tech" class="lp-card block">Tech for Small Nonprofits</a>
+      <a href="/programs" class="lp-card block">All programs</a>
+    </div>
+  </section>
+</Base>

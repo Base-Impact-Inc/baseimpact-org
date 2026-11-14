@@ -2,7 +2,7 @@
 title: "Welcome to Base Impact"
 description: "Introducing Base Impact Inc. — a nonprofit bringing technology help to communities."
 date: 2026-11-02
-image: /images/post/welcome.png
+image: /assets/community-volunteers.jpg
 categories: ["Community News"]
 tags: ["announcement", "nonprofit"]
 featured: true

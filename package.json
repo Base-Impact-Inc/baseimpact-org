@@ -10,16 +10,46 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-types": "wrangler types"
+    "generate-types": "wrangler types",
+    "db:dump": "esbuild scripts/_dump-entry.ts --bundle --platform=node --format=cjs --outfile=.tmp-resources.cjs --log-level=error && node -e \"console.log(require('./.tmp-resources.cjs').ALL_RESOURCES.length)\"",
+    "db:seed": "node scripts/seed-resources.mjs",
+    "db:seed:local": "LOCAL=1 node scripts/seed-resources.mjs"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.4.6",
+    "@astrojs/cloudflare": "^14.4.7",
     "@astrojs/sitemap": "^3.7.4",
-    "@fullcalendar/core": "^6.1.22",
+    "@fullcalendar/core": "^7.1.5",
     "@fullcalendar/daygrid": "^6.1.22",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "astro": "^7.4.7",
-    "wrangler": "^4.158.0"
-  }
+    "astro": "^7.4.11",
+    "wrangler": "^4.161.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^7.0.2"
+  },
+  "description": "Open-source crisis resource directory & nonprofit tech platform for Brevard/Volusia/Orange counties, FL",
+  "keywords": [
+    "nonprofit",
+    "crisis-resources",
+    "resource-directory",
+    "community-tech",
+    "digital-inclusion",
+    "astro",
+    "cloudflare-workers",
+    "florida",
+    "brevard-county"
+  ],
+  "homepage": "https://baseimpact.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Base-Impact-Inc/baseimpact-org.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Base-Impact-Inc/baseimpact-org/issues"
+  },
+  "license": "MIT",
+  "author": "Base Impact, Inc.",
+  "funding": "https://opencollective.com/baseimpact"
 }

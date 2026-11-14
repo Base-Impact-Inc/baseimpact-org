@@ -11,85 +11,56 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
     Base Impact Inc. · EIN 43-2200667 · Florida nonprofit corporation · FDACS registered · Brevard County, FL
   </aside>
 
-  <header class="sticky top-0 z-40" style="background: var(--color-page);">
-    <div class="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4">
+  <header class="sticky top-0 z-40" style="background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); border-bottom: 1px solid var(--color-line);">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
       <a href="/" class="flex min-h-11 min-w-0 items-center gap-2">
-        <span class="block font-display text-lg font-semibold leading-none tracking-tight" style="color: var(--color-body);">Base Impact</span>
+        <span class="block font-display text-xl font-semibold leading-none tracking-tight" style="color: var(--color-body);">Base Impact<span style="color: var(--color-accent);">.</span></span>
       </a>
 
       <nav class="hidden md:flex items-center gap-1" aria-label="Primary">
-        <div class="mega-group">
-          <button class="mega-trigger" aria-expanded="false" aria-haspopup="true">
-            Find Help
-            <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <div class="mega-panel" role="menu">
-            <a href="/directory" role="menuitem">Resource Directory</a>
-            <a href="/technology-access" role="menuitem">Technology Access</a>
-            <a href="/guide" role="menuitem">Resource Guide</a>
-            <a href="/directory?filter=crisis" role="menuitem" class="mega-highlight">Crisis Help (211)</a>
-          </div>
-        </div>
+              <div class="mega-group">
+                <button class="mega-trigger" aria-expanded="false" aria-controls="mega-find-help" min-h-11>
+                  Find Help
+                  <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
+                </button>
+                <div class="mega-panel" role="menu" id="mega-find-help">
+                  <a href="/directory" role="menuitem" class="min-h-11 flex items-center px-3">Resource Directory</a>
+                  <a href="/guide" role="menuitem" class="min-h-11 flex items-center px-3">Resource Guide</a>
+                  <a href="/directory?filter=crisis" role="menuitem" class="mega-highlight min-h-11 flex items-center px-3">Crisis Help (211)</a>
+                </div>
+              </div>
 
-        <div class="mega-group">
-          <button class="mega-trigger" aria-expanded="false" aria-haspopup="true">
-            About
-            <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <div class="mega-panel" role="menu">
-            <a href="/about" role="menuitem">About Us</a>
-            <a href="/purpose" role="menuitem">Our Purpose</a>
-            <a href="/impact" role="menuitem">Impact</a>
-            <a href="/partners" role="menuitem">Partners</a>
-            <a href="/financials" role="menuitem">Financials</a>
-            <a href="/grants" role="menuitem">Grants & Funding</a>
-          </div>
-        </div>
+              <div class="mega-group">
+                <button class="mega-trigger" aria-expanded="false" aria-controls="mega-programs" min-h-11>
+                  Programs
+                  <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
+                </button>
+                <div class="mega-panel" role="menu" id="mega-programs">
+                  <a href="/technology-access" role="menuitem" class="min-h-11 flex items-center px-3">Technology Access</a>
+                  <a href="/programs/digital-skills" role="menuitem" class="min-h-11 flex items-center px-3">Digital Skills & Job Help</a>
+                  <a href="/programs/nonprofit-tech" role="menuitem" class="min-h-11 flex items-center px-3">Tech for Small Nonprofits</a>
+                  <a href="/programs/resource-guide" role="menuitem" class="min-h-11 flex items-center px-3">Local Resource Guide</a>
+                </div>
+              </div>
 
-        <div class="mega-group">
-          <button class="mega-trigger" aria-expanded="false" aria-haspopup="true">
-            Get Involved
-            <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <div class="mega-panel" role="menu">
-            <a href="/volunteer" role="menuitem">Volunteer</a>
-            <a href="/join" role="menuitem">Join Us</a>
-            <a href="/how-to-help" role="menuitem">How to Help</a>
-            <a href="/donate" role="menuitem" class="mega-highlight">Donate</a>
-          </div>
-        </div>
+              <div class="mega-group">
+                <button class="mega-trigger" aria-expanded="false" aria-controls="mega-support" min-h-11>
+                  Support
+                  <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
+                </button>
+                <div class="mega-panel" role="menu" id="mega-support">
+                  <a href="/donate" role="menuitem" class="min-h-11 flex items-center px-3">Donate</a>
+                  <a href="/volunteer" role="menuitem" class="min-h-11 flex items-center px-3">Volunteer</a>
+                  <a href="/join" role="menuitem" class="min-h-11 flex items-center px-3">Join Us</a>
+                  <a href="/how-to-help" role="menuitem" class="min-h-11 flex items-center px-3">How to Help</a>
+                </div>
+              </div>
 
-        <a href="/blog" class="mega-link">Stories</a>
-
-        <div class="mega-group">
-          <button class="mega-trigger" aria-expanded="false" aria-haspopup="true">
-            Resources
-            <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <div class="mega-panel" role="menu">
-            <a href="/events" role="menuitem">Events</a>
-            <a href="/photos" role="menuitem">Photos</a>
-            <a href="/programs" role="menuitem">Programs</a>
-            <a href="/es" role="menuitem">Espanol</a>
-          </div>
-        </div>
-
-        <div class="mega-group">
-          <button class="mega-trigger" aria-expanded="false" aria-haspopup="true">
-            Connect
-            <svg class="mega-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <div class="mega-panel" role="menu">
-            <a href="/contact" role="menuitem">Contact</a>
-            <a href="/feedback" role="menuitem">Feedback</a>
-            <a href="/share-your-story" role="menuitem">Share Your Story</a>
-            <a href="/socials" role="menuitem">Socials</a>
-          </div>
-        </div>
+              <a href="/about" class="mega-link min-h-11 flex items-center px-3">About</a>
       </nav>
 
       <div class="flex items-center gap-3">
-        <button type="button" id="triage-btn" class="flex min-h-11 items-center gap-1 px-3 text-sm font-semibold" style="background: var(--color-fill); color: var(--color-on-fill);">
+        <button type="button" id="triage-btn" class="flex min-h-11 items-center gap-1 text-sm font-semibold" style="background: var(--color-fill); color: var(--color-on-fill); border-radius: 999px; padding-inline: 1rem; white-space: nowrap;">
           Need help now
         </button>
         <button type="button" id="menu-btn" class="flex min-h-11 min-w-11 items-center justify-center md:hidden" style="color: var(--color-body);" aria-label="Open menu" aria-expanded="false">
@@ -180,34 +151,59 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
               <a href="/privacy" class="hover:underline" style="color: var(--color-body);">Privacy</a>
               <a href="/terms" class="hover:underline" style="color: var(--color-body);">Terms</a>
             </div>
+            <!-- Crisis links in footer - WCAG 2.5.8 AA compliant tap targets -->
+            <div class="mt-4 flex flex-wrap items-center justify-end gap-2">
+              <a href="tel:911" class="inline-flex min-h-11 min-w-11 items-center justify-center px-2 py-1 font-semibold text-on-fill underline-offset-2 hover:underline" style="color: var(--color-body);" aria-label="Call 911 for immediate danger">
+                911
+              </a>
+              <span class="text-faint" aria-hidden="true">·</span>
+              <a href="tel:211" class="inline-flex min-h-11 min-w-11 items-center justify-center px-2 py-1 font-semibold text-on-fill underline-offset-2 hover:underline" style="color: var(--color-body);" aria-label="Call 211 for 24/7 local help">
+                211
+              </a>
+              <span class="text-faint" aria-hidden="true">·</span>
+              <a href="tel:988" class="inline-flex min-h-11 min-w-11 items-center justify-center px-2 py-1 font-semibold text-on-fill underline-offset-2 hover:underline" style="color: var(--color-body);" aria-label="Call 988 for crisis support">
+                988
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  <!-- Floating "Get Help: Call 211" button -->
-  <a href="tel:211" id="floating-help-btn" aria-label="Get help: Call 211" style="
-    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9997;
-    display: flex; align-items: center; gap: 0.5rem;
-    padding: 0.75rem 1.25rem; background: var(--color-accent, #f4d96c); color: var(--color-page, #0f1a14);
-    border-radius: 999px; font-weight: 700; font-size: 0.9rem; text-decoration: none;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  <!-- Floating "Get Help: Call 211" button (opens in a new tab so the visitor keeps the directory) -->
+  <a href="tel:211" id="floating-help-btn" target="_blank" rel="noopener noreferrer" aria-label="Get help: Call 211" style="
+    position: fixed; bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); right: 1rem; z-index: 9997;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.1rem; background: var(--color-accent); color: #fff;
+    border-radius: 999px; font-weight: 700; font-size: 0.85rem; text-decoration: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     opacity: 0; transform: translateY(20px);
     transition: opacity 0.3s, transform 0.3s;
   ">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
     </svg>
-    Get Help: Call 211
+    <span class="help-full">Get Help: Call 211</span>
+    <span class="help-short">211</span>
   </a>
 </div>
 
 <style>
+  .help-short { display: none; }
+  @media (max-width: 640px) {
+    /* Compact CTA on phones so it cannot cover card actions. */
+    #floating-help-btn { padding: 0.7rem 0.85rem; }
+    #floating-help-btn .help-full { display: none; }
+    #floating-help-btn .help-short { display: inline; }
+  }
+
   .mega-group { position: relative; }
   .mega-trigger {
     display: flex; align-items: center; gap: 0.25rem;
-    padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
+    padding: 0.625rem 0.9rem; font-size: 1rem; font-weight: 500;
+    white-space: nowrap;
     color: var(--color-body); background: none; border: none; cursor: pointer;
-    border-radius: 0.5rem; transition: background 0.15s;
+    border-radius: 999px; transition: background 0.15s;
+    min-height: 2.75rem; /* 44px - WCAG 2.5.8 AA */
   }
   .mega-trigger:hover { background: var(--color-inset); }
   .mega-chevron { transition: transform 0.2s; }
@@ -229,13 +225,16 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
     display: block; padding: 0.5rem 0.75rem; font-size: 0.875rem;
     color: var(--color-body); text-decoration: none; border-radius: 0.5rem;
     transition: background 0.1s;
+    min-height: 2.75rem; /* 44px - WCAG 2.5.8 AA */
+    display: flex; align-items: center;
   }
   .mega-panel a:hover { background: var(--color-inset); }
   .mega-highlight { color: var(--color-accent) !important; font-weight: 600; }
 
   .mega-link {
-    padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500;
-    color: var(--color-body); text-decoration: none; border-radius: 0.5rem;
+    padding: 0.625rem 0.9rem; font-size: 1rem; font-weight: 500;
+    white-space: nowrap;
+    color: var(--color-body); text-decoration: none; border-radius: 999px;
     transition: background 0.15s;
   }
   .mega-link:hover { background: var(--color-inset); }

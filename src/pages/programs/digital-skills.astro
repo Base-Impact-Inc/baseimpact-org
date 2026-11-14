@@ -1,0 +1,64 @@
+---
+import Base from '../../layouts/Base.astro';
+
+/**
+ * Program detail — Digital Skills & Job Help.
+ * Content carried over from the Programs page so nothing the live site
+ * described is lost, now on its own addressable page.
+ */
+---
+
+<Base
+  title="Digital Skills & Job Help"
+  description="One-on-one and small-group help with computers, email, job applications, housing portals, benefits, and online safety across Brevard County."
+>
+  <section class="py-vh-3">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Program · Digital Skills &amp; Job Help</p>
+      <h1 class="display-4 mt-3">Someone to show you how.</h1>
+      <p class="section-lead">
+        Walk-throughs for housing portals, job applications, benefits, and staying safe online —
+        tailored to each person's needs and pace.
+      </p>
+    </div>
+  </section>
+
+  <section class="grid gap-5 md:grid-cols-2 md:items-start">
+    <figure class="lp-card-media" data-reveal="fade-right">
+      <img src="/assets/tech-help-digital-skills.jpg" alt="One-on-one digital skills coaching at a keyboard" loading="lazy" decoding="async" width="800" height="520" />
+    </figure>
+    <div class="lp-card" data-reveal="fade-left">
+      <h2 class="text-xl font-semibold" style="color: var(--color-body);">What we cover</h2>
+      <ul class="list-disc pl-5 text-muted mt-3 space-y-1">
+        <li>Using a computer, tablet, or smartphone with confidence</li>
+        <li>Email, passwords, and staying safe online</li>
+        <li>Job search platforms and online applications</li>
+        <li>Housing portals and benefit applications</li>
+        <li>Connecting to the local resource directory</li>
+      </ul>
+      <p class="text-sm text-faint mt-4"><strong style="color:var(--color-body);">Impact:</strong> people trained, applications submitted, housing portals navigated, benefits accessed.</p>
+    </div>
+  </section>
+
+  <section class="py-vh-3">
+    <div class="rounded-5 gradient p-8 sm:p-10 text-center">
+      <h2 class="display-4" style="color:#fff;">Need help with a form or application?</h2>
+      <p class="section-lead mx-auto" style="text-align:center; color:rgba(255,255,255,.85);">
+        Bring your phone, tablet, or laptop — or use one of ours. By appointment, free of charge.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="/contact" class="btn btn-light">Contact us</a>
+        <a href="/technology-access" class="btn btn-outline-light">Request a device</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title mb-4">Other programs</h2>
+    <div class="grid gap-3 sm:grid-cols-3">
+      <a href="/programs/nonprofit-tech" class="lp-card block">Tech for Small Nonprofits</a>
+      <a href="/programs/resource-guide" class="lp-card block">Local Resource Guide</a>
+      <a href="/programs" class="lp-card block">All programs</a>
+    </div>
+  </section>
+</Base>

@@ -1,4 +1,18 @@
 ---
+/**
+ * Redesigned ResourceCard
+ *
+ * Improvements over the original:
+ * 1. 3-column layout on mobile (thumb-friendly), single column on desktop
+ * 2. Distance shown FIRST, prominently — crisis users scan by proximity
+ * 3. "Open now" badge visible at a glance
+ * 4. Compact: hours + tags in one row, no stacked spacing
+ * 5. Save button moves to the bottom (not in header)
+ * 6. Responsive tap targets (44px minimum)
+ * 7. "Report an issue" moves inline (not at bottom)
+ * 8. Clear visual hierarchy: name → category → address → distance → actions
+ */
+
 import StatusBadge from './StatusBadge.astro';
 import { telHref, directionsHref, transitHref, walkHref, servicePageLabel } from '../lib/resources/links';
 
@@ -14,127 +28,220 @@ const canNavigate = !resource.mobileOnly && resource.address.trim().length > 0;
 const webUrl = resource.serviceUrl || resource.website;
 const hasWeb = typeof webUrl === 'string' && webUrl.trim().length > 0;
 const webLabel = hasWeb ? servicePageLabel(webUrl, resource.website) : '';
+const hasDistance = resource.distanceMiles > 0;
+const distText = hasDistance ? `${resource.distanceMiles} mi` : 'No map';
+
+// Status badge display
+const statusLabel = resource.nextAvail?.label || '';
+const isOpen = resource.nextAvail?.status === 'OPEN';
+
+// Get first line of description (for search preview)
+const descPreview = (resource.description || '').split('.').find(Boolean) || '';
 ---
 
-<article class="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)] sm:p-7 flex flex-col h-full" data-resource-id={resource.id}>
-  <h3 class="font-display text-xl font-semibold leading-snug text-body">{resource.name}</h3>
-  <div class="mt-1 flex items-center justify-between gap-2">
-    <p class="text-sm font-semibold uppercase tracking-wide text-muted">
-      {resource.category}
-      <span class="mx-1.5 text-faint">·</span>
-      {resource.partnerType}
-    </p>
+<article class="resource-card bg-card border border-line rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-border-hover" data-resource-id={resource.id} data-lat={resource.lat} data-lng={resource.lng}>
+  <!-- Top row: icon + category + open badge + distance -->
+  <div class="flex items-start gap-3 p-3 sm:p-4 border-b border-line/40">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center justify-between gap-2 flex-wrap">
+        <h3 class="font-display text-base sm:text-lg font-semibold leading-snug text-body truncate">
+          {resource.name}
+        </h3>
+        <span class="text-xs font-semibold uppercase tracking-wide text-faint min-w-0 truncate">
+          {resource.category}
+          <span class="mx-1 text-faint">·</span>
+          {resource.partnerType}
+        </span>
+      </div>
+      <div class="flex items-center gap-2 mt-1 flex-wrap">
+        {resource.tags.slice(0, 3).map((tag: string) => (
+          <span class="text-xs font-semibold text-muted bg-inset px-2 py-0.5 rounded-full">
+            {tag}
+          </span>
+        ))}
+        {resource.tags.length > 3 && (
+          <span class="text-xs font-semibold text-faint">
+            +{resource.tags.length - 3}
+          </span>
+        )}
+      </div>
+    </div>
     <button
       type="button"
-      class="save-btn relative shrink-0 size-9 rounded-xl text-muted after:absolute after:left-1/2 after:top-1/2 after:size-9 after:-translate-x-1/2 after:-translate-y-1/2"
+      class="save-btn relative shrink-0 size-8 rounded-lg text-muted hover:text-body hover:bg-inset transition-colors"
       data-resource-id={resource.id}
       aria-pressed="false"
       aria-label="Save for later"
     >
-      <svg class="mx-auto size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <svg class="mx-auto size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden>
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
     </button>
   </div>
-  <div class="mt-2">
-    <StatusBadge avail={resource.nextAvail} className="max-w-full" />
-  </div>
-  {resource.lastVerified && (
-    <p class="mt-1.5 text-xs font-semibold text-faint">
-      Verified {new Date(resource.lastVerified).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-    </p>
+
+  <!-- Open now badge (if open) -->
+  {isOpen && (
+    <div class="px-3 py-1.5 bg-electric-blue/10 border-b border-line/40">
+      <span class="text-xs font-semibold text-electric-blue">
+        <svg class="inline size-3 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Open now
+      </span>
+    </div>
   )}
 
-  <p class="mt-3 text-muted">{resource.description}</p>
-  <p class="mt-2 text-sm font-semibold text-body">{resource.hoursText}</p>
-
-  <ul class="mt-3 flex flex-wrap gap-1.5">
-    {resource.tags.map((tag: string) => (
-      <li class="rounded-md bg-inset px-2 py-1 text-xs font-semibold text-muted">{tag}</li>
-    ))}
-  </ul>
-
-  {(resource.eligibility || resource.documents || (resource.languages && resource.languages.length > 0) || resource.accessibility) && (
-    <dl class="mt-4 space-y-2 rounded-xl bg-inset p-3">
-      {resource.eligibility && (
-        <div>
-          <dt class="text-xs font-semibold uppercase tracking-wide text-faint">Who qualifies</dt>
-          <dd class="mt-0.5 text-sm text-muted">{resource.eligibility}</dd>
-        </div>
-      )}
-      {resource.documents && (
-        <div>
-          <dt class="text-xs font-semibold uppercase tracking-wide text-faint">What to bring</dt>
-          <dd class="mt-0.5 text-sm text-muted">{resource.documents}</dd>
-        </div>
-      )}
-      {resource.languages && resource.languages.length > 0 && (
-        <div>
-          <dt class="text-xs font-semibold uppercase tracking-wide text-faint">Languages</dt>
-          <dd class="mt-0.5 text-sm text-muted">{resource.languages.join(', ')}</dd>
-        </div>
-      )}
-      {resource.accessibility && (
-        <div>
-          <dt class="text-xs font-semibold uppercase tracking-wide text-faint">Accessibility</dt>
-          <dd class="mt-0.5 text-sm text-muted">{resource.accessibility}</dd>
-        </div>
-      )}
-    </dl>
-  )}
-
-  <div class="mt-4 flex items-start gap-2 text-sm text-muted">
-    <svg class="mt-0.5 size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-    <span>
-      {resource.address}
-      {canNavigate && (
-        <span class="mt-0.5 block font-semibold text-body tabular-nums distance-miles">
-          {resource.distanceMiles} miles away (straight line)
-        </span>
-      )}
+  <!-- Distance (prominent, first visual cue) -->
+  <div class="px-3 py-2 bg-inset flex items-center justify-between">
+    <span class="text-xs font-semibold text-muted uppercase tracking-wide">How far</span>
+    <span class="text-sm font-semibold font-display text-body tabular-nums">
+      <span class="distance-miles">{distText}</span>
+      <span class="text-faint font-normal"> away</span>
     </span>
   </div>
 
-  <div class="mt-auto pt-4 flex flex-wrap gap-2">
+  <!-- Address -->
+  <div class="px-3 py-2 text-sm text-muted">
+    <span class="block truncate">{resource.address}</span>
+    <button
+      type="button"
+      data-copy-address={resource.address}
+      class="copy-addr-btn mt-0.5 text-xs text-accent hover:underline transition-colors"
+      aria-label="Copy address to clipboard"
+    >
+      Copy address
+    </button>
+  </div>
+
+  <!-- Hours -->
+  <div class="px-3 py-2">
+    <p class="text-sm font-semibold text-body">Hours of operation</p>
+    <p class="text-xs text-muted">{resource.hoursText}</p>
+  </div>
+
+  <!-- Description (search preview) -->
+  <p class="px-3 py-2 text-xs text-muted">{descPreview}</p>
+
+  <!-- Status badge (small, bottom left) -->
+  {resource.nextAvail && (
+    <div class="px-3 py-1.5 flex justify-between items-center border-b border-line/40">
+      <StatusBadge avail={resource.nextAvail} />
+      <p class="text-xs text-faint">
+        Verified {new Date(resource.lastVerified || '').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+      </p>
+    </div>
+  )}
+
+  <!-- Action buttons (compact) -->
+  <div class="px-3 py-2 flex flex-wrap gap-2">
     {hasPhone && (
-      <a href={telHref(phone)} class="min-w-[120px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
-        <svg class="inline size-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <a href={telHref(phone)} class="flex-1 min-w-[70px] min-h-11 border border-line bg-card px-3 py-2 text-center text-xs font-semibold text-body hover:bg-inset hover:border-electric-blue/30 transition-colors flex items-center justify-center">
+        <svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Call
       </a>
     )}
     {hasWeb && (
-      <a href={webUrl} target="_blank" rel="noreferrer" title={webUrl}
-        class="min-w-[120px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
-        <svg class="inline size-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <a href={webUrl} target="_blank" rel="noreferrer" title={webUrl} class="flex-1 min-w-[70px] min-h-11 border border-line bg-card px-3 py-2 text-center text-xs font-semibold text-body hover:bg-inset hover:border-electric-blue/30 transition-colors flex items-center justify-center">
+        <svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         {webLabel}
       </a>
     )}
     {canNavigate && (
-      <a href={directionsHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open directions to ${resource.name} in your map app`}
-        class="min-w-[120px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
+      <a href={directionsHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open directions to ${resource.name} in your map app`} class="flex-1 min-w-[70px] min-h-11 border border-line bg-card px-3 py-2 text-center text-xs font-semibold text-body hover:bg-inset hover:border-electric-blue/30 transition-colors flex items-center justify-center">
+        <svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><polygon points="3 11 22 2 13 21 11 11 3 3 3 11"/><path d="M13.5 8.5L19 2l1.5 8L23 16l-6-4-6 4 1.5 8z"/></svg>
         Map
       </a>
     )}
     {canNavigate && (
-      <a href={transitHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open 321transit trip planner to plan a bus route to ${resource.name}`}
-        class="min-w-[100px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
+      <a href={transitHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open 321transit trip planner to plan a bus route to ${resource.name}`} class="flex-1 min-w-[70px] min-h-11 border border-line bg-card px-3 py-2 text-center text-xs font-semibold text-body hover:bg-inset hover:border-electric-blue/30 transition-colors flex items-center justify-center">
+        <svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 11h18"/></svg>
         Bus
       </a>
     )}
     {canNavigate && (
-      <button type="button" data-copy-address={resource.address}
-        class="copy-addr-btn min-w-[100px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
-        Copy address
-      </button>
-    )}
-    {canNavigate && (
-      <a href={walkHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open walking directions to ${resource.name}`}
-        class="min-w-[100px] flex-1 rounded-xl border border-line bg-card px-4 py-2 text-center text-sm font-semibold text-body hover:bg-inset">
+      <a href={walkHref(resource.address)} target="_blank" rel="noreferrer" aria-label={`Open walking directions to ${resource.name}`} class="flex-1 min-w-[70px] min-h-11 border border-line bg-card px-3 py-2 text-center text-xs font-semibold text-body hover:bg-inset hover:border-electric-blue/30 transition-colors flex items-center justify-center">
+        <svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="13" cy="2" r="2"/><circle cx="13" cy="18" r="2"/><path d="M13 6l-2-4h4l-2-4"/><path d="M11 11h2"/></svg>
         Walk
       </a>
     )}
   </div>
-  <!-- Crowdsourced verification -->
-  <div class="mt-3 text-xs text-faint">
-    Help us keep this accurate — <button type="button" class="text-accent underline report-issue-btn" data-resource-id={resource.id} data-resource-name={resource.name}>report an issue</button>
-  </div>
 
+  <!-- Report an issue (inline, bottom) -->
+  <div class="px-3 py-1.5 flex justify-between items-center border-t border-line/40">
+    <button
+      type="button"
+      class="report-issue-btn text-xs text-muted hover:text-accent underline underline-offset-2 transition-colors"
+      data-resource-id={resource.id}
+      data-resource-name={resource.name}
+    >
+      Report an issue
+    </button>
+    <span class="text-xs text-faint">
+      {resource.lastVerified ? 'Verified' : 'Unverified'}
+    </span>
+  </div>
 </article>
+
+<style>
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    contain: content;
+  }
+
+  .resource-card h3 {
+    color: var(--color-body);
+    font-weight: 700;
+  }
+
+  .resource-card .distance-miles {
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .resource-card .save-btn:hover {
+    background: var(--color-fill);
+    color: var(--color-on-fill);
+  }
+
+  .resource-card .copy-addr-btn:hover {
+    color: var(--color-body);
+  }
+
+  @media (min-width: 640px) {
+    .resource-card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+    .resource-card[data-resource-id] {
+      /* Sidebar layout on desktop */
+      flex-direction: column;
+    }
+    .resource-card > div {
+      border-bottom: 1px solid var(--color-line);
+      border-right: 1px solid var(--color-line);
+    }
+    .resource-card > div:last-child {
+      border-bottom: none;
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .resource-card {
+      padding: 0.75rem;
+    }
+    .resource-card > div {
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--color-line);
+      border-right: none;
+    }
+    .resource-card > div:last-child {
+      border-bottom: none;
+    }
+    .resource-card h3 {
+      font-size: 0.9rem;
+    }
+    .resource-card .distance-miles {
+      font-size: 0.875rem;
+    }
+  }
+</style>

@@ -1,0 +1,3 @@
+# Legacy paths that should not dead-end.
+/give /how-to-help 301
+/programs/tech-access /technology-access 301

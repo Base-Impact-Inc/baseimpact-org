@@ -1,0 +1,63 @@
+---
+import Base from '../../layouts/Base.astro';
+
+/**
+ * Program detail — Tech for Small Nonprofits.
+ * Content carried over from the Programs page.
+ */
+---
+
+<Base
+  title="Tech for Small Nonprofits"
+  description="Free technology setup, security hardening, backup strategy, and ongoing support for churches, pantries, and 1–5 person community groups in Brevard County."
+>
+  <section class="py-vh-3">
+    <div class="max-w-3xl">
+      <p class="eyebrow">Program · Tech for Small Nonprofits</p>
+      <h1 class="display-4 mt-3">Keep your organization's technology working.</h1>
+      <p class="section-lead">
+        Free setup, security, and support for churches, pantries, and 1–5 person community
+        groups — so you can keep serving.
+      </p>
+    </div>
+  </section>
+
+  <section class="grid gap-5 md:grid-cols-2 md:items-start">
+    <div class="lp-card" data-reveal="fade-right">
+      <h2 class="text-xl font-semibold" style="color: var(--color-body);">What we do</h2>
+      <ul class="list-disc pl-5 text-muted mt-3 space-y-1">
+        <li>Device setup and email configuration</li>
+        <li>Security hardening and password practices</li>
+        <li>Backup strategy so a lost laptop never loses your records</li>
+        <li>Cloud storage and shared document workflows</li>
+        <li>Ongoing support from people who answer</li>
+      </ul>
+      <p class="text-sm text-faint mt-4"><strong style="color:var(--color-body);">Impact:</strong> organizations supported, devices secured, volunteers trained.</p>
+    </div>
+    <figure class="lp-card-media" data-reveal="fade-left">
+      <img src="/assets/tech-support-session.jpg" alt="Volunteer helping a small nonprofit with its technology" loading="lazy" decoding="async" width="800" height="520" />
+    </figure>
+  </section>
+
+  <section class="py-vh-3">
+    <div class="rounded-5 gradient p-8 sm:p-10 text-center">
+      <h2 class="display-4" style="color:#fff;">Run a church, pantry, or community group?</h2>
+      <p class="section-lead mx-auto" style="text-align:center; color:rgba(255,255,255,.85);">
+        Tell us what you're working with. We'll set up a free session and leave you with a plan.
+      </p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="/partners" class="btn btn-light">Partner with us</a>
+        <a href="/contact" class="btn btn-outline-light">Contact us</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title mb-4">Other programs</h2>
+    <div class="grid gap-3 sm:grid-cols-3">
+      <a href="/programs/digital-skills" class="lp-card block">Digital Skills &amp; Job Help</a>
+      <a href="/programs/resource-guide" class="lp-card block">Local Resource Guide</a>
+      <a href="/programs" class="lp-card block">All programs</a>
+    </div>
+  </section>
+</Base>
