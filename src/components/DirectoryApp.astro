@@ -226,7 +226,7 @@ const mapData = JSON.stringify(cardData);
     ))}
   </div>
 
-  <p id="results-count" class="text-sm text-muted mb-4">{resources.length} {t.results}</p>
+  <p id="results-count" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} {t.results}</p>
 
   <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl" id="resource-grid">
     {resources.map((r) => (

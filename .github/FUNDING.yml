@@ -1,0 +1,13 @@
+# GitHub Funding Configuration
+
+# Open Collective (fiscal sponsor - apply at opencollective.com/foundation)
+open_collective: baseimpact
+
+# GitHub Sponsors (personal account)
+github: [YOUR-GITHUB-USERNAME]
+
+# Custom funding links
+custom:
+  - "https://opencollective.com/baseimpact"
+  - "https://baseimpact.org/donate"
+  - "https://github.com/sponsors/[YOUR-GITHUB-USERNAME]"
