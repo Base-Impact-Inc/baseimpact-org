@@ -11,7 +11,10 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
     Base Impact Inc. · EIN 43-2200667 · Florida nonprofit corporation · FDACS registered · Brevard County, FL
   </aside>
 
-  <header class="sticky top-0 z-40" style="background: rgba(0, 0, 0, 0.72); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); border-bottom: 1px solid var(--color-line);">
+  <!-- backdrop-filter must NOT live on this element: it makes the header the
+       containing block for the position:fixed mobile menu below, trapping it
+       inside the header band. -->
+  <header class="sticky top-0 z-40" style="background: rgba(0, 0, 0, 0.92); border-bottom: 1px solid var(--color-line);">
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
       <a href="/" class="flex min-h-11 min-w-0 items-center gap-2">
         <span class="block font-display text-xl font-semibold leading-none tracking-tight" style="color: var(--color-body);">Base Impact<span style="color: var(--color-accent);">.</span></span>
