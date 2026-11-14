@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { SOCIALS } from '../lib/socials';
 ---
 
 <Base title="Connect — Base Impact" description="Connect with Base Impact — find us on social media, get in touch, and stay updated.">
@@ -16,7 +17,17 @@ import Base from '../layouts/Base.astro';
       <li><strong>Location:</strong> Scottsmoor, FL 32775 · Brevard County</li>
     </ul>
     <h2 class="font-display text-xl font-semibold text-body mt-6">Social media</h2>
-    <p>Follow us for updates on new resources, events, and opportunities to get involved. Links coming soon.</p>
+    <p class="mb-4">Follow us for updates on new resources, events, and opportunities to get involved.</p>
+    <ul class="space-y-2">
+      {SOCIALS.map((s) => (
+        <li>
+          <strong>{s.name}:</strong>{' '}
+          <a href={s.url} target="_blank" rel="noopener noreferrer" class="text-accent font-semibold">{s.handle}</a>
+          <span class="text-faint"> — {s.blurb}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="text-sm text-faint mt-4">Instagram is being set up and will be linked here once it is live.</p>
     <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg bg-fill px-5 py-2 text-sm font-semibold text-on-fill hover:bg-fill-hover">Contact us</a>
   </div>
 </Base>

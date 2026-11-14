@@ -64,4 +64,24 @@ import Base from '../../layouts/Base.astro';
       <a href="/programs" class="lp-card block">All programs</a>
     </div>
   </section>
+  <section class="grid gap-5 md:grid-cols-2 md:items-start">
+    <div class="lp-card" data-reveal="fade-right">
+      <h2 class="text-xl font-semibold" style="color: var(--color-body);">How to use it</h2>
+      <ol class="list-decimal pl-5 text-muted mt-3 space-y-1">
+        <li>Search by keyword, or filter by food, shelter, health, housing, and more</li>
+        <li>Enter a ZIP code or tap “Use my location” to sort by distance</li>
+        <li>Call ahead using the listing’s phone number and hours</li>
+        <li>Report anything wrong so the next person gets accurate information</li>
+      </ol>
+    </div>
+    <div class="lp-card" data-reveal="fade-left">
+      <h2 class="text-xl font-semibold" style="color: var(--color-body);">What we check</h2>
+      <ul class="list-disc pl-5 text-muted mt-3 space-y-1">
+        <li>That the organization still exists and serves the county listed</li>
+        <li>Phone numbers, addresses, hours, and eligibility notes</li>
+        <li>Changes reported by visitors and partner organizations</li>
+      </ul>
+      <p class="text-sm text-faint mt-4">Listings are reviewed by a real person before changes go live.</p>
+    </div>
+  </section>
 </Base>
