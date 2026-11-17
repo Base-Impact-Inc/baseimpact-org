@@ -24,7 +24,7 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
 ---
 
 <!doctype html>
-<html lang={Astro.currentLocale || 'en'}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -115,23 +115,29 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
     <!-- Modern motion layer: reveals, count-ups, scroll progress -->
     <script is:inline>
       // Reveal on scroll — IntersectionObserver (AOS-equivalent, no library).
-      const revealEls = document.querySelectorAll('[data-reveal]');
+      // Three animation systems share this layer:
+      //   [data-reveal]      -> add .is-visible
+      //   .fade-in           -> add .visible
+      //   .stagger-children  -> add .visible (reveals its children)
+      // All start at opacity:0 in CSS; if JS fails they must still be shown.
+      const revealEls = document.querySelectorAll('[data-reveal], .fade-in, .stagger-children');
+      const revealClass = (el) => el.hasAttribute('data-reveal') ? 'is-visible' : 'visible';
       if ('IntersectionObserver' in window && revealEls.length) {
         const io = new IntersectionObserver((entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
+              entry.target.classList.add(revealClass(entry.target));
               io.unobserve(entry.target);
             }
           }
         }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
         revealEls.forEach((el) => {
           const r = el.getBoundingClientRect();
-          if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+          if (r.top < window.innerHeight && r.bottom > 0) el.classList.add(revealClass(el));
           else io.observe(el);
         });
       } else {
-        revealEls.forEach((el) => el.classList.add('is-visible'));
+        revealEls.forEach((el) => el.classList.add(revealClass(el)));
       }
 
       // Count-up numbers. Run on load (staggered) rather than gating on

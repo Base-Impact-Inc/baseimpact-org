@@ -10,23 +10,8 @@ export default defineConfig({
   output: 'static',
   adapter: cloudflare(),
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'es'],
-    routing: {
-      prefixDefaultLocale: false,  // /directory (en), /es/directory (es)
-    },
-  },
+  // Translation is handled client-side by visitors' browsers (Google Translate).
+  // No built-in i18n routes are maintained.
 
-  integrations: [
-    sitemap({
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en-US',
-          es: 'es',
-        },
-      },
-    }),
-  ],
+  integrations: [sitemap()],
 });

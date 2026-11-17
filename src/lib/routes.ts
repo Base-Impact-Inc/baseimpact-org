@@ -174,18 +174,6 @@ export const ROUTE_META: RouteMeta[] = [
     description:
       "Request a device, internet service, or digital skills help from Base Impact. Phones, tablets, laptops, and hotspots for neighbors in need.",
   },
-  {
-    path: "/es",
-    title: "Ayuda — Base Impact",
-    description:
-      "Nuestra misión es ayudar a los vecinos a conectarse y a las pequeñas organizaciones sin fines de lucro a mantener su tecnología funcionando.",
-  },
-  {
-    path: "/es/directory",
-    title: "Directorio de recursos",
-    description:
-      "Busca comida, refugio y ayuda cerca de ti en Brevard, Volusia, Orange y estados de Florida.",
-  },
 ];
 
 /** Look up metadata for a path. Falls back to the home entry for unknown paths. */

@@ -1,9 +1,10 @@
 // Service Worker for Base Impact — offline resource directory
-const CACHE_NAME = 'baseimpact-v3';
+const CACHE_NAME = 'baseimpact-v4';
 const OFFLINE_URLS = [
   '/',
   '/directory',
   '/directory/',
+  '/blog/',
   '/about',
   '/contact',
   '/guide',
@@ -17,6 +18,21 @@ const OFFLINE_URLS = [
   '/donate',
   '/financials',
 ];
+
+// A real offline page instead of silently diverting navigation to /directory/.
+const OFFLINE_HTML = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline — Base Impact</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#000;color:#fff;
+font-family:Inter,system-ui,sans-serif;padding:1.5rem;text-align:center}
+a{color:#7c8cff}
+</style></head><body><div>
+<h1>You're offline</h1>
+<p>That page hasn't been saved for offline reading yet. Reconnect and try again.</p>
+<p><a href="/" onclick="location.reload()">Back to Base Impact</a></p>
+</div></body></html>`;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -62,20 +78,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-first for HTML pages (always try fresh, fall back to cache)
+  // Network-first for HTML pages. On a network error, retry once, then use
+  // the cache, then show an honest offline page. Never silently divert the
+  // visitor to an unrelated page (e.g. an article click landing on /directory/).
   event.respondWith(
-    fetch(event.request).then((response) => {
-      if (response.ok) {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-      }
-      return response;
-    }).catch(() => {
-      return caches.match(event.request).then((cached) => {
-        if (cached) return cached;
-        // Fallback to directory page for offline navigation
-        return caches.match('/directory/');
-      });
-    })
+    fetch(event.request)
+      .catch(() => fetch(event.request))
+      .then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() =>
+        caches.match(event.request).then((cached) =>
+          cached || new Response(OFFLINE_HTML, {
+            status: 200,
+            headers: { 'Content-Type': 'text/html; charset=utf-8' },
+          })
+        )
+      )
   );
 });

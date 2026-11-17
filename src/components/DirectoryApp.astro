@@ -2,7 +2,7 @@
 /**
  * DirectoryApp — the shared, interactive resource finder.
  *
- * Rendered by /directory and /es/directory with a locale. All listing data
+ * Rendered by /directory. All listing data
  * arrives already processed (distance + availability) from the page, which
  * reads D1 first and falls back to the bundled snapshot. The client script
  * (`/js/directory.js`) is self-contained: every hook it needs has a stable id
@@ -14,12 +14,12 @@ import TurnstileWidget from './TurnstileWidget.astro';
 import type { ProcessedResource } from '../lib/resources/types';
 
 interface Props {
-  locale?: 'en' | 'es';
+  locale?: 'en';
   resources: ProcessedResource[];
   source?: 'database' | 'snapshot';
 }
 
-const { locale = 'en', resources, source = 'snapshot' } = Astro.props;
+const { resources, source = 'snapshot' } = Astro.props;
 
 const COPY: Record<string, Record<string, string>> = {
   en: {
@@ -78,7 +78,7 @@ const COPY: Record<string, Record<string, string>> = {
   },
 };
 
-const t = COPY[locale] ?? COPY.en;
+const t = COPY.en;
 
 const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'technology', 'crisis', 'saved'];
 
