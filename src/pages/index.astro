@@ -56,13 +56,13 @@ const stories = (await getCollection('posts', (p) => !p.data.draft))
 <Base title="Base Impact. Find help, get connected.">
   <!-- ───────────────────────── HERO ───────────────────────── -->
   <section class="lp-hero rounded-5" style="margin-inline: -1rem;" data-reveal="fade">
-    <div class="lp-hero-bg" style="background-image: url('/assets/warehouse-racking.jpg');" role="img" aria-label="Nonprofit warehouse racking being built for supply storage"></div>
+    <div class="lp-hero-bg" style="background-image: url('/assets/lifepointe-warehouse-shelves-2026-09-17.jpg');" role="img" aria-label="Nonprofit warehouse racking being built for supply storage"></div>
     <div class="lp-hero-overlay"></div>
 
     <div class="lp-hero-content">
       <div class="px-6 py-16 sm:py-24">
         <p class="eyebrow" data-reveal="fade-up" data-delay="1">Base Impact · Brevard, Volusia &amp; Orange Counties</p>
-        <h1 class="lp-hero-title mt-4" data-reveal="fade-up" data-delay="2">Help<span style="color: var(--color-accent);">.</span></h1>
+        <h1 class="lp-hero-title mt-4" data-reveal="fade-up" data-delay="2">Help<span style="color: var(--color-accent);">.</span><span class="sr-only"> Find food, shelter, and essentials in Brevard, Volusia, and Orange Counties.</span></h1>
         <p class="lp-hero-sub mt-5" data-reveal="fade-up" data-delay="3">
           Base Impact connects people with food, shelter, showers, and essentials — and helps small
           nonprofits keep their technology working.
@@ -181,7 +181,7 @@ const stories = (await getCollection('posts', (p) => !p.data.draft))
         <article class="lp-card flex flex-col" data-reveal="zoom-in-up" data-delay={String(i + 1)}>
           {story.data.image && (
             <div class="lp-card-media" style="aspect-ratio: 16 / 10;">
-              <img src={story.data.image} alt="" loading="lazy" decoding="async" width="800" height="500" />
+              <img src={story.data.image} alt={story.data.title} loading="lazy" decoding="async" width="800" height="500" />
             </div>
           )}
           <div class="pt-4 flex-1 flex flex-col">

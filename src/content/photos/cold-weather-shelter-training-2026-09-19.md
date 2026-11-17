@@ -1,7 +1,7 @@
 ---
-title: "Cold-weather shelter volunteer training"
-image: /assets/baseimpact-cold-weather-training-2026-09-19.jpg
-caption: "Training covered cot setup, guest welcome, and safe overnight shelter."
+title: "Cold-weather shelter cots at LifePointe Ministries"
+image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
+caption: "Cots prepared for the LifePointe Ministries cold-weather shelter in Titusville."
 date: 2026-09-19
 state: "FL"
 album: "shelter"

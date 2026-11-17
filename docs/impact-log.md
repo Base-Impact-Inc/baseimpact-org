@@ -20,6 +20,15 @@ Living document tracking all projects, people helped, and events. Updated as new
 | 12 | Brevard Homeless CoC Coalition (membership) | 2026-10-29 | Community News | `src/content/posts/brevard-homeless-coc-coalition.md` (published) |
 | 13 | Rock Church House Rebuild | 2026-09-24 | Impact Stories | `src/content/posts/rock-church-house-rebuild.md` (published) |
 | 14 | Willem Family — Crohn's & Community Support | 2026-10-28 | Impact Stories | `src/content/posts/willem-family-medical-crisis-support.md` (published, featured, real names + news link + GoFundMe) |
+| 15 | Under the Bridge Ministry: Serving North Brevard | 2026-11-16 | Community News | `src/content/posts/under-the-bridge-ministry-titusville.md` (published) |
+| 16 | Operation Christmas Child: A Shoebox of Hope | 2026-11-16 | Community News | `src/content/posts/operation-christmas-child-shoebox.md` (published) |
+| 17 | No One Hungry: Reducing Hunger, Giving Hope | 2026-11-16 | Community News | `src/content/posts/no-one-hungry-titusville.md` (published) |
+| 18 | November 2026 CoC General Membership Meeting | 2026-11-04 | Community News | `src/content/posts/coc-general-meeting-2026-11-04.md` (published) |
+| 19 | Shoeboxes at Rock Church (OCC) | 2026-11-16 | Community News | `src/content/posts/rock-church-operation-christmas-child.md` (published) |
+| 20 | The Grove Church Food Drive | 2026-11-16 | Community News | `src/content/posts/grove-church-food-drive.md` (published) |
+| 21 | LifePointe Ministries Cold-Weather Shelter Training | 2026-09-19 | Community News | `src/content/posts/lifepointe-cold-weather-shelter.md` (published) |
+| 22 | Scam Awareness at LifePointe Ministries | 2026-10-21 | Community News | `src/content/posts/lifepointe-scam-awareness.md` (published) |
+| 23 | Home Visit Helping a Senior Neighbor | 2026-10-29 | Impact Stories | `src/content/posts/helping-seniors-home-visit.md` (published) |
 
 ## Pending / Undocumented Stories (need to be added)
 

@@ -2,7 +2,7 @@
 title: "Joining the Brevard Homeless Coalition (CoC)"
 description: "Base Impact became a member of the Brevard Homeless Continuum of Care (CoC) coalition — joining the network of organizations working to end homelessness in Brevard County."
 date: 2026-10-29
-image: /assets/baseimpact-coc-membership-2026-10-29.jpg
+image: /assets/brevard-homeless-coc-general-meeting-2026-11-04.jpg
 categories: ["Community News"]
 tags: ["coalition", "homelessness", "partnership", "Brevard County", "CoC"]
 featured: false

@@ -1,7 +1,7 @@
 ---
-title: "Building storage racking for a nonprofit warehouse"
-image: /assets/baseimpact-warehouse-racking-2026-09-17.jpg
-caption: "Volunteers built organized space for donated goods and supplies."
+title: "Warehouse shelves at LifePointe Ministries"
+image: /assets/lifepointe-warehouse-shelves-2026-09-17.jpg
+caption: "Organized shelving for donated clothing and supplies in the LifePointe warehouse."
 date: 2026-09-17
 state: "FL"
 album: "warehouse"
