@@ -9,7 +9,7 @@ Living document tracking all projects, people helped, and events. Updated as new
 | 1 | Reloading a Laptop for a War Veteran | 2026-10-15 | Impact Stories | `src/content/posts/reloading-laptop-war-veteran.md` |
 | 2 | Helping a New Florida Resident Find Work | 2026-10-20 | Impact Stories | `src/content/posts/helping-new-florida-resident-find-work.md` |
 | 3 | Helping Travelers in Florida Heat | 2026-08-15 | Impact Stories | `src/content/posts/helping-travelers-florida-heat.md` |
-| 4 | Moving 80+ Year-Old Neighbor Into New Home | 2026-10-27 | Impact Stories | `src/content/posts/moving-elderly-neighbor-new-home.md` |
+| 4 | From Her Car to a Room of Her Own (73-year-old neighbor) | 2026-10-27 | Impact Stories | `src/content/posts/moving-elderly-neighbor-new-home.md` |
 | 5 | Donated 2XL Jackets | 2026-11-01 | Community News | `src/content/posts/donated-2xl-jackets.md` |
 | 6 | Community Technology Day (photo) | 2026-10-15 | Photos | `src/content/photos/first-community-event.md` |
 | 7 | Cold-Night Shelter Supply Drive (event) | 2026-11-15 | Events | `src/content/events/cold-weather-supply-drive.md` |
