@@ -2,6 +2,7 @@
 title: "Internet Bill Fund Assistance — A Neighbor Gets Connected"
 description: "Base Impact helped a neighbor facing an internet bill they couldn't pay — restoring their connection to work, school, benefits, and family. A local news story covered the assistance."
 date: 2026-10-21
+image: /assets/internet-bill-assistance-neighbor.jpg
 categories: ["Impact Stories"]
 tags: ["internet", "utility assistance", "connectivity", "community"]
 featured: false

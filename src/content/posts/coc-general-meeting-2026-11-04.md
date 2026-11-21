@@ -6,8 +6,10 @@ image: /assets/brevard-homeless-coc-general-meeting-2026-11-04.jpg
 categories: ["Community News"]
 tags: ["CoC", "homelessness", "Brevard County", "partnership", "Brevard Homeless Coalition"]
 featured: false
-draft: false
+draft: true
 ---
+
+<!-- Merged into /blog/brevard-homeless-coc-coalition on 2026-11-18. The 2027 meeting calendar, Center for Collaboration venue, lead-agency designation, and source citation now live in that post. Kept as a draft for history. -->
 
 On November 4, 2026, Base Impact joined service providers, agencies, and advocates at the Brevard Continuum of Care (CoC) General Membership Meeting, held at the Center for Collaboration.[10]
 

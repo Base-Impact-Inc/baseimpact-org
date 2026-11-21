@@ -2,7 +2,7 @@
 title: "Donated 2XL Jackets to Neighbors in Need"
 description: "Base Impact donated 2XL jackets to neighbors in need on November 1, 2026 — keeping our community warm as temperatures dropped."
 date: 2026-11-01
-image: /assets/community-food-support.jpg
+image: /assets/donated-winter-jackets-2026-11-01.jpg
 categories: ["Community News"]
 tags: ["donation", "community", "winter", "essentials"]
 featured: false

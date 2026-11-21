@@ -1,0 +1,315 @@
+---
+import Base from '../layouts/Base.astro';
+import {
+  ITEMS,
+  TIERS,
+  TIER_LABELS,
+  TIER_TINT,
+  TIER_TEXT,
+  type Tier,
+} from '../lib/wishlist-items';
+import PreferredGivingNote from '../components/PreferredGivingNote.astro';
+
+// Group items by priority tier so donors see the most urgent needs first.
+const grouped = TIERS.map((tier) => ({
+  tier,
+  label: TIER_LABELS[tier],
+  items: ITEMS.filter((item) => item.tier === tier),
+}));
+
+const totalUnits = ITEMS.reduce((sum, item) => sum + item.qty, 0);
+const totalStarterCost = ITEMS.reduce(
+  (sum, item) => sum + item.unitCost * item.qty,
+  0,
+);
+
+function cta(item: (typeof ITEMS)[0]) {
+  if (item.ctaKind === 'bike') {
+    return {
+      kind: 'bike' as const,
+      html: `
+        <a href="/contact"
+           class="inline-flex min-h-11 items-center rounded-full bg-warm-orange px-6 py-2 text-sm font-semibold text-white hover:bg-warm-orange/90 btn-pill">
+          Donate a used bike · contact us
+        </a>`,
+    };
+  }
+  return {
+    kind: 'amazon' as const,
+    html: `
+      <a href="${item.amazonUrl}"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="inline-flex min-h-11 items-center rounded-full bg-accent px-6 py-2 text-sm font-semibold text-white hover:bg-accent-hover btn-pill">
+        Buy on Amazon
+      </a>`,
+  };
+}
+---
+
+<Base
+  title="Donate Items — Base Impact"
+  description="What Base Impact needs right now — buy it on Amazon, donate a used bike, or give funds so we'll buy exactly what's needed."
+>
+  <div class="picture-band">
+    <img
+      src="/assets/community-food-support.jpg"
+      alt="Volunteers passing out food and supplies to neighbors in need"
+      width="1920"
+      height="1280"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="shell">
+    <p class="eyebrow tracking-widest">Donate Items</p>
+    <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">
+      Wish List — what we need
+    </h1>
+    <p class="max-w-2xl text-muted leading-relaxed fade-in">
+      Base Impact provides survival gear, dry-weather equipment, and a used bike to
+      neighbors who have nothing. The items below go straight to neighbors through
+      Base Impact and our partners — so every gift arrives dry, safe, and ready to use.
+    </p>
+
+    <!-- Preferred giving: funds or items so the most impact on immediate needs. -->
+    <PreferredGivingNote />
+
+    <!-- ================================================================== -->
+    <!-- Amazon Wish List (placeholder). Not fabricated — link comes from    -->
+    <!-- Douglas once the public wish list is live.                         -->
+    <!-- ================================================================== -->
+    <section class="fade-in rounded-2xl bg-band p-6 sm:p-8 border border-line">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 class="font-display text-xl font-semibold text-body">Our Amazon Wish List</h2>
+          <p class="mt-2 text-sm text-muted leading-relaxed">
+            Our public <em>Amazon Wish List</em> is being set up by Douglas — the
+            link will appear here once the list is live. Until then, you can buy
+            each item directly from its verified product page using the
+            <span class="text-body font-medium underline">"Buy on Amazon"</span>
+            links on the item cards below.
+          </p>
+          <p class="mt-3 text-xs text-faint">
+            <mark class="bg-inset rounded px-1 py-0.5 text-body">Coming soon — link placeholder</mark>
+            &nbsp;·&nbsp; Every product link on this page is a real, verified
+            Amazon product page (checked 2026-11-20). Prices are the US Amazon
+            displayed price on that date, not a quote.
+          </p>
+        </div>
+        <span class="inline-flex shrink-0 self-start rounded-full bg-tint-caution px-4 py-2 text-xs font-semibold text-caution">
+          Coming soon
+        </span>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- Fallback: give funds                                        -->
+    <!-- ================================================================== -->
+    <section class="fade-in mt-6 rounded-2xl bg-fill/4 p-6 sm:p-8 border border-line">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 class="font-display text-xl font-semibold text-body">
+            Prefer to give funds?
+          </h2>
+          <p class="mt-2 text-sm text-muted leading-relaxed">
+            We'll buy exactly what's needed, in the quantities we confirm.
+            Funds go further when you pick a single item or set — every gift
+            helps neighbors get through the next cold snap, storm, or heat wave.
+          </p>
+        </div>
+        <a
+          href="/donate"
+          class="inline-flex min-h-11 items-center rounded-full bg-accent px-6 py-2 text-sm font-semibold text-white hover:bg-accent-hover btn-pill"
+        >
+          Give now · /donate
+        </a>
+      </div>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- How it works                                         -->
+    <!-- ================================================================== -->
+    <section class="mt-12 pt-12 fade-in">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow mb-1">How it works</p>
+          <h2 class="section-title">From your gift to a neighbor's door</h2>
+        </div>
+        <p class="section-lead">
+          One gift can become a whole system — gear, a bike, or funds — that gets
+          a neighbor through a hard stretch.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <div class="lp-card flex flex-col p-6">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <p class="mt-4 font-display text-xl font-semibold text-body">1 · You give</p>
+          <p class="mt-2 text-sm text-muted leading-relaxed">
+            Buy an item on Amazon, donate a used-but-serviced bike, or give funds.
+            We write the spec and confirm quantities before anything ships.
+          </p>
+        </div>
+        <div class="lp-card flex flex-col p-6">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <p class="mt-4 font-display text-xl font-semibold text-body">2 · We receive</p>
+          <p class="mt-2 text-sm text-muted leading-relaxed">
+            Items arrive at Base Impact. Bikes go to a local shop for a safety
+            check — never handed out unassembled or without a lock and lights.
+          </p>
+        </div>
+        <div class="lp-card flex flex-col p-6">
+          <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <p class="mt-4 font-display text-xl font-semibold text-body">3 · We deliver</p>
+          <p class="mt-2 text-sm text-muted leading-relaxed">
+            Through LifePointe's cold-weather shelter, Under The Bridge weekly
+            outreach, No One Hungry pantry, and other partners — one gift, many
+            neighbors.
+          </p>
+        </div>
+      </div>
+
+      <p class="mt-8 text-sm text-faint leading-relaxed">
+        Items are stored, safety-checked, and distributed by volunteers and
+        partner staff. We do not sell anything. We do not publish recipient
+        names or addresses. Where possible, we offer the neighbor a choice of
+        sizes and bag colours.
+      </p>
+
+      <p class="mt-4 text-xs text-faint">
+        <mark class="bg-inset rounded px-1 py-0.5 text-body">Tax note</mark>
+        &nbsp;Base Impact Inc. is a Florida nonprofit corporation pursuing its
+        own 501(c)(3) status through Form 1023-EZ. The IRS determination has not
+        yet been issued, so <strong>gifts are not currently tax-deductible</strong>.
+        Please consult your tax advisor.
+      </p>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- Item cards grouped by tier                                        -->
+    <!-- ================================================================== -->
+    <section class="mt-12 pb-12 fade-in">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow mb-1">What's on the list</p>
+          <h2 class="section-title">Needed items by priority</h2>
+        </div>
+        <p class="section-lead">
+          {totalUnits} starter packs across {ITEMS.length} items and 3 priority
+          tiers. Every item is listed with its verified product page and cost so
+          donors can give exactly what's needed.
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        {grouped.map((group) => (
+          <div class="space-y-4">
+            <h3
+              class="flex items-center gap-2 font-display text-xl font-semibold text-body"
+            >
+              <span
+                class="flex h-4 w-4 items-center justify-center rounded-full"
+                style="background:{TIER_TINT[group.tier]};color:{TIER_TEXT[group.tier]}"
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke={TIER_TEXT[group.tier]} stroke-width="2" stroke-linecap="round"><path d="M2 6l4-3 4 3"/></svg>
+              </span>
+              {group.label} ({group.items.length})
+            </h3>
+            <div class="card-group">
+              {group.items.map((item) => (
+                <article class="flex flex-col fade-in">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="min-w-0">
+                      <h3 class="font-display text-lg font-semibold text-body">
+                        {item.item}
+                      </h3>
+                      <p class="mt-0.5 text-xs text-faint">{item.category}</p>
+                    </div>
+                    <span
+                      class="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold"
+                      style={`background:${TIER_TINT[item.tier]};color:${TIER_TEXT[item.tier]}`}
+                    >
+                      {TIER_LABELS[item.tier]}
+                    </span>
+                  </div>
+
+                  <p class="mt-3 text-sm text-muted leading-relaxed">{item.why}</p>
+
+                  <dl class="mt-4 grid grid-cols-2 gap-3 border-t border-line/60 pt-4">
+                    <div>
+                      <dt class="text-xs text-faint">Needed</dt>
+                      <dd class="text-sm font-semibold text-body">{item.qty} packs</dd>
+                    </div>
+                    <div>
+                      <dt class="text-xs text-faint">Unit cost</dt>
+                      <dd class="text-sm font-semibold text-body">
+                        ${(item.unitCost).toFixed(2)}
+                      </dd>
+                    </div>
+                    <div class="col-span-2">
+                      <dt class="text-xs text-faint">Estimated starter cost</dt>
+                      <dd class="text-sm font-semibold text-body">
+                        ${(item.unitCost * item.qty).toFixed(2)}
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <div class="mt-4 flex flex-wrap gap-3" set:html={cta(item).html} />
+
+                  {item.altItem && item.altUrl && (
+                    <p class="mt-3 text-xs text-faint">
+                      Or:&nbsp;
+                      <a href={item.altUrl} target="_blank" rel="noopener noreferrer" class="text-accent underline underline-offset-2">
+                        {item.altItem}
+                      </a>
+                    </p>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="mt-8 text-xs text-faint">
+        Volumes are a starter tranche sized for roughly 10–20 neighbors plus an
+        outreach buffer. Bulk tiers (25 / 50 / 100 units) are on request — see
+        the item doc for manufacturer-ready specs and corporate-donation fit.
+      </p>
+    </section>
+
+    <!-- ================================================================== -->
+    <!-- Vendor / manufacturer pitch                                        -->
+    <!-- ================================================================== -->
+    <section class="mt-12 rounded-2xl bg-band p-6 sm:p-8 border border-line fade-in">
+      <h2 class="font-display text-xl font-semibold text-body">
+        For manufacturers &amp; distributors
+      </h2>
+      <p class="mt-2 text-sm text-muted leading-relaxed">
+        Blanket donations move faster when a product matches a spec. Pitch your
+        product to Base Impact — we'll write the spec, confirm quantities, and
+        report back what shipped. A few categories are strong fit today because
+        they are high volume, low unit cost, simple to ship, and needed year-round.
+      </p>
+      <a
+        href="/contact"
+        class="mt-4 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white hover:bg-accent-hover btn-pill"
+      >
+        Pitch your product · contact us
+      </a>
+    </section>
+
+    <p class="mt-8 text-xs text-faint">
+      Base Impact Inc. · Scottsmoor, FL 32775 · (321) 323-0999 ·
+      <a href="mailto:admin@baseimpact.org" class="text-accent underline underline-offset-2">admin@baseimpact.org</a>
+    </p>
+  </div>
+</Base>

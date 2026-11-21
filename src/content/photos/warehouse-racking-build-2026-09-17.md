@@ -1,7 +1,7 @@
 ---
 title: "Warehouse shelves at LifePointe Ministries"
 image: /assets/lifepointe-warehouse-shelves-2026-09-17.jpg
-caption: "Organized shelving for donated clothing and supplies in the LifePointe warehouse."
+caption: "Volunteers built organized shelving for donated goods and clothing in the LifePointe warehouse."
 date: 2026-09-17
 state: "FL"
 album: "warehouse"

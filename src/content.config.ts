@@ -9,6 +9,8 @@ const postsCollection = defineCollection({
     description: z.string().optional(),
     date: z.coerce.date(),
     image: z.string().optional(),
+    /** "cover" crops the banner; "contain" keeps the whole photo visible. */
+    imageFit: z.enum(["cover", "contain"]).default("cover"),
     categories: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),

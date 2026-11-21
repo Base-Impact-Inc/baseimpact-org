@@ -22,7 +22,7 @@ const recent = posts.filter(p => !p.data.featured);
         {featured.map(post => (
           <a href={`/blog/${post.id}`} class="group rounded-2xl bg-card shadow-[var(--shadow-border)] hover:shadow-lg transition-shadow overflow-hidden">
             {post.data.image && (
-              <img src={post.data.image} alt={post.data.title} class="w-full h-56 object-cover" loading="lazy" />
+              <img src={post.data.image} alt={post.data.title} class:list={["w-full h-56", post.data.imageFit === "contain" ? "object-contain bg-band" : "object-cover"]} loading="lazy" />
             )}
             <div class="p-6">
               <span class="text-xs font-semibold text-accent uppercase tracking-wide">Featured</span>
@@ -48,7 +48,7 @@ const recent = posts.filter(p => !p.data.featured);
         {recent.map(post => (
           <a href={`/blog/${post.id}`} class="group block rounded-2xl bg-card shadow-[var(--shadow-border)] hover:shadow-lg transition-shadow overflow-hidden">
             {post.data.image && (
-              <img src={post.data.image} alt={post.data.title} class="w-full h-48 object-cover" loading="lazy" />
+              <img src={post.data.image} alt={post.data.title} class:list={["w-full h-48", post.data.imageFit === "contain" ? "object-contain bg-band" : "object-cover"]} loading="lazy" />
             )}
             <div class="p-5">
               <h3 class="font-display text-lg font-semibold text-body group-hover:text-accent transition-colors">{post.data.title}</h3>

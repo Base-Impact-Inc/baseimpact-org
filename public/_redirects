@@ -1,3 +1,7 @@
 # Legacy paths that should not dead-end.
 /give /how-to-help 301
 /programs/tech-access /technology-access 301
+
+# CoC meeting report merged into the membership post (2026-11-18).
+/blog/coc-general-meeting-2026-11-04 /blog/brevard-homeless-coc-coalition 301
+/blog/coc-general-meeting-2026-11-04/ /blog/brevard-homeless-coc-coalition/ 301

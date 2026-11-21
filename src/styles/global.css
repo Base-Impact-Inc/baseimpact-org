@@ -1367,6 +1367,34 @@ html {
   box-shadow: var(--shadow-border);
 }
 
+/* Improved link card */
+.link-card {
+  display: block;
+  padding: 1.25rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
+}
+.link-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-border);
+}
+
+/* Preferred-giving note — warm callout on the donation surfaces (/donate, /wishlist). */
+.preferred-giving-note {
+  border-left: 3px solid var(--color-warm-orange);
+  background: rgba(243, 112, 33, 0.09);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+}
+.preferred-giving-note p {
+  margin: 0;
+  font-size: var(--step-body);
+  line-height: 1.625;
+  color: var(--color-body);
+  text-wrap: pretty;
+}
+
 /* Better section header */
 .section-header {
   margin-bottom: 1.5rem;
@@ -1807,6 +1835,7 @@ html {
 .size-8 { width: 2rem; height: 2rem; }
 .min-h-\[60vh\] { min-height: 60vh; }
 .object-cover { object-fit: cover; }
+.object-contain { object-fit: contain; }
 .overflow-y-auto { overflow-y: auto; }
 .inset-0 { inset: 0; }
 .fixed { position: fixed; }

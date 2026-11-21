@@ -32,6 +32,15 @@ The outreach arm of LifePointe is called C.R.E.W. 29 — a weekly gathering of v
 
 Shelter work and technology access overlap more than people expect. Guests need to reach services, benefits, and family; the organizations running shelters need working devices, internet, and reliable information to keep operations moving. Training alongside LifePointe helps us understand where our directory and tech support can actually help.
 
+## How Base Impact supports shelter work
+
+- **Trained volunteers** — ready to serve when a cold night is forecast
+- **Resource navigation** — our directory helps guests find longer-term services
+- **Technology support** — devices, internet, and reliable information for the organizations running the shelter
+- **Community awareness** — sharing when shelters open and how neighbors can reach them
+
+Cold-weather shelters in Brevard County typically open when overnight temperatures are forecast to fall to around 40°F, with announcements through local media, 211, and community organizations. If you or someone you know needs a place on a cold night, call 211.
+
 ## Get involved
 
 LifePointe is always looking for volunteers and supplies. Call 321-383-0254 or visit [lifepointeministries.org](https://www.lifepointeministries.org/).[16][17]

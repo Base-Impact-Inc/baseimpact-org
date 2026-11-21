@@ -17,7 +17,7 @@ const { Content } = await render(post);
 <Base title={`${post.data.title} — Base Impact`} description={post.data.description}>
   <article class="max-w-3xl mx-auto fade-in">
     {post.data.image && (
-      <img src={post.data.image} alt={post.data.title} class="w-full h-72 object-cover rounded-2xl mb-8" loading="lazy" />
+      <img src={post.data.image} alt={post.data.title} class:list={["w-full rounded-2xl mb-8", post.data.imageFit === "contain" ? "object-contain bg-band" : "h-72 object-cover"]} loading="lazy" />
     )}
     <div class="mb-6">
       <h1 class="font-display text-4xl font-semibold text-body mb-3 leading-tight">{post.data.title}</h1>

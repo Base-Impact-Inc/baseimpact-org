@@ -2,7 +2,8 @@
 title: "The Willem Family: Crohn's Disease, Community Support, and Hope"
 description: "Matthew Willem of DeBary, FL was diagnosed with Crohn's disease after decades of misdiagnosis. Base Impact and the West Volusia community rallied to support the Willem family through medical and financial challenges."
 date: 2026-10-28
-image: https://www.beacononlinenews.com/wp-content/uploads/2026/10/A01-crohns-disease-e1793125644318.jpg
+image: /assets/crohns-family-beacon.jpg
+imageFit: contain
 categories: ["Impact Stories"]
 tags: ["Crohn's disease", "medical", "community support", "family", "DeBary", "GoFundMe"]
 featured: true
@@ -10,6 +11,10 @@ draft: false
 ---
 
 Base Impact is proud to be part of the community response supporting the Willem family of DeBary, Florida. Matthew Willem spent decades being told his severe symptoms were anxiety or laziness — until a colonoscopy revealed Crohn's disease. The delayed diagnosis cost him health, income, and stability. But the West Volusia community rallied around him.
+
+![The Willem family, photographed for the West Volusia Beacon article about Matthew's Crohn's disease diagnosis](https://www.beacononlinenews.com/wp-content/uploads/2026/10/A01-crohns-disease-e1793125644318.jpg)
+
+*Photo: West Volusia Beacon. The full image is shown here so every family member remains visible.*
 
 ## The story
 

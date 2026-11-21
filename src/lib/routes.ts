@@ -139,6 +139,12 @@ export const ROUTE_META: RouteMeta[] = [
       "Where to find Base Impact online. Our handle is baseimpactorg on every platform.",
   },
   {
+    path: "/wishlist",
+    title: "Donate Items",
+    description:
+      "What Base Impact needs right now — buy it on Amazon, donate a used bike, or give funds so we'll buy exactly what's needed.",
+  },
+  {
     path: "/donate",
     title: "Donate to Base Impact",
     description:
