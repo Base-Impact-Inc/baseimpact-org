@@ -39,6 +39,7 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
   </div>
 
   <form class="max-w-lg space-y-4" method="POST" action="/api/contact">
+    <input type="hidden" name="source_page" value="/contact" />
     <div>
       <label for="name" class="block text-sm font-semibold text-body mb-1">Name</label>
       <input type="text" id="name" name="name" required

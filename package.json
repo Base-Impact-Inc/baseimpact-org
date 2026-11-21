@@ -13,7 +13,8 @@
     "generate-types": "wrangler types",
     "db:dump": "esbuild scripts/_dump-entry.ts --bundle --platform=node --format=cjs --outfile=.tmp-resources.cjs --log-level=error && node -e \"console.log(require('./.tmp-resources.cjs').ALL_RESOURCES.length)\"",
     "db:seed": "node scripts/seed-resources.mjs",
-    "db:seed:local": "LOCAL=1 node scripts/seed-resources.mjs"
+    "db:seed:local": "LOCAL=1 node scripts/seed-resources.mjs",
+    "test:contact": "esbuild scripts/test-contact-submit.ts --bundle --platform=node --format=esm --outfile=.tmp-contact-test.mjs --log-level=error && node .tmp-contact-test.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.4.8",
