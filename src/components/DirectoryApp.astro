@@ -35,6 +35,9 @@ const COPY: Record<string, Record<string, string>> = {
     anyDistance: 'Any distance',
     within: 'Within',
     miles: 'mi',
+    distanceMode: 'Distance mode',
+    byRoad: 'By road',
+    walking: 'Walking',
     all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
     money: 'Money Help', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
     openNow: 'Only show open now',
@@ -159,6 +162,16 @@ const mapData = JSON.stringify(cardData);
           <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
           {t.useLocation}
         </button>
+        <label for="distance-mode" class="sr-only">{t.distanceMode}</label>
+        <select
+          id="distance-mode"
+          aria-label={t.distanceMode}
+          class="w-32 rounded-xl border-line px-3 py-3"
+          style="background: var(--color-page); color: var(--color-body);"
+        >
+          <option value="driving">{t.byRoad}</option>
+          <option value="walking">{t.walking}</option>
+        </select>
       </div>
     </div>
 

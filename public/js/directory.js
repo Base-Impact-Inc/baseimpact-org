@@ -45,6 +45,19 @@
   const RADIUS_KEY = 'baseimpact-radius';
   const SAVED_KEY = 'baseimpact-saved';
 
+  /* Road-distance upgrade: public OSRM (no key, no hosting). Haversine stays
+     as the instant sort AND as the fallback when the public server fails. */
+  const ROAD_DISTANCE_KEY = 'baseimpact-road-distance-v1';
+  const ROAD_MODE_KEY = 'baseimpact-road-mode';
+  const ROAD_PROFILES = { driving: 'routed-car', walking: 'routed-foot' };
+  const ROAD_BASES = [
+    'https://routing.openstreetmap.de', // FOSSGIS: car + foot profiles
+    'https://router.project-osrm.org',  // OSRM demo: fallback when FOSSGIS rate-limits
+  ];
+  const ROAD_LIMIT = 20;
+  const ROAD_TTL_MS = 60 * 60 * 1000;
+  const METERS_PER_MILE = 1609.344;
+
   let visibleCount = PAGE_SIZE;
   let activeGroup = 'all';
   let activeState = 'all';
@@ -57,11 +70,18 @@
   let markerLayer = null;
   let mapInitialised = false;
   let currentMapGroup = 'all';
+  let roadMode = 'driving';
+  let roadDistances = new Map();
+  let roadUpgradeSeq = 0;
 
   try {
     savedIds = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]');
     location = JSON.parse(sessionStorage.getItem(LOCATION_KEY) || 'null');
     radius = parseInt(sessionStorage.getItem(RADIUS_KEY) || '0', 10) || 0;
+    const storedMode = sessionStorage.getItem(ROAD_MODE_KEY);
+    if (storedMode && Object.prototype.hasOwnProperty.call(ROAD_PROFILES, storedMode)) {
+      roadMode = storedMode;
+    }
   } catch {
     /* ignore malformed storage */
   }
@@ -83,11 +103,148 @@
   }
 
   function itemDistance(item) {
+    const id = item.getAttribute('data-resource-id');
+    if (id && roadDistances.has(id)) return roadDistances.get(id);
     if (!location) return parseFloat(item.getAttribute('data-distance') || '9999');
     const lat = parseFloat(item.getAttribute('data-lat'));
     const lng = parseFloat(item.getAttribute('data-lng'));
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return 9999;
     return calculateDistanceMiles(location.lat, location.lng, lat, lng);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Road distances — public OSRM, with Haversine fallback              */
+  /* ------------------------------------------------------------------ */
+
+  function roadCacheKey(origin, ids) {
+    const o = `${origin.lat.toFixed(4)},${origin.lng.toFixed(4)}`;
+    return `${ROAD_DISTANCE_KEY}:${roadMode}:${o}:${ids.slice(0, 50).join(',')}`;
+  }
+
+  function readRoadCache(origin, ids) {
+    try {
+      const raw = sessionStorage.getItem(roadCacheKey(origin, ids));
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || Date.now() - data.timestamp > ROAD_TTL_MS) return null;
+      return data.distances && typeof data.distances === 'object' ? data.distances : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeRoadCache(origin, ids, distances) {
+    try {
+      sessionStorage.setItem(
+        roadCacheKey(origin, ids),
+        JSON.stringify({ distances, timestamp: Date.now() }),
+      );
+    } catch {
+      /* storage disabled or full — caching is best-effort */
+    }
+  }
+
+  function clearRoadDistances() {
+    roadDistances = new Map();
+  }
+
+  function setDistanceStatus(ok) {
+    if (!locationStatus || !location) return;
+    const base = location.label ? `Showing results near ${location.label}` : '';
+    const note = ok
+      ? ` · road distance (${roadMode})`
+      : ' · road distance unavailable, showing straight-line';
+    locationStatus.textContent = base + note;
+  }
+
+  async function upgradeRoadDistances() {
+    if (!location || !Number.isFinite(location.lat) || !Number.isFinite(location.lng)) return;
+    const profile = ROAD_PROFILES[roadMode];
+    if (!profile) return;
+
+    // Haversine still sorts everything instantly; upgrade only the closest few.
+    const candidates = items
+      .filter((item) => {
+        const lat = parseFloat(item.getAttribute('data-lat'));
+        const lng = parseFloat(item.getAttribute('data-lng'));
+        return Number.isFinite(lat) && Number.isFinite(lng);
+      })
+      .sort((a, b) => itemDistance(a) - itemDistance(b))
+      .slice(0, ROAD_LIMIT);
+
+    if (candidates.length === 0) return;
+
+    const ids = candidates.map((item) => item.getAttribute('data-resource-id') || '');
+    const seq = ++roadUpgradeSeq;
+
+    const cached = readRoadCache(location, ids);
+    if (cached) {
+      ids.forEach((id, i) => {
+        const d = cached[id];
+        if (Number.isFinite(d)) roadDistances.set(id, d);
+      });
+      render();
+      setDistanceStatus(true);
+      return;
+    }
+
+    // OSRM expects lng,lat; one origin row -> N destination columns.
+    const coords = [
+      `${location.lng},${location.lat}`,
+      ...candidates.map((item) => `${item.getAttribute('data-lng')},${item.getAttribute('data-lat')}`),
+    ].join(';');
+    const destinations = candidates.map((_, i) => i + 1).join(';');
+    const urls = ROAD_BASES.map((base) => {
+      // The OSRM demo server only exposes the driving profile.
+      const profile = base.includes('openstreetmap.de') ? ROAD_PROFILES[roadMode] : 'driving';
+      return (
+        `${base}/${profile}/table/v1/driving/${coords}` +
+        `?sources=0&destinations=${destinations}&annotations=distance,duration`
+      );
+    });
+
+    try {
+      let data = null;
+      let lastError = null;
+      for (const url of urls) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 10000);
+        try {
+          const response = await fetch(url, { signal: controller.signal, referrerPolicy: 'no-referrer' });
+          if (!response.ok) throw new Error(`OSRM ${response.status}`);
+          const parsed = await response.json();
+          if (parsed.code !== 'Ok') throw new Error(parsed.message || parsed.code || 'OSRM error');
+          data = parsed;
+          break;
+        } catch (err) {
+          lastError = err;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+      if (!data) throw lastError || new Error('No road-distance provider available');
+
+      const row = data.distances && data.distances[0];
+      if (!Array.isArray(row)) throw new Error('OSRM returned no distance row');
+
+      const distances = {};
+      candidates.forEach((item, i) => {
+        const meters = row[i];
+        if (typeof meters !== 'number' || !Number.isFinite(meters)) return;
+        const miles = Math.round((meters / METERS_PER_MILE) * 10) / 10;
+        const id = item.getAttribute('data-resource-id') || '';
+        roadDistances.set(id, miles);
+        distances[id] = miles;
+      });
+      if (seq !== roadUpgradeSeq) return; // a newer location/mode request won
+      writeRoadCache(location, ids, distances);
+      render();
+      setDistanceStatus(true);
+    } catch (err) {
+      if (seq !== roadUpgradeSeq) return;
+      console.warn('Road-distance upgrade failed; keeping straight-line distances:', err);
+      setDistanceStatus(false);
+    }
   }
 
   /* ------------------------------------------------------------------ */
@@ -265,7 +422,9 @@
     sessionStorage.setItem(LOCATION_KEY, JSON.stringify({ lat: loc.lat, lng: loc.lng, label }));
     if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label}` : '';
     visibleCount = PAGE_SIZE;
+    clearRoadDistances();
     render();
+    upgradeRoadDistances();
   }
 
   async function geocodeZip(zip) {
@@ -318,22 +477,79 @@
     render();
   });
 
+  const distanceModeSelect = $('distance-mode');
+  if (distanceModeSelect) {
+    distanceModeSelect.value = roadMode;
+    distanceModeSelect.addEventListener('change', () => {
+      const next = distanceModeSelect.value;
+      if (!Object.prototype.hasOwnProperty.call(ROAD_PROFILES, next)) return;
+      roadMode = next;
+      try {
+        sessionStorage.setItem(ROAD_MODE_KEY, roadMode);
+      } catch {
+        /* best-effort */
+      }
+      roadUpgradeSeq += 1; // invalidate any in-flight request
+      clearRoadDistances();
+      render();
+      upgradeRoadDistances();
+    });
+  }
+
   /* ------------------------------------------------------------------ */
   /* Map                                                                 */
   /* ------------------------------------------------------------------ */
 
   function buildPopup(r) {
-    const dest = `https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lng}`;
-    const directions = r.mobileOnly
-      ? ''
-      : `<a href="${dest}" target="_blank" rel="noreferrer" style="display:inline-block;margin-top:6px;background:#1717e5;color:#fff;padding:4px 10px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:600;">Directions</a>`;
+    const base = `https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lng}`;
+    const hasCoords = r.lat && r.lng;
+    const modes = hasCoords
+      ? [
+          { mode: 'walking', label: 'Walk', "aria": 'Open walking directions', icon: '<svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="13" cy="2" r="2"/><circle cx="13" cy="18" r="2"/><path d="M13 6l-2-4h4l-2-4"/><path d="M11 11h2"/></svg>' },
+          { mode: 'transit', label: 'Bus', "aria": 'Open transit directions (SCAT)', icon: '<svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 11h18"/></svg>' },
+          { mode: 'driving', label: 'Drive', "aria": 'Open driving directions', icon: '<svg class="inline size-3.5 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 11 3 3 3 11"/><path d="M13.5 8.5L19 2l1.5 8L23 16l-6-4-6 4 1.5 8z"/></svg>' }
+        ]
+      : [];
+
+    const directionsHtml = modes.map(m => `
+      <a
+        href="${base}&travelmode=${m.mode}"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="${m.aria} to ${escapeHTML(r.name)}"
+        class="direction-pill"
+        style="
+          display:inline-flex;
+          align-items:center;
+          gap:0.375rem;
+          padding:0.375rem 0.75rem;
+          border-radius:9999px;
+          font-size:0.75rem;
+          font-weight:600;
+          text-decoration:none;
+          color:var(--color-body);
+          background:var(--color-card);
+          border:1px solid var(--color-line);
+          transition:background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+        "
+        onmouseover="this.style.background='var(--color-inset)';this.style.borderColor='var(--color-accent)';"
+        onmouseout="this.style.background='var(--color-card)';this.style.borderColor='var(--color-line)';"
+        onmousedown="this.style.transform='scale(0.96)';"
+        onmouseup="this.style.transform='scale(1)';"
+      >
+        ${m.icon}
+        ${m.label}
+      </a>
+    `).join('');
+
     return `
       <div style="min-width:200px;font-family:Inter,system-ui,sans-serif;">
         <strong style="color:#111;display:block;margin-bottom:2px;">${escapeHTML(r.name)}</strong>
         <span style="color:#555;font-size:12px;">${escapeHTML(r.address)}</span>
-        ${directions}
+        ${hasCoords ? `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:8px;">${directionsHtml}</div>` : ''}
       </div>`;
   }
+
 
   function escapeHTML(value) {
     return String(value).replace(/[&<>"']/g, (c) => ({
@@ -430,4 +646,5 @@
     locationStatus.textContent = `Showing results near ${location.label}`;
   }
   render();
+  if (location) upgradeRoadDistances();
 })();
