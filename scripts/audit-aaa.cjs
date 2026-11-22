@@ -2,30 +2,31 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 
 const BASE = process.env.BASE_URL || "https://baseimpact.org";
-const PAGES = [
-  `${BASE}/`,
-  `${BASE}/directory`,
-  `${BASE}/programs/resource-guide`,
-  `${BASE}/blog/lifepointe-scam-awareness`,
-  `${BASE}/blog/navy-build-parts-outreach`,
-  `${BASE}/contact`,
-  `${BASE}/donate`,
+const DEFAULT_ROUTES = [
+  "/", "/directory", "/programs/resource-guide",
+  "/blog/lifepointe-scam-awareness", "/blog/navy-build-parts-outreach",
+  "/contact", "/donate", "/privacy", "/terms", "/accessibility",
 ];
+const ROUTES = process.env.ROUTES_FILE
+  ? JSON.parse(fs.readFileSync(process.env.ROUTES_FILE, "utf8"))
+  : DEFAULT_ROUTES;
+const PAGES = ROUTES.map((r) => BASE + r);
 
 async function audit() {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-  await page.setViewportSize({ width: 1280, height: 720 });
-
   const allResults = [];
 
   for (const url of PAGES) {
     console.log(`Auditing: ${url}`);
+    // Fresh context per page: no shared service worker or cache, so a cached
+    // response can never make one page look like another (or like about:blank).
+    const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+    const page = await context.newPage();
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(2500);
       await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.4/axe.min.js' });
-      
+
       const results = await page.evaluate(() => {
         return new Promise((resolve) => {
           axe.run(document, {
@@ -49,6 +50,8 @@ async function audit() {
     } catch (e) {
       console.log(`  ERROR: ${e.message}`);
       allResults.push({ url, results: null, error: e.message });
+    } finally {
+      await context.close();
     }
   }
 

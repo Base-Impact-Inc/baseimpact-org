@@ -1,6 +1,7 @@
 const { chromium } = require('playwright');
 const BASE = process.env.BASE_URL || 'https://baseimpact.org';
-const PAGES = ['/', '/directory', '/contact', '/donate'];
+const DEFAULT_PAGES = ['/', '/directory', '/contact', '/donate', '/privacy', '/terms', '/accessibility'];
+const PAGES = process.env.ROUTES_FILE ? JSON.parse(require('fs').readFileSync(process.env.ROUTES_FILE, 'utf8')) : DEFAULT_PAGES;
 
 (async () => {
   const browser = await chromium.launch({ headless: true });

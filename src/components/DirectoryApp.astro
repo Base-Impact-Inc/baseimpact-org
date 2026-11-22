@@ -115,7 +115,7 @@ const mapData = JSON.stringify(cardData);
   <div class="text-center max-w-3xl mx-auto">
     <p class="eyebrow">{t.eyebrow}</p>
     <h1 class="display-4 mt-3" style="color: var(--color-body);">
-      {t.titleA}<span style="color: var(--color-accent);">.</span> {t.titleB}
+      {t.titleA}<span style="color: var(--color-accent);" aria-hidden="true">.</span> {t.titleB}
     </h1>
     <p class="section-lead mx-auto" style="text-align:center;">{t.lead}</p>
     <p class="mt-4">
@@ -140,7 +140,7 @@ const mapData = JSON.stringify(cardData);
             class="w-full rounded-xl border-line px-4 py-3 pl-10"
             style="background: var(--color-page); color: var(--color-body);"
           />
-          <svg class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </div>
       </div>
       <div>
@@ -159,7 +159,7 @@ const mapData = JSON.stringify(cardData);
       </div>
       <div class="flex gap-2">
         <button type="button" id="use-location-btn" class="btn btn-outline-light flex-1">
-          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
           {t.useLocation}
         </button>
         <label for="distance-mode" class="sr-only">{t.distanceMode}</label>
@@ -219,7 +219,7 @@ const mapData = JSON.stringify(cardData);
         <button type="button" id="view-map" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.map}</button>
       </div>
       <button type="button" id="save-all-btn" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">
-        <svg class="size-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        <svg class="size-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         {t.saved}
       </button>
       <button type="button" id="print-list" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">

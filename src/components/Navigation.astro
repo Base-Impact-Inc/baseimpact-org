@@ -37,19 +37,6 @@ const connect = [
   { href: "/share-your-story", label: "Share Your Story" },
   { href: "/socials", label: "Socials" },
 ];
-
-const searchPages = [
-  { title: "Home", url: "/", keywords: "home main" },
-  { title: "Resource Directory", url: "/directory", keywords: "directory find help resources" },
-  { title: "Technology Access", url: "/technology-access", keywords: "technology devices internet" },
-  { title: "Resource Guide", url: "/guide", keywords: "guide help" },
-  { title: "Stories", url: "/blog", keywords: "blog stories" },
-  { title: "About", url: "/about", keywords: "about company" },
-  { title: "Contact", url: "/contact", keywords: "contact email phone" },
-  { title: "Donate", url: "/donate", keywords: "donate give" },
-  { title: "Donate Items", url: "/wishlist", keywords: "wishlist donate items" },
-  { title: "Volunteer", url: "/volunteer", keywords: "volunteer help" },
-];
 ---
 
 <header class="site-header" role="banner">
@@ -58,15 +45,15 @@ const searchPages = [
       <span class="logo-text">Base Impact</span>
     </a>
 
-    <div class="nav-links desktop-nav" role="menubar">
+    <div class="nav-links desktop-nav">
       <div class="nav-dropdown" data-dropdown="findhelp">
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-          Find Help <span class="dropdown-arrow">&#9662;</span>
+          Find Help <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="nav-dropdown-menu" role="menu">
+        <div class="nav-dropdown-menu">
           <div class="dropdown-grid">
             {findHelp.map((s) => (
-              <a href={s.href} class="dropdown-item" role="menuitem">
+              <a href={s.href} class="dropdown-item">
                 <span>{s.label}</span>
               </a>
             ))}
@@ -76,12 +63,12 @@ const searchPages = [
 
       <div class="nav-dropdown" data-dropdown="about">
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-          About <span class="dropdown-arrow">&#9662;</span>
+          About <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="nav-dropdown-menu" role="menu">
+        <div class="nav-dropdown-menu">
           <div class="dropdown-grid">
             {about.map((s) => (
-              <a href={s.href} class="dropdown-item" role="menuitem">
+              <a href={s.href} class="dropdown-item">
                 <span>{s.label}</span>
               </a>
             ))}
@@ -91,12 +78,12 @@ const searchPages = [
 
       <div class="nav-dropdown" data-dropdown="involved">
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-          Get Involved <span class="dropdown-arrow">&#9662;</span>
+          Get Involved <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="nav-dropdown-menu" role="menu">
+        <div class="nav-dropdown-menu">
           <div class="dropdown-grid">
             {getInvolved.map((s) => (
-              <a href={s.href} class="dropdown-item" role="menuitem">
+              <a href={s.href} class="dropdown-item">
                 <span>{s.label}</span>
               </a>
             ))}
@@ -108,12 +95,12 @@ const searchPages = [
 
       <div class="nav-dropdown" data-dropdown="resources">
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-          Resources <span class="dropdown-arrow">&#9662;</span>
+          Resources <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="nav-dropdown-menu" role="menu">
+        <div class="nav-dropdown-menu">
           <div class="dropdown-grid">
             {resources.map((s) => (
-              <a href={s.href} class="dropdown-item" role="menuitem">
+              <a href={s.href} class="dropdown-item">
                 <span>{s.label}</span>
               </a>
             ))}
@@ -123,12 +110,12 @@ const searchPages = [
 
       <div class="nav-dropdown" data-dropdown="connect">
         <button class="nav-dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-          Connect <span class="dropdown-arrow">&#9662;</span>
+          Connect <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
-        <div class="nav-dropdown-menu" role="menu">
+        <div class="nav-dropdown-menu">
           <div class="dropdown-grid">
             {connect.map((s) => (
-              <a href={s.href} class="dropdown-item" role="menuitem">
+              <a href={s.href} class="dropdown-item">
                 <span>{s.label}</span>
               </a>
             ))}
@@ -137,7 +124,7 @@ const searchPages = [
       </div>
 
       <button class="nav-search-btn" aria-label="Search (Ctrl+K)" title="Search (Ctrl+K)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
@@ -170,7 +157,7 @@ const searchPages = [
 
       <div class="mobile-nav-section">
         <button class="mobile-nav-group-toggle" aria-expanded="false">
-          Find Help <span class="dropdown-arrow">&#9662;</span>
+          Find Help <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mobile-nav-group" hidden>
           {findHelp.map((s) => (
@@ -181,7 +168,7 @@ const searchPages = [
 
       <div class="mobile-nav-section">
         <button class="mobile-nav-group-toggle" aria-expanded="false">
-          About <span class="dropdown-arrow">&#9662;</span>
+          About <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mobile-nav-group" hidden>
           {about.map((s) => (
@@ -192,7 +179,7 @@ const searchPages = [
 
       <div class="mobile-nav-section">
         <button class="mobile-nav-group-toggle" aria-expanded="false">
-          Get Involved <span class="dropdown-arrow">&#9662;</span>
+          Get Involved <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mobile-nav-group" hidden>
           {getInvolved.map((s) => (
@@ -203,7 +190,7 @@ const searchPages = [
 
       <div class="mobile-nav-section">
         <button class="mobile-nav-group-toggle" aria-expanded="false">
-          Resources <span class="dropdown-arrow">&#9662;</span>
+          Resources <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mobile-nav-group" hidden>
           {resources.map((s) => (
@@ -214,7 +201,7 @@ const searchPages = [
 
       <div class="mobile-nav-section">
         <button class="mobile-nav-group-toggle" aria-expanded="false">
-          Connect <span class="dropdown-arrow">&#9662;</span>
+          Connect <svg class="dropdown-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="mobile-nav-group" hidden>
           {connect.map((s) => (
@@ -225,11 +212,11 @@ const searchPages = [
     </div>
   </div>
 
-  <div class="search-modal" id="search-modal" aria-hidden="true" role="dialog" aria-label="Search">
+  <div class="search-modal" id="search-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Search">
     <div class="search-modal-overlay"></div>
     <div class="search-modal-content">
       <div class="search-modal-header">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
@@ -302,6 +289,37 @@ const searchPages = [
 </style>
 
 <script>
+  // Search index. Lives here (not in frontmatter) because Astro scopes
+  // frontmatter to the template; a module script cannot see it.
+  const searchPages = [
+    { title: "Home", url: "/", keywords: "home main" },
+    { title: "Resource Directory", url: "/directory", keywords: "directory find help resources" },
+    { title: "Technology Access", url: "/technology-access", keywords: "technology devices internet" },
+    { title: "Resource Guide", url: "/guide", keywords: "guide help" },
+    { title: "Stories", url: "/blog", keywords: "blog stories" },
+    { title: "About", url: "/about", keywords: "about company" },
+    { title: "Contact", url: "/contact", keywords: "contact email phone" },
+    { title: "Donate", url: "/donate", keywords: "donate give" },
+    { title: "Donate Items", url: "/wishlist", keywords: "wishlist donate items" },
+    { title: "Volunteer", url: "/volunteer", keywords: "volunteer help" },
+  ];
+
+  // Keep Tab cycling inside a dialog-like container while it is open.
+  const tabbableIn = (root) =>
+    [...root.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])')]
+      .filter((el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; });
+
+  function trapTab(container) {
+    container.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const f = tabbableIn(container);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    });
+  }
+
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
   const mobileDrawer = document.getElementById('mobile-drawer');
   const mobileDrawerClose = document.querySelector('.mobile-drawer-close');
@@ -313,6 +331,7 @@ const searchPages = [
     mobileMenuBtn?.setAttribute('aria-expanded', 'true');
     mobileDrawer?.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    mobileDrawerClose?.focus();
   }
   function closeMobileMenu() {
     mobileDrawer?.classList.remove('open');
@@ -320,10 +339,15 @@ const searchPages = [
     mobileMenuBtn?.setAttribute('aria-expanded', 'false');
     mobileDrawer?.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    mobileMenuBtn?.focus();
   }
-  mobileMenuBtn?.addEventListener('click', openMobileMenu);
+  mobileMenuBtn?.addEventListener('click', () => {
+    if (mobileDrawer?.classList.contains('open')) closeMobileMenu();
+    else openMobileMenu();
+  });
   mobileDrawerClose?.addEventListener('click', closeMobileMenu);
   mobileDrawerOverlay?.addEventListener('click', closeMobileMenu);
+  trapTab(mobileDrawer);
 
   document.querySelectorAll('.mobile-nav-group-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -363,12 +387,18 @@ const searchPages = [
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeMobileMenu();
-      document.querySelectorAll('.nav-dropdown.open').forEach((d) => {
-        d.classList.remove('open');
-        d.querySelector('.nav-dropdown-trigger')?.setAttribute('aria-expanded', 'false');
-      });
-      document.getElementById('search-modal')?.classList.remove('open');
+      // Close the topmost thing that is open, and put focus back where it started.
+      const openDropdown = document.querySelector('.nav-dropdown.open');
+      if (openDropdown) {
+        openDropdown.classList.remove('open');
+        const t = openDropdown.querySelector('.nav-dropdown-trigger');
+        t?.setAttribute('aria-expanded', 'false');
+        t?.focus();
+        return;
+      }
+      if (mobileDrawer?.classList.contains('open')) { closeMobileMenu(); return; }
+      const searchModal = document.getElementById('search-modal');
+      if (searchModal?.classList.contains('open')) { closeSearch(); return; }
     }
   });
 
@@ -378,14 +408,18 @@ const searchPages = [
 
   function openSearch() {
     searchModal?.classList.add('open');
+    searchModal?.setAttribute('aria-hidden', 'false');
     searchInput?.focus();
   }
   function closeSearch() {
     searchModal?.classList.remove('open');
+    searchModal?.setAttribute('aria-hidden', 'true');
     if (searchInput) searchInput.value = '';
+    searchBtn?.focus();
   }
   searchBtn?.addEventListener('click', openSearch);
   document.querySelector('.search-modal-overlay')?.addEventListener('click', closeSearch);
+  trapTab(searchModal);
 
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {

@@ -72,6 +72,8 @@
   /* accents — launchpad primary #1717e5 */
   --color-accent: #1717e5;
   --color-accent-hover: #3333f0;
+  /* accent as *text* on dark surfaces — #1717e5 is a fill colour, too dark to read (WCAG 1.4.3) */
+  --color-link: #a3a3f7;
   --color-positive: #198754;
   --color-caution: #ffc107;
   --color-critical: #dc3545;
@@ -97,6 +99,16 @@
   --color-tint-caution: rgba(255, 193, 7, 0.14);
   --color-tint-critical: rgba(220, 53, 69, 0.16);
   --color-tint-inactive: rgba(138, 138, 142, 0.16);
+
+  /* Text that sits ON the tinted backgrounds above.
+     The base --color-* signals are fill colours (too dark to read on the tint),
+     so these lighter counterparts are guaranteed >= 7:1 even on --color-inset. */
+  --color-on-positive: #4ade80;
+  --color-on-caution: #ffd34d;
+  --color-on-inactive: #c7c7cc;
+  --color-on-critical: #fca5a5;
+  --color-on-high: #fdba74;
+  --color-on-nice: #c7c7cc;
 
   --color-black: #000000;
   --color-white: #ffffff;
@@ -177,6 +189,16 @@ body {
   color: inherit;
   font-family: inherit;
 }
+/* Form controls inherit the dark theme instead of picking up UA light-gray
+   surfaces (buttonface/inputface), which were breaking contrast on cards. */
+button,
+input,
+select,
+textarea {
+  background-color: transparent;
+  color: inherit;
+  font-family: inherit;
+}
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   text-wrap: balance;
@@ -189,11 +211,11 @@ p {
   text-wrap: pretty;
 }
 a {
-  color: var(--color-accent);
+  color: var(--color-link);
   text-decoration: none;
 }
 a:not([class*="bg-fill"]):hover {
-  color: var(--color-accent-hover);
+  color: #c3c3fb;
 }
 ::placeholder {
   color: var(--color-faint);
@@ -207,7 +229,7 @@ button:not(:disabled),
   touch-action: manipulation;
 }
 :focus-visible {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--color-link);
   outline-offset: 3px;
 }
 input, select, textarea {
@@ -250,7 +272,8 @@ input, select, textarea {
 .text-muted { color: var(--color-muted); }
 .text-faint { color: var(--color-faint); }
 .bg-inset { background: var(--color-inset); }
-.text-accent { color: var(--color-accent); }
+.text-accent { color: var(--color-link); }
+.hover\:text-accent:hover { color: #c3c3fb; }
 .bg-fill { background: var(--color-fill); }
 .bg-fill-hover:hover { background: var(--color-fill-hover); }
 .font-display { font-family: var(--font-display); }
@@ -595,6 +618,7 @@ p {
     --color-bg: #ffffff;
     --color-muted: #333333;
     --color-accent: #0000cc;
+    --color-link: #0000cc;
     --color-line: #000000;
   }
   body {
@@ -761,7 +785,9 @@ p {
 .text-muted { color: var(--color-muted); }
 .text-faint { color: var(--color-faint); }
 .text-on-fill { color: var(--color-on-fill); }
-.text-accent { color: var(--color-accent); }
+.text-accent { color: var(--color-link); }
+.text-link { color: var(--color-link); }
+.hover\:text-accent:hover { color: #c3c3fb; }
 .text-center { text-align: center; }
 .placeholder\:text-faint::placeholder { color: var(--color-faint); }
 
@@ -1015,6 +1041,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
     --color-faint: #333333;
     --color-line: #000000;
     --color-accent: #0000cc;
+    --color-link: #0000cc;
     --shadow-border: 0 0 0 2px #000000;
     --shadow-border-hover: 0 0 0 2px #000000, 0 2px 4px #000000;
   }
@@ -1086,6 +1113,14 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 2px var(--color-signal);
   outline: none;
 }
+/* Keyboard focus gets the same 2px ring + 3px offset as links and buttons.
+   Placed after the rule above so it wins on equal specificity, and the
+   shadow ring is dropped so the field does not show two indicators. */
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 3px;
+  box-shadow: none;
+}
 
 /* Better button disabled state */
 button:disabled, [disabled] {
@@ -1097,21 +1132,21 @@ button:disabled, [disabled] {
 /* Improved error/success messages */
 .alert-success {
   background: var(--color-tint-positive);
-  color: var(--color-positive);
+  color: var(--color-on-positive);
   border: 1px solid var(--color-positive);
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
 }
 .alert-error {
   background: var(--color-tint-critical);
-  color: var(--color-critical);
+  color: var(--color-on-critical);
   border: 1px solid var(--color-critical);
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
 }
 .alert-caution {
   background: var(--color-tint-caution);
-  color: var(--color-caution);
+  color: var(--color-on-caution);
   border: 1px solid var(--color-caution);
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
@@ -1336,10 +1371,10 @@ html {
 }
 
 /* Improved badge variants */
-.badge-success { background: var(--color-tint-positive); color: var(--color-positive); }
-.badge-caution { background: var(--color-tint-caution); color: var(--color-caution); }
-.badge-critical { background: var(--color-tint-critical); color: var(--color-critical); }
-.badge-inactive { background: var(--color-tint-inactive); color: var(--color-inactive); }
+.badge-success { background: var(--color-tint-positive); color: var(--color-on-positive); }
+.badge-caution { background: var(--color-tint-caution); color: var(--color-on-caution); }
+.badge-critical { background: var(--color-tint-critical); color: var(--color-on-critical); }
+.badge-inactive { background: var(--color-tint-inactive); color: var(--color-on-inactive); }
 
 /* Better card group (Kairo-style) */
 .card-group {
@@ -1663,10 +1698,11 @@ html {
 .lp-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.9s var(--ease-out-expo); }
 .lp-card-media:hover img { transform: scale(1.06); }
 .no-bottom-radius { border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+/* Dark jewel-toned wash: every stop keeps the original hue family but stays at
+   <= 0.066 luminance so solid-white body text clears AAA 7:1 everywhere. */
 .gradient {
   background-image: linear-gradient(24deg, #1717e5, transparent 21%),
-    linear-gradient(198deg, rgba(255, 193, 7, 0.2) 11%, transparent 0%),
-    linear-gradient(50deg, #6610f2 5%, #6f42c1 32%, #d63384 35%, #dc3545 65%, #fd7e14 83%, #ffc107 91%);
+    linear-gradient(50deg, #3b0a86 5%, #4c1d95 32%, #701a75 35%, #7f1d1d 65%, #7c2d12 83%, #78350f 91%);
 }
 
 /* --- animated underline links (launchpad signature) --- */
@@ -1696,6 +1732,18 @@ html {
   background-image: linear-gradient(90deg, #a3a3f7 0 25%, transparent 25% 50%, #a3a3f7 50% 75%, transparent 75%);
 }
 .link-fancy-accent:hover { color: #c3c3fb; }
+/* WCAG 1.4.1 / link-in-text-block: a link inside running text must be
+   distinguishable by more than colour. Keep the underline, drop the
+   animated dash bar in prose so it isn't doubled up. */
+p .link-fancy,
+li .link-fancy {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+p .link-fancy::after,
+li .link-fancy::after {
+  display: none;
+}
 
 /* --- stats --- */
 .stat-big {
@@ -1868,7 +1916,10 @@ html {
 .bg-electric-blue\/10 { background: rgba(23, 23, 229, 0.12); }
 .text-electric-blue { color: #a3a3f7; }
 .text-electric-blue\/20 { color: rgba(163, 163, 247, 0.75); }
-.bg-emerald-700 { background: #047857; color: #fff; }
+.bg-emerald-700 { background: #065f46; color: #fff; }
+.bg-emerald-900 { background: #022c22; color: #fff; }
+.hover\:bg-emerald-800:hover { background: #065f46; }
+.hover\:bg-emerald-950:hover { background: #011f16; }
 .bg-green-50 { background: #052e16; color: #bbf7d0; }
 .border-green-200 { border-color: #86efac; }
 .text-green-700 { color: #4ade80; }
@@ -1886,4 +1937,32 @@ html {
 .justify-end { justify-content: flex-end; }
 .resize-y { resize: vertical; }
 .shadow-border-hover { box-shadow: var(--shadow-border-hover); }
+
+/* ── Status/badge tinted utilities ─────────────────────────────────────────
+   Components referenced .bg-tint-* / .text-on-* but they were never defined,
+   which left badges as unstyled white text. Text tokens are the on-tint
+   variants: >= 7:1 on every surface (see :root). */
+.bg-tint-positive { background: var(--color-tint-positive); }
+.bg-tint-caution { background: var(--color-tint-caution); }
+.bg-tint-critical { background: var(--color-tint-critical); }
+.bg-tint-inactive { background: var(--color-tint-inactive); }
+.text-on-positive { color: var(--color-on-positive); }
+.text-on-caution { color: var(--color-on-caution); }
+.text-on-inactive { color: var(--color-on-inactive); }
+.text-on-critical { color: var(--color-on-critical); }
+.text-on-high { color: var(--color-on-high); }
+.text-on-nice { color: var(--color-on-nice); }
+
+/* Dropdown chevron: decorative (aria-hidden), sized like an icon. */
+.dropdown-arrow {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}
 
