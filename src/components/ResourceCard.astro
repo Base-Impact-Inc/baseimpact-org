@@ -44,10 +44,10 @@ const descPreview = (resource.description || '').split('.').find(Boolean) || '';
   <div class="flex items-start gap-3 p-3 sm:p-4 border-b border-line/40">
     <div class="flex-1 min-w-0">
       <div class="flex items-center justify-between gap-2 flex-wrap">
-        <h3 class="font-display text-base sm:text-lg font-semibold leading-snug text-body truncate">
+        <h3 class="font-display text-base sm:text-lg font-semibold leading-snug text-body break-words">
           {resource.name}
         </h3>
-        <span class="text-xs font-semibold uppercase tracking-wide text-faint min-w-0 truncate">
+        <span class="text-xs font-semibold uppercase tracking-wide text-faint min-w-0 break-words">
           {resource.category}
           <span class="mx-1 text-faint">·</span>
           {resource.partnerType}
@@ -100,7 +100,7 @@ const descPreview = (resource.description || '').split('.').find(Boolean) || '';
 
   <!-- Address -->
   <div class="px-3 py-2 text-sm text-muted">
-    <span class="block truncate">{resource.address}</span>
+    <span class="block break-words">{resource.address}</span>
     <button
       type="button"
       data-copy-address={resource.address}

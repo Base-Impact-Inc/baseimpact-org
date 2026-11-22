@@ -1826,6 +1826,9 @@ li .link-fancy::after {
 .resource-card h3 {
   overflow-wrap: anywhere;
 }
+/* Titles and labels must wrap in full — ellipsising a resource name hides
+   the one piece of information a person is scanning the list for. */
+.break-words { overflow-wrap: break-word; }
 .min-w-\[70px\] { min-width: 70px; }
 .min-w-\[200px\] { min-width: 200px; }
 @media (prefers-reduced-motion: reduce) {
