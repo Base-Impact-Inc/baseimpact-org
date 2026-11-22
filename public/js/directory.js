@@ -58,6 +58,14 @@
   const ROAD_TTL_MS = 60 * 60 * 1000;
   const METERS_PER_MILE = 1609.344;
 
+  /* Transit: SCAT schedules routed by a self-hosted OpenTripPlanner instance.
+     The endpoint always returns a Google Maps transit fallback URL, so any
+     failure degrades to a normal Google Maps directions link. */
+  const TRANSIT_API = 'https://otp.douglaspc.com/api/otp/route';
+  const TRANSIT_CACHE_KEY = 'baseimpact-transit-v1';
+  const TRANSIT_TTL_MS = 5 * 60 * 1000;
+  const TRANSIT_TIMEOUT_MS = 8000;
+
   let visibleCount = PAGE_SIZE;
   let activeGroup = 'all';
   let activeState = 'all';
@@ -518,6 +526,7 @@
         rel="noreferrer"
         aria-label="${m.aria} to ${escapeHTML(r.name)}"
         class="direction-pill"
+        ${m.mode === 'transit' ? `data-transit="1" data-transit-lat="${Number(r.lat)}" data-transit-lng="${Number(r.lng)}" data-transit-name="${escapeHTML(r.name)}"` : ''}
         style="
           display:inline-flex;
           align-items:center;
@@ -633,6 +642,236 @@
     if (!mapInitialised) setTimeout(initMap, 200);
     if (map) setTimeout(() => map.invalidateSize(), 250);
   }
+
+  /* ------------------------------------------------------------------ */
+  /* Transit (SCAT schedules via self-hosted OpenTripPlanner)            */
+  /* ------------------------------------------------------------------ */
+
+  let transitPanel = null;
+  let transitPanelClose = null;
+  let transitPanelStatus = null;
+  let transitPanelBody = null;
+  let transitReturnFocus = null;
+
+  function googleTransitUrl(toLat, toLng) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=transit`;
+  }
+
+  function transitCacheKey(toLat, toLng) {
+    const origin = location && Number.isFinite(location.lat)
+      ? `${location.lat.toFixed(5)},${location.lng.toFixed(5)}`
+      : 'current-location';
+    return `${TRANSIT_CACHE_KEY}|${origin}>${Number(toLat).toFixed(5)},${Number(toLng).toFixed(5)}`;
+  }
+
+  function readTransitCache(key) {
+    try {
+      const raw = sessionStorage.getItem(key);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || !parsed.data || Date.now() - parsed._t > TRANSIT_TTL_MS) return null;
+      return parsed.data;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeTransitCache(key, data) {
+    try {
+      sessionStorage.setItem(key, JSON.stringify({ _t: Date.now(), data }));
+    } catch {
+      /* storage full/blocked — caching is best-effort */
+    }
+  }
+
+  function closeTransitPanel() {
+    if (!transitPanel) return;
+    transitPanel.classList.add('hidden');
+    if (transitReturnFocus && typeof transitReturnFocus.focus === 'function') {
+      transitReturnFocus.focus();
+    }
+    transitReturnFocus = null;
+  }
+
+  function ensureTransitPanel() {
+    if (transitPanel) return;
+    transitPanel = document.createElement('div');
+    transitPanel.id = 'transit-panel';
+    transitPanel.className = 'hidden';
+    transitPanel.setAttribute('role', 'dialog');
+    transitPanel.setAttribute('aria-modal', 'false');
+    transitPanel.setAttribute('aria-labelledby', 'transit-panel-title');
+    transitPanel.style.cssText = [
+      'position:fixed', 'inset-inline:1rem', 'bottom:1rem', 'z-index:2000',
+      'max-width:26rem', 'margin-inline:auto', 'padding:1rem',
+      'border-radius:14px', 'background:var(--color-card,#fff)',
+      'border:1px solid var(--color-line,#e3e3e8)', 'box-shadow:0 12px 32px rgba(0,0,0,.18)',
+      'font-family:Inter,system-ui,sans-serif', 'color:var(--color-body,#111)',
+      'max-height:min(70vh,34rem)', 'overflow:auto',
+    ].join(';');
+
+    transitPanel.innerHTML = `
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;">
+        <h2 id="transit-panel-title" style="margin:0;font-size:.95rem;line-height:1.3;color:#111;">Bus routes</h2>
+        <button type="button" id="transit-panel-close" aria-label="Close bus routes"
+          style="border:0;background:transparent;font-size:1.35rem;line-height:1;cursor:pointer;padding:.125rem .375rem;color:#555;border-radius:6px;"
+        >&times;</button>
+      </div>
+      <p id="transit-panel-status" role="status" aria-live="polite"
+         style="margin:.375rem 0 0;font-size:.8rem;color:#555;"></p>
+      <div id="transit-panel-body" style="margin-top:.5rem;"></div>
+    `;
+
+    document.body.appendChild(transitPanel);
+    transitPanelClose = $('transit-panel-close');
+    transitPanelStatus = $('transit-panel-status');
+    transitPanelBody = $('transit-panel-body');
+
+    transitPanelClose.addEventListener('click', closeTransitPanel);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !transitPanel.classList.contains('hidden')) {
+        closeTransitPanel();
+      }
+    });
+  }
+
+  function renderTransitItineraries(data, destinationName, toLat, toLng) {
+    const all = Array.isArray(data.itineraries) ? data.itineraries : [];
+    // Prefer itineraries that actually ride the bus; keep walk-only as last resort.
+    const ranked = all.slice().sort((a, b) => {
+      const aBus = (a.legs || []).some((l) => l.mode !== 'WALK') ? 0 : 1;
+      const bBus = (b.legs || []).some((l) => l.mode !== 'WALK') ? 0 : 1;
+      return aBus - bBus || a.durationMin - b.durationMin;
+    });
+
+    if (!ranked.length) {
+      transitPanelStatus.textContent = 'No SCAT bus itinerary found for this trip.';
+      transitPanelBody.innerHTML = '';
+      return;
+    }
+
+    const fmtMin = (n) => `${Math.max(1, Math.round(n || 0))} min`;
+    const fmtDist = (m) => {
+      if (!m) return '';
+      if (m < 160) return `${Math.round(m * 3.28084)} ft`;
+      return `${(m / METERS_PER_MILE).toFixed(1)} mi`;
+    };
+
+    const legLabel = (leg) => {
+      if (leg.mode === 'WALK') {
+        return `Walk ${fmtMin(leg.durationMin)}${fmtDist(leg.distanceM) ? ` (${fmtDist(leg.distanceM)})` : ''}`;
+      }
+      const route = leg.routeShortName || leg.route || 'Bus';
+      let headsign = leg.headsign || '';
+      if (headsign) {
+        const escaped = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        headsign = headsign.replace(new RegExp(`^${escaped}\\s*[-:–]?\\s*`, 'i'), '');
+      }
+      const suffix = headsign ? ` toward ${headsign}` : '';
+      return `${route}${suffix} · ${fmtMin(leg.durationMin)}`;
+    };
+
+    const cards = ranked.slice(0, 3).map((itin) => {
+      const legs = (itin.legs || []).map((leg) => `
+        <li style="display:flex;gap:.5rem;align-items:baseline;padding:.125rem 0;font-size:.8rem;color:#333;">
+          <span aria-hidden="true" style="width:.5rem;height:.5rem;border-radius:50%;flex:none;background:${
+            leg.mode === 'WALK' ? '#8a8a8e' : 'var(--color-accent,#3f3fd8)'
+          };transform:translateY(-1px);"></span>
+          <span>${escapeHTML(legLabel(leg))}</span>
+        </li>`).join('');
+      const transfers = itin.transfers
+        ? `${itin.transfers} transfer${itin.transfers === 1 ? '' : 's'}`
+        : 'no transfers';
+      return `
+        <div style="border:1px solid var(--color-line,#e3e3e8);border-radius:10px;padding:.625rem .75rem;margin-bottom:.5rem;background:var(--color-inset,#fafafa);">
+          <strong style="font-size:.85rem;color:#111;">${fmtMin(itin.durationMin)}</strong>
+          <span style="font-size:.75rem;color:#555;"> · ${fmtMin(itin.walkTimeMin)} walking · ${transfers}</span>
+          <ul style="list-style:none;margin:.375rem 0 0;padding:0;">${legs}</ul>
+        </div>`;
+    }).join('');
+
+    const fallback = data.fallbackUrl || googleTransitUrl(toLat, toLng);
+
+    transitPanelBody.innerHTML = `
+      ${cards}
+      <a href="${fallback}" target="_blank" rel="noreferrer"
+         style="display:inline-block;margin-top:.25rem;font-size:.8rem;font-weight:600;color:var(--color-accent,#3f3fd8);text-decoration:none;">
+        Open in Google Maps ↗
+      </a>
+      <p style="margin:.5rem 0 0;font-size:.72rem;color:#777;">
+        Schedules: Space Coast Area Transit (GTFS). Times are estimates.
+      </p>
+    `;
+    transitPanelStatus.textContent =
+      `Bus options to ${destinationName || 'this location'} · departing now`;
+  }
+
+  async function planTransit(toLat, toLng, destinationName) {
+    // The Google Maps link carries both ends, so the fallback stays accurate
+    // even when the routing service never answered.
+    const fallbackUrl = `https://www.google.com/maps/dir/?api=1`
+      + `&origin=${location.lat},${location.lng}`
+      + `&destination=${toLat},${toLng}&travelmode=transit`;
+    const cacheKey = transitCacheKey(toLat, toLng);
+    const cached = readTransitCache(cacheKey);
+    if (cached) return cached;
+
+    const url = `${TRANSIT_API}?from=${location.lat},${location.lng}&to=${toLat},${toLng}&mode=TRANSIT,WALK`;
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(TRANSIT_TIMEOUT_MS),
+      });
+      const data = await response.json();
+      const payload = {
+        success: Boolean(data && data.success),
+        itineraries: (data && data.itineraries) || [],
+        fallbackUrl: (data && data.fallbackUrl) || fallbackUrl,
+        error: (data && data.error) || '',
+      };
+      writeTransitCache(cacheKey, payload);
+      return payload;
+    } catch {
+      return { success: false, itineraries: [], fallbackUrl, error: 'unavailable' };
+    }
+  }
+
+  async function showTransitRoutes(link) {
+    if (!location || !Number.isFinite(location.lat) || !Number.isFinite(location.lng)) {
+      return; // no origin known — let the plain Google Maps link handle it
+    }
+
+    const toLat = Number(link.getAttribute('data-transit-lat'));
+    const toLng = Number(link.getAttribute('data-transit-lng'));
+    const name = link.getAttribute('data-transit-name') || 'this location';
+
+    ensureTransitPanel();
+    transitReturnFocus = document.activeElement;
+    transitPanelBody.setAttribute('data-to-lat', String(toLat));
+    transitPanelBody.setAttribute('data-to-lng', String(toLng));
+    transitPanelBody.innerHTML = '';
+    transitPanelStatus.textContent = `Finding SCAT bus routes to ${name}…`;
+    transitPanel.classList.remove('hidden');
+    transitPanelClose.focus();
+
+    const data = await planTransit(toLat, toLng, name);
+    if (data.success && data.itineraries.length) {
+      renderTransitItineraries(data, name, toLat, toLng);
+      return;
+    }
+    // Graceful degradation: open Google Maps transit in a new tab.
+    window.open(data.fallbackUrl || googleTransitUrl(toLat, toLng), '_blank', 'noopener');
+    closeTransitPanel();
+  }
+
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[data-transit]');
+    if (!link) return;
+    // Without a known origin we cannot query OTP; let the Google Maps link work.
+    if (!location || !Number.isFinite(location.lat) || !Number.isFinite(location.lng)) return;
+    event.preventDefault();
+    showTransitRoutes(link);
+  });
 
   viewListBtn?.addEventListener('click', showList);
   viewMapBtn?.addEventListener('click', showMap);
