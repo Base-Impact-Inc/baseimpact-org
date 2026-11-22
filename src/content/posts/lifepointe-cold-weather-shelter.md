@@ -9,8 +9,6 @@ featured: false
 draft: false
 ---
 
-![Volunteers wearing name tags stand and talk in a church hall during a cold-weather shelter training session; two folding cots and black chairs are set up on the floor, with a communion table, pulpit, and #loveinaction banner in the background](/assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg)
-
 When the temperature drops in Brevard County, a safe place to sleep is not a luxury — it is basic safety. On September 19, Base Impact joined volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) in Titusville for a hands-on training day focused on one question: how do we open a cold-weather shelter quickly, respectfully, and well?
 
 The answer was not complicated, but it was practical. Cots have to be set up. Guests need a calm welcome. Volunteers need to know their roles before the doors open.
