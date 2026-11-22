@@ -2,7 +2,7 @@
 title: "Cold Weather Shelter Training — Preparing to Serve"
 description: "Base Impact participated in cold weather shelter training — learning how to set up cots, welcome guests, and provide safe overnight shelter when temperatures drop."
 date: 2026-09-19
-image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
+image: /assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg
 categories: ["Impact Stories"]
 tags: ["shelter", "cold weather", "training", "volunteers", "community"]
 featured: false
@@ -10,6 +10,8 @@ draft: false
 ---
 
 <!-- Re-published as a standalone article at the owner's request on 2026-11-22. -->
+
+![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
 
 Base Impact joined a cold weather shelter training session to learn how to set up and run overnight shelter for neighbors when temperatures drop dangerously low. The training covered everything from cot setup to guest welcome procedures.
 

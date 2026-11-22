@@ -2,12 +2,14 @@
 title: "LifePointe Ministries: Cold-Weather Shelter Training in Titusville"
 description: "Base Impact joined LifePointe Ministries' CREW 29 team to prepare cots and learn how the Titusville cold-weather shelter serves neighbors on the coldest nights."
 date: 2026-09-19
-image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
+image: /assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg
 categories: ["Community News"]
 tags: ["LifePointe Ministries", "CREW 29", "cold weather shelter", "Titusville", "volunteers"]
 featured: false
 draft: false
 ---
+
+![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
 
 Base Impact joined volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) in Titusville to help prepare cots and learn how the church's cold-weather shelter operates. The session covered setup, hospitality, and what it takes to open a shelter quickly when temperatures drop.
 
