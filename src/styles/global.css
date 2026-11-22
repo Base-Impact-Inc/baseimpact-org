@@ -63,7 +63,7 @@
   /* text */
   --color-body: #ffffff;
   --color-muted: #b9b9bf;
-  --color-faint: #8a8a8e;
+  --color-faint: #a8a8ac;
   --color-on-fill: #ffffff;
 
   /* border */
@@ -75,11 +75,11 @@
   --color-positive: #198754;
   --color-caution: #ffc107;
   --color-critical: #dc3545;
-  --color-inactive: #8a8a8e;
+  --color-inactive: #a0a0a4;
 
   /* legacy brand references kept for content pages that still name them */
-  --color-electric-blue: #4d4df0;
-  --color-electric-blue-hover: #6a6af5;
+  --color-electric-blue: #3f3fd8;
+  --color-electric-blue-hover: #3838c8;
   --color-solar-green: #c1ff00;
   --color-warm-orange: #f37021;
   --color-rose: #ffe8e8;

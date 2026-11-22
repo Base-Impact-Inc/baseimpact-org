@@ -3,11 +3,7 @@ import Navigation from './Navigation.astro';
 ---
 
 <div class="site-shell">
-  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-card focus:px-3 focus:py-2">
-    Skip to content
-  </a>
-
-  <aside class="px-4 py-2 text-center text-sm font-medium" style="color: var(--color-muted);">
+  <aside class="px-4 py-2 text-center text-sm font-medium" aria-label="Organization information" style="color: var(--color-muted);">
     Base Impact Inc. · EIN 43-2200667 · Florida nonprofit corporation · FDACS registered · Brevard County, FL
   </aside>
 
@@ -40,7 +36,8 @@ import Navigation from './Navigation.astro';
       </div>
     </footer>
   <!-- Floating "Get Help: Call 211" button -->
-  <a href="tel:211" id="floating-help-btn" aria-label="Get help: Call 211" style="
+  <nav aria-label="Quick help">
+    <a href="tel:211" id="floating-help-btn" aria-label="Get help: Call 211" style="
     position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9997;
     display: flex; align-items: center; gap: 0.5rem;
     padding: 0.75rem 1.25rem; background: var(--color-accent, #f4d96c); color: var(--color-page, #0f1a14);
@@ -54,6 +51,7 @@ import Navigation from './Navigation.astro';
     </svg>
     Get Help: Call 211
   </a>
+  </nav>
 </div>
 
 <style>
