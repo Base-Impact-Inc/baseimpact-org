@@ -6,8 +6,6 @@ image: /assets/active-duty-pc-build-cover-2026-11-18.jpg
 categories: ["Impact Stories"]
 tags: ["veterans", "active duty", "technology", "computer parts", "partnership"]
 featured: false
-# Held pending approval — do not publish until explicitly cleared.
-draft: true
 ---
 
 ![A black mid-tower PC mid-build on a gridded cutting mat: the ASRock Phantom Gaming motherboard, Cougar liquid cooler with white pump fans, Montech case fans, a black graphics card, and a screwdriver beside the open case](/assets/active-duty-pc-build-2026-11-18.jpg)

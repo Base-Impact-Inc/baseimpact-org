@@ -27,8 +27,12 @@ Our work puts us in touch with neighbors who are online for the first time, sett
 
 ## Get involved
 
-Watch for community education events at [LifePointe Ministries](https://www.lifepointeministries.org/) (4220 South Hopkins Avenue, Titusville) and follow the [Titusville Police Department](https://titusville.com/494/Police-Department) alerts. If you're unsure about a call or message, hang up and verify independently.
+Watch for community education events at [LifePointe Ministries](https://www.lifepointeministries.org/) ([ADDRESS]) and follow the [[ADDRESS] Police Department](https://titusville.com/494/Police-Department) alerts. If you're unsure about a call or message, hang up and verify independently.
+
+## Event announcement
+
+The event was announced on the [LifePointe Ministries Facebook page](https://www.facebook.com/LifePointeTitusville/posts/-coming-up-this-wednesdayjoin-us-at-lifepointe-ministries-on-wednesday-october-2/1429914155900745/).
 
 ## Sources
 
-[20] https://titusville.com/CivicAlerts.aspx?AID=241 — City of Titusville - Phone scam advisory
+[20] https://titusville.com/CivicAlerts.aspx?AID=241 — City of [ADDRESS] - Phone scam advisory
