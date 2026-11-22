@@ -2,14 +2,14 @@
 title: "Cold-Weather Shelter Training Day with LifePointe Ministries"
 description: "How Base Impact and LifePointe's CREW 29 team trained for cot setup, hospitality, and volunteer shifts at Titusville's cold-weather shelter — and why preparation matters when a cold night arrives."
 date: 2026-09-19
-image: /assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg
+image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
 categories: ["Impact Stories"]
 tags: ["LifePointe Ministries", "CREW 29", "cold weather shelter", "Titusville", "volunteers"]
 featured: false
 draft: false
 ---
 
-![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
+![Volunteers wearing name tags stand and talk in a church hall during a cold-weather shelter training session; two folding cots and black chairs are set up on the floor, with a communion table, pulpit, and #loveinaction banner in the background](/assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg)
 
 When the temperature drops in Brevard County, a safe place to sleep is not a luxury — it is basic safety. On September 19, Base Impact joined volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) in Titusville for a hands-on training day focused on one question: how do we open a cold-weather shelter quickly, respectfully, and well?
 
@@ -22,6 +22,10 @@ LifePointe Ministries, at 4220 South Hopkins Avenue, operates the only inclement
 The work is volunteer-run from top to bottom. Pastor Royce "Scooter" Morrison has said the outreach is "100% volunteer-based" and that even the pastor draws no pay for it.[19] During one recent cold spell, the shelter was open 12 of 26 days, and all 60-plus beds were full.[19]
 
 That kind of demand is why training days matter. A shelter is only as ready as the people who know what to do when the call comes.
+
+The training-day flyer spelled out the purpose plainly: learn how the shelter operates, ask questions, and find a role before the weather turns.
+
+![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
 
 ## CREW 29: the team behind the work
 
