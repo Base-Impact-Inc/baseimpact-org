@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
+// Server-rendered so the ?signedup=1 confirmation banner is present even with
+// JavaScript disabled (plain POST -> 303 -> this page).
+export const prerender = false;
+
 const events = (await getCollection('events', ({ data }) => !data.draft))
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
 
@@ -285,6 +289,20 @@ const categoryColors: Record<string, string> = {
     });
     calendar.render();
   });
+</script>
+
+<script is:inline>
+(function () {
+  if (new URLSearchParams(location.search).get('signedup') !== '1') return;
+  if (document.querySelector('[role="status"]')) return;
+  var h1 = document.querySelector('h1');
+  if (!h1) return;
+  var banner = document.createElement('div');
+  banner.className = 'mb-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-green-800 font-semibold fade-in';
+  banner.setAttribute('role', 'status');
+  banner.textContent = "Thanks! Your volunteer signup was received. We'll confirm by phone or email.";
+  h1.parentNode.insertBefore(banner, h1);
+})();
 </script>
 
 </Base>

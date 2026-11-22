@@ -23,7 +23,7 @@ async function audit() {
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
     const page = await context.newPage();
     try {
-      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      const resp = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(2500);
       await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.8.4/axe.min.js' });
 
@@ -36,7 +36,8 @@ async function audit() {
         });
       });
 
-      allResults.push({ url, results, error: null });
+      const docInfo = await page.evaluate(() => ({ title: document.title, h1: document.querySelectorAll('h1').length, main: document.querySelectorAll('main').length }));
+      allResults.push({ url, finalUrl: page.url(), httpStatus: resp && resp.status(), doc: docInfo, results, error: null });
       
       const v = results.violations;
       const inc = results.incomplete;

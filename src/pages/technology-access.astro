@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import TurnstileWidget from '../components/TurnstileWidget.astro';
 
+// Server-rendered so the ?submitted=1 confirmation banner is present even
+// with JavaScript disabled (plain POST -> 303 -> this page).
+export const prerender = false;
+
 const submitted = Astro.url.searchParams.get('submitted') === '1';
 ---
 
@@ -137,4 +141,18 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
       <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-line bg-card/20 px-5 py-2 text-sm font-semibold text-on-fill hover:bg-card/40">Partner with us</a>
     </div>
   </section>
+
+  <script is:inline>
+  (function () {
+    if (new URLSearchParams(location.search).get('submitted') !== '1') return;
+    if (document.querySelector('[role="status"]')) return;
+    var h1 = document.querySelector('h1');
+    if (!h1) return;
+    var banner = document.createElement('div');
+    banner.className = 'mb-6 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-green-800 font-semibold fade-in';
+    banner.setAttribute('role', 'status');
+    banner.textContent = "Thanks! Your request was received. We'll follow up within a few business days.";
+    h1.parentNode.insertBefore(banner, h1);
+  })();
+  </script>
 </Base>

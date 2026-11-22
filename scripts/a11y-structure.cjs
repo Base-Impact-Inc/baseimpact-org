@@ -18,7 +18,26 @@ const PAGES = ['/', '/directory', '/contact', '/donate', '/accessibility'];
     const r = (n) => n.role && n.role.value;
     const nm = (n) => (n.name ? n.name.value : '');
 
-    const headings = nodes.filter((n) => r(n) === 'heading').map((n) => ({ level: n.properties && n.properties.find((p) => p.name === 'level').value.value, name: nm(n) }));
+    // getFullAXTree returns a flat array whose order is not guaranteed to be
+    // document order. Build the parent/child tree and walk it depth-first so
+    // heading order reflects what a screen reader actually traverses.
+    const children = new Map();
+    for (const n of nodes) {
+      if (n.parentId == null) continue;
+      if (!children.has(n.parentId)) children.set(n.parentId, []);
+      children.get(n.parentId).push(n);
+    }
+    const headings = [];
+    const walk = (node) => {
+      if (node.ignored) return;
+      if (r(node) === 'heading') {
+        const levelProp = node.properties && node.properties.find((p) => p.name === 'level');
+        headings.push({ level: levelProp ? levelProp.value.value : 0, name: nm(node) });
+      }
+      for (const child of children.get(node.nodeId) || []) walk(child);
+    };
+    for (const n of nodes) if (n.parentId == null) walk(n);
+
     const landmarks = [...new Set(nodes.filter((n) => ['banner', 'main', 'contentinfo', 'navigation', 'complementary', 'search', 'form'].includes(r(n))).map(r))];
     const unnamed = nodes.filter((n) => ['textbox', 'button', 'link', 'combobox', 'checkbox', 'radio', 'switch', 'menuitem'].includes(r(n)) && !nm(n)).map((n) => ({ role: r(n), ignored: !!n.ignored }));
     const imgs = nodes.filter((n) => r(n) === 'image' || r(n) === 'img');
