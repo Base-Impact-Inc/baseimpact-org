@@ -6,10 +6,10 @@ image: /assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg
 categories: ["Impact Stories"]
 tags: ["shelter", "cold weather", "training", "volunteers", "community"]
 featured: false
-draft: false
+draft: true
 ---
 
-<!-- Re-published as a standalone article at the owner's request on 2026-11-22. -->
+<!-- Merged into /blog/lifepointe-cold-weather-shelter on 2026-11-22. Kept inactive for history. -->
 
 ![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
 
