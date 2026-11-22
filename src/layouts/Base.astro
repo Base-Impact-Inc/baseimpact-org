@@ -154,6 +154,11 @@ const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`
         const suffix = el.getAttribute('data-count-suffix') || '';
         const prefix = el.getAttribute('data-count-prefix') || '';
         const decimals = parseInt(el.getAttribute('data-count-decimals') || '0', 10);
+        // Reduced motion: skip the tween and show the final number directly.
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          el.textContent = prefix + target.toFixed(decimals) + suffix;
+          return;
+        }
         const duration = 1400;
         const startedAt = performance.now();
         const timer = setInterval(() => {

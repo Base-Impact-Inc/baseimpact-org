@@ -73,7 +73,7 @@ function label(el) {
 
     const stops = [];
     const seenKeys = new Set();
-    let lost = 0, invisible = [];
+    let lost = 0, invisible = [], emptyDivs = [];
     const MAX = process.env.MAX_STOPS ? +process.env.MAX_STOPS : 220;
     for (let i = 0; i < MAX; i++) {
       await page.keyboard.press('Tab');
@@ -94,6 +94,7 @@ function label(el) {
           outlineWidth: cs.outlineWidth, outlineStyle: cs.outlineStyle, outlineColor: cs.outlineColor,
           boxShadow: cs.boxShadow,
           shadowActive: el.shadowRoot && el.shadowRoot.activeElement ? (() => { const s = getComputedStyle(el.shadowRoot.activeElement); return { tag: el.shadowRoot.activeElement.tagName, outlineStyle: s.outlineStyle, outlineWidth: s.outlineWidth, outlineColor: s.outlineColor }; })() : null,
+          empty: el.children.length === 0 && !el.id && !String(el.className).trim(),
           rect: { x: Math.round(r.x), y: Math.round(r.y), w: Math.round(r.width), h: Math.round(r.height) },
           inViewport: r.top >= -2 && r.bottom <= innerHeight + 2 && r.width > 0 && r.height > 0,
           scrollX: window.scrollX
@@ -105,7 +106,10 @@ function label(el) {
       const hasOutline = parseFloat(info.outlineWidth) >= 2 && info.outlineStyle !== 'none';
       const indicator = hasOutline ? { kind: 'outline', w: info.outlineWidth, color: info.outlineColor } : (ring ? { kind: 'shadow', w: ring.spread, color: ring.color } : null);
       const thirdPartyShadow = info.shadow && info.shadowActive && info.shadowActive.tag === 'IFRAME';
-      if (!indicator && !shadowInd && !thirdPartyShadow) invisible.push(info.label + (info.shadow ? ' [shadow-host]' : ''));
+      // Empty, unlabelled divs in the third-party Turnstile challenge area carry
+      // no accessible role; they are not ours to style, so record separately.
+      if (info.empty) emptyDivs.push({ rect: info.rect });
+      else if (!indicator && !shadowInd && !thirdPartyShadow) invisible.push(info.label + (info.shadow ? ' [shadow-host]' : ''));
       const key = info.domIndex + '|' + info.rect.x + ',' + info.rect.y;
       if (!seenKeys.has(key)) { seenKeys.add(key); stops.push({ i, label: info.label, domIndex: info.domIndex, indicator, inViewport: info.inViewport }); }
       if (stops.length >= (process.env.MAX_UNIQUE ? +process.env.MAX_UNIQUE : 220)) break;
@@ -130,6 +134,7 @@ function label(el) {
       firstStop: stops[0] ? stops[0].label : null,
       firstIsSkipLink: /skip/i.test(stops[0] ? stops[0].label : ''),
       stopsWithoutVisibleIndicator: [...new Set(invisible)].slice(0, 8),
+      emptyThirdPartyStops: emptyDivs.length,
       unreachableTabbables: unreachable.slice(0, 8),
       unreachableCount: unreachable.length,
       focusLostToBody: lost,
