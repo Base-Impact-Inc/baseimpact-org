@@ -51,14 +51,23 @@ axe's `color-contrast-enhanced` check treats any ratio below its `minThreshold` 
 
 These are AAA best-practice `2.4.9`-style checks; they do not affect the AA claim.
 
-## Live-site audit (https://baseimpact.org, as deployed at audit time)
+## Live-site audit (https://baseimpact.org, after redeploy 2026-11-22, version `eb3e1d33`)
 
-The fixes above were verified live after the owner's deploy. Two residual findings remain **because the deployed build predates the working-tree fixes**; both are already fixed in the repo and only need a redeploy:
+Both residuals from the earlier deploy are closed:
 
-1. `/reports` — with real report data present, the list renders an `h3` card title before the section `h2`, producing a moderate `heading-order` flag (axe + structure pass). Fix: card title changed to `h2`.
-2. `/technology-access`, `/events` — confirmation banners do not appear on the static build (see fix 5). Fix: pages server-rendered + inline fallback.
+1. `/reports` — the report card title is now `h2`; the live page has **0 `h3`** and heading order `h1, h2, h2, h2`.
+2. `/technology-access?submitted=1` and `/events?signedup=1` — confirmation banners now render with `role="status"` in the server HTML (fix 5).
 
-Everything else on the live site passes: axe 0 violations outside `/reports`, strict contrast 0 failures, keyboard/focus sweeps clean, 57/57 zoom, 56/57 structure (`/reports`), contact/story/report-dialog form checks pass.
+Final live verification:
+
+| Check | Coverage | Result |
+|---|---|---|
+| axe-core 4.8.4 (AAA + best-practice) | 59 live URLs | **0 violations**, 8 needs-review nodes, 0 errors |
+| Document structure | same 59 URLs | every page has exactly 1 `h1` and 1 `main` |
+| Form confirmation behaviour | contact success/error, story, report dialog, both banners | **6/6 pass** |
+| Key pages | `/`, `/directory`, `/contact`, `/donate`, `/accessibility`, `/reports` | 200 (redirecting paths 307 to canonical trailing-slash URLs) |
+
+The 8 needs-review nodes are the same third-party iframe and minor identical-link cases listed above; none is a violation.
 
 ## Known limitations (carried on the statement page)
 
@@ -70,6 +79,6 @@ Everything else on the live site passes: axe 0 violations outside `/reports`, st
 
 ## Sign-off
 
-The local production build meets the stated target: 0 AAA violations from axe across all 57 routes, 0 strict-contrast failures, full keyboard operability with visible focus, correct structure and language, clean 200% zoom, and announced form outcomes. WCAG 2.1 AA conformance is claimed for baseimpact.org, with the residual live items listed above to be closed by redeployment.
+The local production build meets the stated target: 0 AAA violations from axe across all 57 routes, 0 strict-contrast failures, full keyboard operability with visible focus, correct structure and language, clean 200% zoom, and announced form outcomes. WCAG 2.1 AA conformance is claimed for baseimpact.org, with all known items closed by the 2026-11-22 redeploy.
 
 **Signed:** Hermes Agent (accessibility audit) — 2026-11-22
