@@ -29,8 +29,11 @@ const PAGES = ['/', '/directory', '/contact', '/donate', '/accessibility'];
     }
     const headings = [];
     const walk = (node) => {
-      if (node.ignored) return;
-      if (r(node) === 'heading') {
+      // `ignored` nodes are often just layout wrappers (e.g. Astro's
+      // <Fragment> hosts) that sit *between* a landmark and its headings.
+      // Pruning them here made the walk skip every heading, so recurse
+      // through them and only skip counting the ignored node itself.
+      if (!node.ignored && r(node) === 'heading') {
         const levelProp = node.properties && node.properties.find((p) => p.name === 'level');
         headings.push({ level: levelProp ? levelProp.value.value : 0, name: nm(node) });
       }
