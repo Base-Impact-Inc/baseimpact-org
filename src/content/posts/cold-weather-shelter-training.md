@@ -6,10 +6,10 @@ image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
 categories: ["Impact Stories"]
 tags: ["shelter", "cold weather", "training", "volunteers", "community"]
 featured: false
-draft: true
+draft: false
 ---
 
-<!-- Merged into /blog/lifepointe-cold-weather-shelter on 2026-11-18. Kept as a draft for history. -->
+<!-- Re-published as a standalone article at the owner's request on 2026-11-22. -->
 
 Base Impact joined a cold weather shelter training session to learn how to set up and run overnight shelter for neighbors when temperatures drop dangerously low. The training covered everything from cot setup to guest welcome procedures.
 
