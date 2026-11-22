@@ -1083,7 +1083,7 @@ input, select, textarea {
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-signal-soft);
+  box-shadow: 0 0 0 2px var(--color-signal);
   outline: none;
 }
 
