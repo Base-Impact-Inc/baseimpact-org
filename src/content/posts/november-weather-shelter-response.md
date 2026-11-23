@@ -9,7 +9,7 @@ featured: false
 draft: false
 ---
 
-Over the past few days, Base Impact helped alongside volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) as the Titusville church opened its inclement-weather shelter during a stretch of heavy rain and flooding in Brevard County. This was the shelter in action — the same team we had trained with in September (see [Cold-Weather Shelter Training Day](/blog/lifepointe-cold-weather-shelter)) now serving neighbors through a real weather event.
+Over the past few days, Base Impact helped alongside volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) as the Titusville church opened its inclement-weather shelter during a stretch of heavy rain and flooding in Brevard County. This was the shelter in action — the same team we had trained with in September (see [Inclement Weather Shelter Training Day](/blog/lifepointe-cold-weather-shelter)) now serving neighbors through a real weather event.
 
 [News 6 / ClickOrlando reported the opening on November 18, 2026](https://www.clickorlando.com/news/local/2026/11/18/titusville-ministry-opens-weather-shelter-as-brevard-county-braces-for-more-rain-flooding/).
 

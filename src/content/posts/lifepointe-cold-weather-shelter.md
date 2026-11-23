@@ -1,15 +1,15 @@
 ---
-title: "Cold-Weather Shelter Training Day with LifePointe Ministries"
-description: "How Base Impact and LifePointe's CREW 29 team trained for cot setup, hospitality, and volunteer shifts at Titusville's cold-weather shelter — and why preparation matters when a cold night arrives."
+title: "Inclement Weather Shelter Training Day with LifePointe Ministries"
+description: "How Base Impact and LifePointe's CREW 29 team trained for cot setup, hospitality, and volunteer shifts at Titusville's inclement weather shelter — and why preparation matters when a cold night arrives."
 date: 2026-09-19
 image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
 categories: ["Impact Stories"]
-tags: ["LifePointe Ministries", "CREW 29", "cold weather shelter", "Titusville", "volunteers"]
+tags: ["LifePointe Ministries", "CREW 29", "inclement weather shelter", "Titusville", "volunteers"]
 featured: false
 draft: false
 ---
 
-When the temperature drops in Brevard County, a safe place to sleep is not a luxury — it is basic safety. On September 19, Base Impact joined volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) in Titusville for a hands-on training day focused on one question: how do we open a cold-weather shelter quickly, respectfully, and well?
+When the temperature drops in Brevard County, a safe place to sleep is not a luxury — it is basic safety. On September 19, Base Impact joined volunteers at [LifePointe Ministries](https://www.lifepointeministries.org/) in Titusville for a hands-on training day focused on one question: how do we open an inclement weather shelter quickly, respectfully, and well?
 
 The answer was not complicated, but it was practical. Cots have to be set up. Guests need a calm welcome. Volunteers need to know their roles before the doors open.
 
@@ -23,7 +23,7 @@ That kind of demand is why training days matter. A shelter is only as ready as t
 
 The training-day flyer spelled out the purpose plainly: learn how the shelter operates, ask questions, and find a role before the weather turns.
 
-![LifePointe Ministries Cold & Inclement Weather Shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
+![LifePointe Ministries inclement weather shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
 
 ## CREW 29: the team behind the work
 
@@ -53,7 +53,7 @@ We learn from partners like LifePointe, then use our platform to make their work
 
 ## How neighbors can help
 
-Cold-weather shelters in Brevard County typically open when overnight temperatures are forecast to fall to around 40°F, with announcements through local media, 211, and community organizations. If you or someone you know needs a place on a cold night, call **211**.
+Inclement weather shelters in Brevard County typically open when severe weather is forecast — most often when overnight temperatures are expected to fall to around 40°F — with announcements through local media, 211, and community organizations. If you or someone you know needs a place on a cold night, call **211**.
 
 LifePointe is always looking for volunteers and supplies. Call **321-383-0254** or visit [lifepointeministries.org](https://www.lifepointeministries.org/).[16][17]
 
