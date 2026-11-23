@@ -39,7 +39,7 @@ const COPY: Record<string, Record<string, string>> = {
     byRoad: 'By road',
     walking: 'Walking',
     all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
-    money: 'Money Help', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
+    money: 'Money Help', gas: 'Gas', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
     openNow: 'Only show open now',
     list: 'List', map: 'Map', print: 'Print list',
     loadMore: 'Load more', showAll: 'Show all',
@@ -66,7 +66,7 @@ const COPY: Record<string, Record<string, string>> = {
     within: 'Dentro de',
     miles: 'mi',
     all: 'Todos', food: 'Comida', shelter: 'Refugio', health: 'Salud',
-    money: 'Ayuda económica', basics: 'Básicos', technology: 'Tecnología', crisis: 'Crisis', saved: 'Guardados',
+    money: 'Ayuda económica', gas: 'Gas', basics: 'Básicos', technology: 'Tecnología', crisis: 'Crisis', saved: 'Guardados',
     openNow: 'Mostrar solo abiertos ahora',
     list: 'Lista', map: 'Mapa', print: 'Imprimir lista',
     loadMore: 'Cargar más', showAll: 'Mostrar todo',
@@ -83,7 +83,7 @@ const COPY: Record<string, Record<string, string>> = {
 
 const t = COPY.en;
 
-const groups = ['all', 'food', 'shelter', 'health', 'money', 'basics', 'technology', 'crisis', 'saved'];
+const groups = ['all', 'food', 'shelter', 'health', 'money', 'gas', 'basics', 'technology', 'crisis', 'saved'];
 
 // Unique states, derived server-side so the filter works even without JS.
 const states = Array.from(new Set(resources.map((r) => r.state).filter(Boolean))).sort() as string[];

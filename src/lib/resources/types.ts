@@ -10,7 +10,8 @@ export type ResourceCategory =
   | "Churches & Faith-Based"
   | "Charity Free Services"
   | "Shelters & Housing"
-  | "Showers & Hygiene";
+  | "Showers & Hygiene"
+  | "Gas & Transportation Assistance";
 
 export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Statewide";
 
@@ -22,7 +23,7 @@ export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Statewide";
  * runs it", and conflating the two is what put children's health insurance under a
  * jobs heading.
  */
-export type HelpGroup = "food" | "shelter" | "health" | "money" | "basics" | "crisis" | "technology";
+export type HelpGroup = "food" | "shelter" | "health" | "money" | "gas" | "basics" | "crisis" | "technology";
 
 export type HelpService = "Food" | "Faith" | "Charity";
 
