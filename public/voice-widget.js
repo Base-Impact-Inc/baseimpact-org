@@ -24,8 +24,14 @@
     '#bi-ai-input{flex:1;min-width:0;padding:.6rem .7rem;border-radius:10px;border:1px solid rgba(255,255,255,.25);background:#1b2620;color:#fff;font:inherit}',
     '#bi-ai-form button{border:0;border-radius:10px;padding:.55rem .8rem;background:var(--color-accent,#f4d96c);color:#0f1a14;font-weight:700;cursor:pointer}',
     '#bi-ai-mic{background:#fff!important;color:#163222!important}',
+    '#bi-ai-mic.listening{background:#e02020!important;color:#fff!important;animation:pulse 1s infinite}',
+    '#bi-ai-mic.error{background:#f44!important;color:#fff!important}',
+    '#bi-ai-mic.unsupported{background:#666!important;color:#fff!important;cursor:not-allowed}',
+    '@keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}',
     '#bi-ai-opts{display:flex;gap:1rem;padding:0 .75rem .65rem;font-size:.78rem;color:#cbd8d0}',
-    '#bi-ai-opts label{display:flex;align-items:center;gap:.3rem;cursor:pointer}'
+    '#bi-ai-opts label{display:flex;align-items:center;gap:.3rem;cursor:pointer}',
+    '.bi-toast{position:fixed;bottom:5.6rem;right:1.5rem;z-index:9999;padding:.75rem 1rem;background:#183326;color:#f5f5f0;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.35);font:13px/1.4 system-ui,sans-serif;animation:slideUp .3s ease}',
+    '@keyframes slideUp{from{transform:translateY(1rem);opacity:0}to{transform:translateY(0);opacity:1}}'
   ].join('');
   document.head.appendChild(css);
 
@@ -76,6 +82,13 @@
       window.speechSynthesis.speak(u);
     } catch (e) {}
   }
+  function showToast(msg, type) {
+    var t = document.createElement('div');
+    t.className = 'bi-toast' + (type ? ' ' + type : '');
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 4000);
+  }
   function ask(text) {
     text = (text || '').trim();
     if (!text) return;
@@ -118,12 +131,44 @@
       input.value = text;
       ask(text);
     };
-    rec.onerror = function () { if (mic) mic.textContent = '🎤'; };
-    rec.onend = function () { if (mic) mic.textContent = '🎤'; };
+    rec.onerror = function (e) {
+      mic.textContent = '🎤';
+      mic.classList.remove('listening');
+      var msg = 'Speech recognition error';
+      if (e.error === 'not-allowed' || e.error === 'permission-denied') {
+        msg = 'Microphone access denied. Please allow microphone access in your browser settings.';
+      } else if (e.error === 'no-speech') {
+        msg = 'No speech detected. Please try again.';
+      } else if (e.error === 'network') {
+        msg = 'Network error. Please check your connection.';
+      }
+      mic.classList.add('error');
+      showToast(msg, 'error');
+      setTimeout(function () { mic.classList.remove('error'); }, 3000);
+    };
+    rec.onend = function () {
+      mic.textContent = '🎤';
+      mic.classList.remove('listening');
+    };
     mic.addEventListener('click', function () {
       if (TTS) window.speechSynthesis.cancel();
-      try { rec.start(); mic.textContent = '🔴'; }
-      catch (e) { mic.textContent = '🎤'; }
+      try {
+        rec.start();
+        mic.textContent = '🔴';
+        mic.classList.add('listening');
+        mic.title = 'Listening… click to stop';
+      } catch (e) {
+        mic.textContent = '🎤';
+        mic.classList.remove('listening');
+        showToast('Could not start microphone. Please check permissions.', 'error');
+      }
     });
+  } else if (mic) {
+    // SpeechRecognition not supported in this browser
+    mic.textContent = '❌';
+    mic.title = 'Speech recognition not supported in this browser';
+    mic.classList.add('unsupported');
+    mic.disabled = true;
+    showToast('Voice input not supported in this browser. Use Chrome, Edge, or Safari.', 'error');
   }
 })();
