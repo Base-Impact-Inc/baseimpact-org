@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PreferredGivingNote from '../components/PreferredGivingNote.astro';
+import FdacsDisclosure from '../components/FdacsDisclosure.astro';
 ---
 
 <Base title="Donate — Base Impact" description="Support Base Impact's mission to help neighbors get connected in Brevard County, FL.">
@@ -36,7 +37,7 @@ import PreferredGivingNote from '../components/PreferredGivingNote.astro';
       </p>
       <div class="flex flex-wrap gap-3">
         <a href="https://www.zeffy.com/en-US/peer-to-peer/50k-for-base-impact" target="_blank" rel="noopener noreferrer"
-          class="inline-flex min-h-11 items-center rounded-full bg-emerald-700 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-800 btn-pill">
+          class="inline-flex min-h-11 items-center rounded-full bg-emerald-900 px-6 py-2 text-sm font-semibold text-white hover:bg-emerald-950 btn-pill">
           Donate Now
         </a>
         <a href="/contact" class="inline-flex min-h-11 items-center rounded-lg border border-on-fill/30 px-5 py-2 text-sm font-semibold text-body hover:bg-on-fill/10">
@@ -48,7 +49,7 @@ import PreferredGivingNote from '../components/PreferredGivingNote.astro';
 
     <h2 class="font-display text-xl font-semibold text-body mt-6">Other ways to give</h2>
     <ul class="list-disc pl-5 space-y-2">
-      <li>Give by phone or mail — contact us for details.</li>
+      <li>Give by phone or mail — email <a href="mailto:donations@baseimpact.org" class="text-accent hover:underline">donations@baseimpact.org</a> for details.</li>
       <li>Donate devices — phones, tablets, laptops, and chargers are wiped, refurbished, and redeployed.</li>
       <li>Ask your employer about matching-gift programs.</li>
     </ul>
@@ -60,5 +61,7 @@ import PreferredGivingNote from '../components/PreferredGivingNote.astro';
       Base Impact Inc. is a Florida nonprofit corporation. 501(c)(3) tax-exempt status is pending.
       Donations are not currently tax-deductible. Please consult your tax advisor.
     </p>
+
+    <FdacsDisclosure />
   </div>
 </Base>

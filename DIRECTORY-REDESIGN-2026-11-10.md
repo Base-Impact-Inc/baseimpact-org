@@ -103,7 +103,7 @@ Text: Results update within {radius} miles of {zip}.
 
 **Filter chips (top row, left to right):**
 ```
-[All] [Food] [Shelter] [Health] [Money Help] [Basics] [Technology] [Crisis] [Saved]
+[All] [Food] [Shelter] [Health] [Money Help] [Gas] [Basics] [Technology] [Crisis] [Saved]
 ```
 
 **Distance controls:**

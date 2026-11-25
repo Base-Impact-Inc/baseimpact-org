@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+
+const title = 'Accessibility — Base Impact';
+const description =
+  'How Base Impact works to make baseimpact.org usable by everyone, our WCAG 2.1 conformance status, and how to report an accessibility barrier.';
+---
+
+<Base title={title} description={description}>
+  <div class="mx-auto max-w-2xl space-y-6">
+    <header class="space-y-2">
+      <h1 class="font-display text-3xl font-semibold">Accessibility</h1>
+      <p class="text-muted">Last reviewed: November 22, 2026</p>
+    </header>
+
+    <div class="rounded-2xl bg-inset p-9 text-sm text-body sm:p-8">
+      <p class="font-semibold">Our goal is simple: anyone in Brevard County should be able to use this site.</p>
+      <p class="mt-2 text-muted">
+        If something on this site is hard to use with a screen reader, a keyboard, a magnifier, or a phone, tell
+        us and we will fix it. Contact details are at the bottom of this page.
+      </p>
+    </div>
+
+    <section class="space-y-5 rounded-2xl bg-card p-9 shadow-[var(--shadow-border)] sm:p-8" aria-labelledby="standard">
+      <div id="standard">
+        <h2 class="font-display text-xl font-semibold">The standard we hold ourselves to</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          We target <strong class="font-semibold" style="color: var(--color-body);">WCAG 2.1 Level AA</strong>,
+          the level most public-sector and legal guidance expects of a website. Where a Level AAA criterion is
+          achievable we apply it: body text contrast is at least 7:1, large text at least 4.5:1, no time limits
+          are imposed, and keyboard focus is always visible.
+        </p>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Formal whole-site AAA conformance is not realistic for a site that publishes long community resource
+          descriptions, so we do not claim it. We claim AA conformance and report our automated AAA results
+          honestly below.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-xl font-semibold">Last audit</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          On November 22, 2026 we ran four checks over the 57 published route URLs
+          (<code>baseimpact.org</code> pages and blog posts):
+        </p>
+        <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-muted">
+          <li>
+            <strong class="font-semibold" style="color: var(--color-body);">axe-core 4.8.4</strong> with the
+            <code>wcag2aaa</code>, <code>wcag21aaa</code> and <code>best-practice</code> rule sets —
+            <strong class="font-semibold" style="color: var(--color-body);">0 violations</strong>.
+          </li>
+          <li>
+            An independent strict contrast pass over every visible text node, resolving alpha-blended and
+            gradient backgrounds — <strong class="font-semibold" style="color: var(--color-body);">0 text below
+            7:1</strong> (normal) or 4.5:1 (large), and 0 below AA.
+          </li>
+          <li>
+            A keyboard tab-order sweep on the nine pages with forms, dialogs and dynamic widgets — skip link
+            first, every stop reachable, every stop showing a visible focus ring, Shift+Tab and Escape working.
+          </li>
+          <li>
+            An accessibility-tree structure pass and a 200% zoom/reflow pass on all 57 routes — one
+            <code>h1</code> per page, headings in order, landmark regions present, <code>lang="en"</code>, and no
+            horizontal scrolling at double size.
+          </li>
+        </ul>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          Eight checks returned "needs review" rather than pass or fail: one third-party embedded video player
+          and seven minor repeated-link cases. None is a violation; each is reviewed in the
+          <a class="link-fancy-accent" href="/terms">compliance notes</a>.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-xl font-semibold">What we do to keep the site usable</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
+          <li><strong class="font-semibold" style="color: var(--color-body);">Keyboard:</strong> every control works without a mouse. A skip link jumps past the header, dropdowns open on focus and on Enter/Space, and focus order follows the page.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Focus visibility:</strong> a solid 2px focus ring is drawn on links, buttons, inputs, selects, and textareas, with a 3px offset so it stays visible over dark backgrounds.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Structure:</strong> one <code>h1</code> per page, headings in order, landmark regions for header, main, and footer, and labelled navigation.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Forms:</strong> every field has a visible label, errors are announced with <code>role="alert"</code>, confirmations with <code>role="status"</code>, and no form closes itself on a timer.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Zoom and reflow:</strong> pages stay usable at 200% text zoom with no horizontal scrolling.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Motion:</strong> animation and number tweens are disabled when your device is set to reduce motion.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">Language:</strong> every page declares <code>lang="en"</code>. The site is English-only.</li>
+          <li><strong class="font-semibold" style="color: var(--color-body);">No time limits:</strong> nothing expires or moves on a timer.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="font-display text-xl font-semibold">Technical compatibility</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          The site is built with semantic HTML and no framework-required markup, and was verified with
+          Chromium-based browser automation plus the browser accessibility tree. We expect it to work with the
+          screen readers commonly used with current Chrome, Firefox, Safari, and Edge — NVDA and JAWS on
+          Windows, VoiceOver on macOS and iOS, and TalkBack on Android. A full hands-on pass with those
+          combinations is still on our list.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-display text-xl font-semibold">Known limitations</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
+          <li>The directory map and the spam-check widget on forms are embedded third-party components. Both have text alternatives or human fallbacks; the map's contents are also available as the sortable, filterable list below it.</li>
+          <li>One blog post embeds a third-party video player; the article text carries the same information.</li>
+          <li>Some resource descriptions are written by the organizations themselves; we copy them as provided and cannot guarantee their reading level.</li>
+          <li>A manual screen-reader pass over the directory filters and map popups is on our list and not yet complete.</li>
+          <li>Automated tools cannot check everything. If you hit a barrier we missed, tell us and we will treat it as a bug.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="font-display text-xl font-semibold">Report an accessibility problem</h2>
+        <p class="mt-2 text-sm leading-relaxed text-muted">
+          Tell us what you were trying to do, the page you were on, and the browser and assistive technology you
+          use. We aim to respond within two business days.
+        </p>
+        <ul class="mt-3 space-y-2 text-sm text-muted">
+          <li>
+            Email:{' '}
+            <a class="link-fancy-accent" href="mailto:accessibility@baseimpact.org">accessibility@baseimpact.org</a>
+          </li>
+          <li>
+            Phone or text:{' '}
+            <a class="link-fancy-accent" href="tel:+13213230999">(321) 323-0999</a>
+          </li>
+          <li>
+            <a class="link-fancy-accent" href="/contact">Use the contact form</a>
+          </li>
+        </ul>
+        <p class="mt-3 text-sm leading-relaxed text-muted">
+          If you are not satisfied with our response you can also contact us through the
+          <a class="link-fancy-accent" href="/contact">contact page</a> and ask for the issue to be escalated.
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>

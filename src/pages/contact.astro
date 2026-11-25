@@ -9,11 +9,9 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
   </div>
   <h1 class="font-display text-3xl font-semibold text-body mb-4 fade-in">Contact Us</h1>
 
-  {Astro.url.searchParams.get('sent') === '1' && (
-    <div class="rounded-xl border border-accent/40 bg-card p-4 mb-6 max-w-lg text-body">
-      Thanks — your message was sent. We reply within a few business days.
-    </div>
-  )}
+  <!-- Result of the last submit. Announced by screen readers because it is a
+       live region; the script below fills it and moves focus to it. -->
+  <div id="form-status" role="status" aria-live="polite" class="mb-6 max-w-lg"></div>
 
   <div class="grid gap-4 sm:grid-cols-2 max-w-2xl mb-8">
     <div class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
@@ -23,7 +21,7 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
     </div>
     <div class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
       <p class="text-xs font-bold uppercase tracking-widest text-faint mb-1">Email</p>
-      <a href="mailto:admin@baseimpact.org" class="text-accent font-semibold break-all">admin@baseimpact.org</a>
+      <a href="mailto:info@baseimpact.org" class="text-accent font-semibold break-all">info@baseimpact.org</a>
       <p class="text-sm text-muted mt-1">We reply within a few business days</p>
     </div>
     <div class="rounded-2xl bg-card p-5 shadow-[var(--shadow-border)]">
@@ -38,15 +36,15 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
     </div>
   </div>
 
-  <form class="max-w-lg space-y-4" method="POST" action="/api/contact">
+  <form id="contact-form" class="max-w-lg space-y-4" method="POST" action="/api/contact">
     <div>
       <label for="name" class="block text-sm font-semibold text-body mb-1">Name</label>
-      <input type="text" id="name" name="name" required
+      <input type="text" id="name" name="name" required autocomplete="name"
         class="w-full rounded-lg border border-line bg-card px-3 py-2 text-body" />
     </div>
     <div>
       <label for="email" class="block text-sm font-semibold text-body mb-1">Email</label>
-      <input type="email" id="email" name="email" required
+      <input type="email" id="email" name="email" required autocomplete="email"
         class="w-full rounded-lg border border-line bg-card px-3 py-2 text-body" />
     </div>
     <div>
@@ -55,8 +53,57 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
         class="w-full rounded-lg border border-line bg-card px-3 py-2 text-body"></textarea>
     </div>
     <TurnstileWidget />
-    <button type="submit" class="rounded-xl bg-fill px-6 py-3 text-base font-semibold text-on-fill hover:bg-fill-hover">
+    <button type="submit" id="contact-submit"
+      class="rounded-xl bg-fill px-6 py-3 text-base font-semibold text-on-fill hover:bg-fill-hover">
       Send message
     </button>
   </form>
 </Base>
+
+<script>
+  // Submit without a page load so validation errors and the sent confirmation
+  // stay on the page and are announced. Without JavaScript the browser still
+  // posts the form; /api/contact then returns its own accessible result page.
+  const form = document.getElementById('contact-form');
+  const status = document.getElementById('form-status');
+  const submitBtn = document.getElementById('contact-submit');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    submitBtn?.setAttribute('disabled', 'disabled');
+    if (submitBtn) submitBtn.textContent = 'Sending…';
+    status.textContent = '';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; message?: string };
+
+      if (res.ok && data.ok) {
+        status.className = 'mb-6 max-w-lg alert-success';
+        status.textContent = 'Thanks — your message was sent. We reply within a few business days.';
+        form.reset();
+      } else {
+        status.className = 'mb-6 max-w-lg alert-error';
+        status.textContent = data.message || 'Something went wrong. Please try again in a few minutes.';
+      }
+      status.setAttribute('role', res.ok ? 'status' : 'alert');
+      status.tabIndex = -1;
+      status.focus();
+    } catch {
+      status.className = 'mb-6 max-w-lg alert-error';
+      status.setAttribute('role', 'alert');
+      status.tabIndex = -1;
+      status.textContent = 'We could not reach the server. Please try again in a few minutes.';
+      status.focus();
+    } finally {
+      submitBtn?.removeAttribute('disabled');
+      if (submitBtn) submitBtn.textContent = 'Send message';
+    }
+  });
+</script>

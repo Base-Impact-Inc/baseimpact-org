@@ -6,8 +6,10 @@ image: /assets/operation-christmas-child-shoebox-gift-2026-11-16.jpg
 categories: ["Community News"]
 tags: ["Operation Christmas Child", "Samaritan's Purse", "shoebox", "children", "Titusville"]
 featured: false
-draft: false
+draft: true
 ---
+
+<!-- Merged into /blog/rock-church-operation-christmas-child on 2026-11-22. Kept inactive for history. -->
 
 Operation Christmas Child is a project of Samaritan's Purse that sends gift-filled shoeboxes to children in need around the world, together with the message of the Gospel of Jesus Christ.[4] Each box is packed with small toys, school supplies, and personal care items.
 

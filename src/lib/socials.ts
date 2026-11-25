@@ -55,6 +55,13 @@ export const SOCIALS: Social[] = [
     blurb: "The same updates, and where most of our neighbours already are.",
     icon: "facebook",
   },
+  {
+    name: "Instagram",
+    handle: "@base_impact_org",
+    url: "https://www.instagram.com/base_impact_org/",
+    blurb: "Photos from the field, event coverage, and community highlights.",
+    icon: "instagram",
+  },
 ];
 
 /**
@@ -64,4 +71,4 @@ export const SOCIALS: Social[] = [
  * would either 404 or land on a stranger's account. These render as plain text so the
  * page stays honest about what is and is not live yet.
  */
-export const PENDING: string[] = ["Instagram"];
+export const PENDING: string[] = [];

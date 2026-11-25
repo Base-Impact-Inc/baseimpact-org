@@ -67,7 +67,7 @@ export function TriageSheet() {
         {step === 1 ? (
           <div className="space-y-5">
             <div className="pr-10">
-              <p className="inline-flex items-center gap-1.5 rounded-full bg-tint-caution px-3 py-1 text-xs font-bold text-caution">
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-tint-caution px-3 py-1 text-xs font-bold text-on-caution">
                 <Zap className="size-3.5" aria-hidden />
                 Quick helper
               </p>
@@ -119,7 +119,7 @@ export function TriageSheet() {
                   <div key={res.id} className="rounded-2xl bg-card p-6 shadow-[var(--shadow-border)]">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="font-display text-lg font-semibold">{res.name}</h3>
-                      <span className="shrink-0 rounded-full bg-tint-positive px-2 py-1 text-xs font-bold text-positive">
+                      <span className="shrink-0 rounded-full bg-tint-positive px-2 py-1 text-xs font-bold text-on-positive">
                         {res.hoursText}
                       </span>
                     </div>

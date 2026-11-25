@@ -5,7 +5,7 @@ const orgs = [
   {
     name: 'LifePointe Ministries, Inc.',
     meta: 'EIN 45-1198607 · Titusville, FL · 501(c)(3)',
-    body: 'Operates the Titusville Civic Center. Provides homeless showers, clothing, essentials, toiletries, and Thursday evening dinners. Operates the only inclement-weather cold-night shelter between Titusville and Port Orange. Runs CREW 29 outreach ministry providing meals, clothing, hygiene items, and fellowship.',
+    body: 'Operates the Titusville Civic Center. Provides homeless showers, clothing, essentials, toiletries, and Thursday evening dinners. Operates the only inclement-weather shelter between Titusville and Port Orange. Runs CREW 29 outreach ministry providing meals, clothing, hygiene items, and fellowship.',
   },
   {
     name: 'No One Hungry, Inc.',
@@ -30,7 +30,7 @@ const orgs = [
   {
     name: 'First United Methodist Church of Titusville',
     meta: 'Titusville, FL · Church (automatically tax-exempt)',
-    body: 'Runs the Community Breakfast program providing food, essentials, clothing, and a safe space to shelter from the weather. Not a full-time shelter — partners with LifePointe Ministries for cold-night shelter overflow.',
+    body: 'Runs the Community Breakfast program providing food, essentials, clothing, and a safe space to shelter from the weather. Not a full-time shelter — partners with LifePointe Ministries for inclement-weather shelter overflow.',
   },
   {
     name: 'First Christian Church of Titusville',
@@ -48,12 +48,12 @@ const techHelp = [
 const involvement = [
   'Food service and meal preparation',
   'Clothing distribution to families and individuals in need',
-  'Cold-night shelter security and support during extreme weather',
+  'Inclement-weather shelter security and support during extreme weather',
   'Communications and safety team service',
   'Technology support and device setup for neighbors and nonprofits',
   'Senior assistance — transportation, technology, and daily needs',
   'Housing connections — helping people find stable housing',
-  'Emergency response — acquiring and distributing cold weather supplies',
+  'Emergency response — acquiring and distributing inclement-weather supplies',
   'Community cleanup and beautification',
 ];
 
@@ -113,7 +113,7 @@ const opportunities = [
   <section class="mt-10 fade-in">
     <h2 class="font-display text-xl font-semibold text-body mb-2">Our track record</h2>
     <p class="max-w-2xl text-muted leading-relaxed mb-5">
-      Base Impact's founder has volunteered at local churches, food pantries, cold-night shelters,
+      Base Impact's founder has volunteered at local churches, food pantries, inclement-weather shelters,
       and community organizations in Brevard County. That hands-on service shapes our programs and
       ensures we understand the real needs of the people we serve.
     </p>
@@ -142,13 +142,13 @@ const opportunities = [
 
     <h3 class="font-display text-lg font-semibold text-body mt-8 mb-3">Community involvement</h3>
     <p class="max-w-2xl text-muted leading-relaxed mb-3">
-      Hands-on volunteer work at local churches, food pantries, cold-night shelters, and community
+      Hands-on volunteer work at local churches, food pantries, inclement-weather shelters, and community
       organizations — the direct experience that shapes every program we build.
     </p>
     <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
       {involvement.map((item) => (
         <li class="flex items-start gap-2 text-muted">
-          <svg class="mt-1 size-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden>
+          <svg class="mt-1 size-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
             <path d="M20 6L9 17l-5-5" />
           </svg>
           <span class="text-sm">{item}</span>

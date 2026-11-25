@@ -98,7 +98,7 @@ function cta(item: (typeof ITEMS)[0]) {
             displayed price on that date, not a quote.
           </p>
         </div>
-        <span class="inline-flex shrink-0 self-start rounded-full bg-tint-caution px-4 py-2 text-xs font-semibold text-caution">
+        <span class="inline-flex shrink-0 self-start rounded-full bg-tint-caution px-4 py-2 text-xs font-semibold text-on-caution">
           Coming soon
         </span>
       </div>
@@ -146,7 +146,7 @@ function cta(item: (typeof ITEMS)[0]) {
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
         <div class="lp-card flex flex-col p-6">
           <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
           <p class="mt-4 font-display text-xl font-semibold text-body">1 · You give</p>
           <p class="mt-2 text-sm text-muted leading-relaxed">
@@ -156,7 +156,7 @@ function cta(item: (typeof ITEMS)[0]) {
         </div>
         <div class="lp-card flex flex-col p-6">
           <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
           <p class="mt-4 font-display text-xl font-semibold text-body">2 · We receive</p>
           <p class="mt-2 text-sm text-muted leading-relaxed">
@@ -166,11 +166,11 @@ function cta(item: (typeof ITEMS)[0]) {
         </div>
         <div class="lp-card flex flex-col p-6">
           <div class="flex h-11 w-11 items-center justify-center rounded-full bg-signal-soft text-accent">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
           <p class="mt-4 font-display text-xl font-semibold text-body">3 · We deliver</p>
           <p class="mt-2 text-sm text-muted leading-relaxed">
-            Through LifePointe's cold-weather shelter, Under The Bridge weekly
+            Through LifePointe's inclement-weather shelter, Under The Bridge weekly
             outreach, No One Hungry pantry, and other partners — one gift, many
             neighbors.
           </p>
@@ -219,7 +219,7 @@ function cta(item: (typeof ITEMS)[0]) {
                 class="flex h-4 w-4 items-center justify-center rounded-full"
                 style="background:{TIER_TINT[group.tier]};color:{TIER_TEXT[group.tier]}"
               >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke={TIER_TEXT[group.tier]} stroke-width="2" stroke-linecap="round"><path d="M2 6l4-3 4 3"/></svg>
+                <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke={TIER_TEXT[group.tier]} stroke-width="2" stroke-linecap="round"><path d="M2 6l4-3 4 3"/></svg>
               </span>
               {group.label} ({group.items.length})
             </h3>
@@ -309,7 +309,7 @@ function cta(item: (typeof ITEMS)[0]) {
 
     <p class="mt-8 text-xs text-faint">
       Base Impact Inc. · Scottsmoor, FL 32775 · (321) 323-0999 ·
-      <a href="mailto:admin@baseimpact.org" class="text-accent underline underline-offset-2">admin@baseimpact.org</a>
+      <a href="mailto:donations@baseimpact.org" class="text-accent underline underline-offset-2">donations@baseimpact.org</a>
     </p>
   </div>
 </Base>

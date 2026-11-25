@@ -42,9 +42,9 @@ export const TIER_TINT: Record<Tier, string> = {
 };
 
 export const TIER_TEXT: Record<Tier, string> = {
-  critical: "var(--color-critical)",
-  high: "var(--color-warm-orange)",
-  "nice-to-have": "var(--color-faint)",
+  critical: "var(--color-on-critical)",
+  high: "var(--color-on-high)",
+  "nice-to-have": "var(--color-on-nice)",
 };
 
 export const ITEMS: WishlistItem[] = [

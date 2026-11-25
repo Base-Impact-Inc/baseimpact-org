@@ -37,7 +37,7 @@ import Base from '../layouts/Base.astro';
         <label for="story-consent" class="text-sm text-muted leading-relaxed">
           I give Base Impact permission to publish my story on their website and social media.
           I understand my email will never be shared publicly. I can request removal at any time
-          by contacting Base Impact at <a href="tel:+13213230999" class="text-accent hover:underline">(321) 323-0999</a>.
+          by contacting Base Impact at <a href="tel:+132****0999" class="text-accent hover:underline">(321) 323-0999</a> or <a href="mailto:stories@baseimpact.org" class="text-accent hover:underline">stories@baseimpact.org</a>.
         </label>
       </div>
 
@@ -45,7 +45,7 @@ import Base from '../layouts/Base.astro';
         Submit your story
       </button>
 
-      <p id="form-status" class="text-sm text-accent font-medium" style="display: none;"></p>
+      <p id="form-status" class="text-sm text-accent font-medium" style="display: none;" role="status" aria-live="polite"></p>
     </form>
 
     <div class="mt-8 rounded-lg border border-line bg-card p-5">

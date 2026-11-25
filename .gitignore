@@ -48,3 +48,7 @@ program-budgets.md
 # taste-skill inspector output
 .taste-skill/
 assets/
+
+# Public site images must be tracked (do not let `assets/` hide public/assets/)
+!public/assets/
+!public/assets/**
