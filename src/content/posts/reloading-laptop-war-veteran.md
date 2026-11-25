@@ -2,7 +2,7 @@
 title: "Reloading a Laptop for a War Veteran"
 description: "Base Impact helped a war veteran by reloading and setting up his laptop — restoring his connection to family, benefits, and the digital world."
 date: 2026-10-15
-image: /assets/tech-help-digital-skills.jpg
+image: /assets/laptop-neat-desk.jpg
 categories: ["Impact Stories"]
 tags: ["veterans", "technology", "laptop", "support"]
 featured: false
