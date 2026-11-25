@@ -2018,28 +2018,6 @@ li .link-fancy::after {
 .search-wrapper #search-clear.visible { opacity: 1; pointer-events: auto; }
 .search-wrapper #search-clear:hover { color: var(--color-body); }
 
-/* Distance badge — top-left, prominent */
-.distance-badge {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 3.5rem;
-  height: 1.75rem;
-  padding: 0 0.5rem;
-  background: var(--color-fill);
-  color: var(--color-on-fill);
-  font-size: 0.7rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  border-radius: 9999px;
-  box-shadow: var(--shadow-border);
-  white-space: nowrap;
-}
-
 /* Open now badge — top-right */
 .open-badge {
   position: absolute;

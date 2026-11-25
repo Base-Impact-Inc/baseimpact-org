@@ -55,13 +55,6 @@ const verifiedDate = resource.lastVerified
   aria-labelledby={`card-${resource.id}-name`}
 >
 
-  <!-- Distance badge — TOP LEFT, always visible -->
-  {hasDistance && (
-    <span class="distance-badge" aria-label={`${resource.distanceMiles.toFixed(1)} miles away`}>
-      {distText}
-    </span>
-  )}
-
   <!-- Open now badge — TOP RIGHT -->
   {isOpen && (
     <div class="open-badge" aria-live="polite">
