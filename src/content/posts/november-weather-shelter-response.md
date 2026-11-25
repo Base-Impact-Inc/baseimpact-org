@@ -35,6 +35,35 @@ Volunteers set up cots, pillows, and blankets. The shelter offered hot meals, cl
 
 The shelter was opened independently of Brevard County government. County officials said they were prepared to open county-run shelters if conditions warranted.
 
+## Scenes from the shelter
+
+<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3 my-8">
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-1.jpg" alt="Volunteers preparing the shelter space with cots and supplies" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Volunteers preparing the shelter space with cots and supplies</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-2.jpg" alt="Selfie of volunteer at the shelter" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Base Impact team member at the shelter</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-3.jpg" alt="Shelter hall with cots set up for guests" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Shelter hall with cots set up for overnight guests</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-4.jpg" alt="Community hall arranged for shelter guests with tables and chairs" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Community hall arranged with tables and chairs</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-5.jpg" alt="Supplies and registration table at the shelter" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Supplies and registration table</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-6.jpg" alt="Breakfast served at the shelter" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Hot breakfast served to guests</figcaption>
+  </figure>
+</div>
+
 ## Where Base Impact fits in
 
 Our role in moments like this is practical: help where hands are needed, and make sure people can connect to longer-term services once the immediate danger passes.
@@ -43,6 +72,16 @@ Our role in moments like this is practical: help where hands are needed, and mak
 - **Resource navigation** — connecting guests with our [resource directory](/directory) for food, shelter, hygiene, and transportation help
 - **Community awareness** — sharing accurate, timely information about where shelter is available
 - **Technology help** — keeping devices and information usable for the people and organizations doing the work
+
+## A note of gratitude
+
+We're deeply grateful for the opportunity to serve alongside LifePointe Ministries and the volunteers who showed up — night after night — to make sure no neighbor had to face this storm alone. In Brevard County, we've seen time and again that when the weather turns hard, the community turns *toward* each other. Churches open their doors. Neighbors bring blankets. Volunteers give up their sleep. Organizations share resources without being asked twice.
+
+This is what it looks like to pull together. It's not grand gestures; it's cots unfolded at 5 p.m., hot coffee at midnight, a dry pair of socks handed to someone who walked through flooding. It's the quiet, steady work of people who believe that everyone deserves a safe place to land.
+
+Thank you to Pastor Morrison, Pastor Evans, the LifePointe congregation, and every volunteer who made these days possible. Thank you to the neighbors who trusted us with their stories and their rest. And thank you to our partners, donors, and supporters who make Base Impact's presence in these moments possible.
+
+This is the work. We're honored to do it with you.
 
 ## How you can help
 
