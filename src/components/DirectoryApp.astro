@@ -295,19 +295,7 @@ const mapData = JSON.stringify(cardData);
         ))}
       </nav>
 
-      <!-- Mobile: Filter sheet trigger button -->
-      <button
-        type="button"
-        id="filter-sheet-trigger"
-        class="lg:hidden btn-pill w-full justify-between"
-        aria-haspopup="dialog"
-        aria-label={t.filters}
-        aria-expanded="false"
-      >
-        <span>{t.filters}</span>
-        <span id="active-filter-count" class="badge bg-signal-soft text-signal" hidden>0</span>
-        <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
+      
     </div>
 
     <!-- Row 4: View toggle + Saved + Print -->
@@ -325,94 +313,6 @@ const mapData = JSON.stringify(cardData);
       </button>
     </div>
   </div>
-
-  <!-- Mobile Filter Sheet (Bottom Sheet Dialog) -->
-  <dialog id="filter-sheet" class="filter-sheet lg:hidden" role="dialog" aria-labelledby="filter-sheet-title" aria-modal="true">
-    <form method="dialog">
-      <header>
-        <h2 id="filter-sheet-title" class="text-lg font-semibold">{t.filters}</h2>
-        <button type="button" value="close" class="text-muted hover:text-body" aria-label="Close filters">
-          <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </header>
-      <section class="space-y-6">
-        <!-- Location Section -->
-        <div class="filter-section">
-          <h3 class="filter-section-title">Location</h3>
-          <div class="space-y-3">
-            <label class="flex items-center gap-2">
-              <input type="text" id="sheet-zip-input" placeholder={t.zip} autocomplete="postal-code" inputmode="numeric" maxlength="5" pattern="[0-9]{5}" class="flex-1 rounded-xl border-line px-4 py-3" style="background: var(--color-page); color: var(--color-body);" />
-            </label>
-            <label class="flex items-center gap-2">
-              <button type="button" id="sheet-use-location-btn" class="btn btn-outline-light flex-1">
-                <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
-                {t.useLocation}
-              </button>
-            </label>
-            <label class="flex items-center gap-2">
-              <span class="text-sm text-muted w-24">{t.distanceMode}</span>
-              <select id="sheet-distance-mode" class="flex-1 rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
-                <option value="driving">{t.byRoad}</option>
-                <option value="walking">{t.walking}</option>
-              </select>
-            </label>
-            <label class="flex items-center gap-2">
-              <span class="text-sm text-muted w-24">{t.anyDistance}</span>
-              <select id="sheet-radius-select" class="flex-1 rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
-                <option value="0">{t.anyDistance}</option>
-                <option value="5">{t.within} 5 {t.miles}</option>
-                <option value="10" selected>{t.within} 10 {t.miles}</option>
-                <option value="25">{t.within} 25 {t.miles}</option>
-                <option value="50">{t.within} 50 {t.miles}</option>
-                <option value="100">{t.within} 100 {t.miles}</option>
-              </select>
-            </label>
-            <label class="flex items-center gap-2">
-              <span class="text-sm text-muted w-24">State</span>
-              <select id="sheet-state-filter" class="flex-1 rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
-                <option value="all">All states</option>
-                {states.map((s) => <option value={s}>{s}</option>)}
-              </select>
-            </label>
-            <label class="flex items-center gap-2 text-sm text-muted cursor-pointer">
-              <input type="checkbox" id="sheet-open-now" class="rounded" />
-              {t.openNow}
-            </label>
-          </div>
-        </div>
-
-        <!-- Category Sections (Accordion) -->
-        <div class="filter-section">
-          <h3 class="filter-section-title">{t.essentials}</h3>
-          <div class="filter-section-chips">
-            {['food', 'shelter', 'health'].map(g => (
-              <button type="button" data-group={g} class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors">{t[g]}</button>
-            ))}
-          </div>
-        </div>
-        <div class="filter-section">
-          <h3 class="filter-section-title">{t.support}</h3>
-          <div class="filter-section-chips">
-            {['money', 'gas', 'basics', 'technology'].map(g => (
-              <button type="button" data-group={g} class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors">{t[g]}</button>
-            ))}
-          </div>
-        </div>
-        <div class="filter-section">
-          <h3 class="filter-section-title">{t.crisisSaved}</h3>
-          <div class="filter-section-chips">
-            {['crisis', 'saved'].map(g => (
-              <button type="button" data-group={g} class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors">{t[g]}</button>
-            ))}
-          </div>
-        </div>
-      </section>
-      <footer>
-        <button type="button" value="reset" class="btn-pill flex-1 border border-line bg-card">{t.resetFilters}</button>
-        <button type="button" id="filter-sheet-apply" value="apply" class="btn-pill flex-1 bg-fill">{t.applyFilters}</button>
-      </footer>
-    </form>
-  </dialog>
 
   <!-- Saved Bar (shown when Saved filter active) -->
   <div id="saved-bar" class="saved-bar mb-4 hidden" role="status" aria-live="polite">

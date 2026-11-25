@@ -5,16 +5,8 @@
  * listing as a `.resource-item` with data attributes, and embeds the same rows
  * as JSON in `#resource-data` for the map. No external globals required.
  *
- * New in this version:
- * - Search clear button + debounce
- * - Mobile filter sheet (bottom sheet dialog)
- * - Accordion chip groups (desktop)
- * - Hybrid desktop map (split pane, sticky)
- * - Mobile list/map tabs
- * - Saved bar with export/clear
- * - Clear all filters buttons
- * - Per-card mobile map links
- * - Synced filter state between desktop/mobile/sheet
+ * Simplified version: no filter sheet, no modal dialogs.
+ * Just sticky filter bar, accordion chip groups, hybrid map, saved bar.
  */
 (() => {
   'use strict';
@@ -29,7 +21,7 @@
   const activeGrid = () => $('mobile-list')?.hidden ? grid : gridMobile;
   const getItems = () => Array.from(activeGrid()?.querySelectorAll('.resource-item') || []);
 
-  // --- Filter elements (desktop) ---
+  // --- Filter elements ---
   const searchInput = $('search-input');
   const searchClear = $('search-clear');
   const zipInput = $('zip-input');
@@ -40,18 +32,9 @@
   const distanceModeSelect = $('distance-mode');
   const locationStatus = $('location-status');
 
-  // --- Filter elements (sheet) ---
-  const sheetZipInput = $('sheet-zip-input');
-  const sheetUseLocationBtn = $('sheet-use-location-btn');
-  const sheetRadiusSelect = $('sheet-radius-select');
-  const sheetStateFilter = $('sheet-state-filter');
-  const sheetOpenNowCheckbox = $('sheet-open-now');
-  const sheetDistanceModeSelect = $('sheet-distance-mode');
-
   // --- Chips ---
   const desktopChips = Array.from(document.querySelectorAll('.chip-group button[data-group]'));
-  const sheetChips = Array.from(document.querySelectorAll('#filter-sheet button[data-group]'));
-  const allChips = [...desktopChips, ...sheetChips];
+  const allChips = [...desktopChips];
 
   // --- Map legend chips ---
   const mapChips = Array.from(document.querySelectorAll('.map-legend-chip, #map-legend-mobile button[data-mapgroup]'));
@@ -59,8 +42,6 @@
   // --- View toggle ---
   const viewListBtn = $('view-list');
   const viewMapBtn = $('view-map');
-  const mobileViewListBtn = $('view-list'); // same ID, but we'll query in context
-  const mobileViewMapBtn = $('view-map');
 
   // --- Map containers ---
   const mapContainer = $('map-container');
@@ -88,12 +69,6 @@
   // --- Clear filters ---
   const clearAllFiltersBtn = $('clear-all-filters');
   const clearAllFiltersBtnMobile = $('clear-all-filters-mobile');
-
-  // --- Filter sheet ---
-  const filterSheetTrigger = $('filter-sheet-trigger');
-  const filterSheet = $('filter-sheet');
-  const filterSheetApply = $('filter-sheet-apply');
-  const activeFilterCountEl = $('active-filter-count');
 
   // --- Data ---
   let cardData = [];
@@ -178,10 +153,7 @@
     if (radius > 0) count++;
     if (location) count++;
     if (query) count++;
-    if (activeFilterCountEl) {
-      activeFilterCountEl.textContent = count;
-      activeFilterCountEl.hidden = count === 0;
-    }
+    // No activeFilterCountEl element anymore (was on filter sheet trigger)
   }
 
   function updateSavedBar() {
@@ -436,46 +408,34 @@
   });
 
   // --- Open now ---
-  [openNowCheckbox, sheetOpenNowCheckbox].forEach(cb => {
-    cb?.addEventListener('change', () => {
-      openOnly = cb.checked;
-      syncCheckboxes([openNowCheckbox, sheetOpenNowCheckbox], openOnly);
-      render();
-    });
+  openNowCheckbox?.addEventListener('change', () => {
+    openOnly = openNowCheckbox.checked;
+    render();
   });
 
   // --- State filter ---
-  [stateFilter, sheetStateFilter].forEach(sel => {
-    sel?.addEventListener('change', () => {
-      activeState = sel.value || 'all';
-      syncSelectors([stateFilter, sheetStateFilter], activeState);
-      render();
-    });
+  stateFilter?.addEventListener('change', () => {
+    activeState = stateFilter.value || 'all';
+    render();
   });
 
   // --- Radius ---
-  [radiusSelect, sheetRadiusSelect].forEach(sel => {
-    sel?.addEventListener('change', () => {
-      radius = parseInt(sel.value || '0', 10) || 0;
-      sessionStorage.setItem(RADIUS_KEY, String(radius));
-      syncSelectors([radiusSelect, sheetRadiusSelect], String(radius));
-      render();
-    });
+  radiusSelect?.addEventListener('change', () => {
+    radius = parseInt(radiusSelect.value || '0', 10) || 0;
+    sessionStorage.setItem(RADIUS_KEY, String(radius));
+    render();
   });
 
   // --- Distance mode ---
-  [distanceModeSelect, sheetDistanceModeSelect].forEach(sel => {
-    sel?.addEventListener('change', () => {
-      const next = sel.value;
-      if (!Object.prototype.hasOwnProperty.call(ROAD_PROFILES, next)) return;
-      roadMode = next;
-      try { sessionStorage.setItem(ROAD_MODE_KEY, roadMode); } catch {}
-      syncSelectors([distanceModeSelect, sheetDistanceModeSelect], roadMode);
-      roadUpgradeSeq += 1;
-      clearRoadDistances();
-      render();
-      upgradeRoadDistances();
-    });
+  distanceModeSelect?.addEventListener('change', () => {
+    const next = distanceModeSelect.value;
+    if (!Object.prototype.hasOwnProperty.call(ROAD_PROFILES, next)) return;
+    roadMode = next;
+    try { sessionStorage.setItem(ROAD_MODE_KEY, roadMode); } catch {}
+    roadUpgradeSeq += 1;
+    clearRoadDistances();
+    render();
+    upgradeRoadDistances();
   });
 
   // --- Chips (category filters) ---
@@ -494,8 +454,6 @@
     chip.addEventListener('click', () => {
       activeGroup = chip.getAttribute('data-group') || 'all';
       syncChips();
-      // Close filter sheet on mobile after selection
-      if (filterSheet && !filterSheet.hidden) closeFilterSheet();
       render();
     });
   });
@@ -562,23 +520,20 @@
     sessionStorage.removeItem(RADIUS_KEY);
 
     syncChips();
-    syncSelectors([stateFilter, sheetStateFilter], 'all');
-    syncSelectors([radiusSelect, sheetRadiusSelect], '0');
-    syncCheckboxes([openNowCheckbox, sheetOpenNowCheckbox], false);
+    syncSelectors([stateFilter], 'all');
+    syncSelectors([radiusSelect], '0');
+    syncCheckboxes([openNowCheckbox], false);
     if (searchInput) { searchInput.value = ''; }
     if (searchClear) { searchClear.hidden = true; searchClear.classList.remove('visible'); }
     if (zipInput) zipInput.value = '';
-    if (sheetZipInput) sheetZipInput.value = '';
     if (locationStatus) locationStatus.textContent = '';
     if (distanceModeSelect) distanceModeSelect.value = 'driving';
-    if (sheetDistanceModeSelect) sheetDistanceModeSelect.value = 'driving';
     roadMode = 'driving';
     try { sessionStorage.setItem(ROAD_MODE_KEY, roadMode); } catch {}
 
     clearRoadDistances();
     visibleCount = PAGE_SIZE;
     render();
-    closeFilterSheet();
   }
 
   [clearAllFiltersBtn, clearAllFiltersBtnMobile].forEach(btn => {
@@ -632,7 +587,7 @@
     location = loc;
     sessionStorage.setItem(LOCATION_KEY, JSON.stringify({ lat: loc.lat, lng: loc.lng, label }));
     if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label}` : '';
-    syncSelectors([zipInput, sheetZipInput], '');
+    syncSelectors([zipInput], '');
     visibleCount = PAGE_SIZE;
     clearRoadDistances();
     render();
@@ -648,86 +603,33 @@
     return data;
   }
 
-  [zipInput, sheetZipInput].forEach(input => {
-    input?.addEventListener('keydown', async e => {
-      if (e.key !== 'Enter') return;
-      e.preventDefault();
-      const zip = input.value.trim();
-      if (!/^\d{5}$/.test(zip)) {
-        if (locationStatus) locationStatus.textContent = 'Enter a valid 5-digit ZIP code.';
-        return;
-      }
-      try {
-        const loc = await geocodeZip(zip);
-        setLocation({ lat: loc.lat, lng: loc.lng }, loc.label);
-        closeFilterSheet();
-      } catch {
-        if (locationStatus) locationStatus.textContent = 'Could not find that ZIP code. Please try again.';
-      }
-    });
+  zipInput?.addEventListener('keydown', async e => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const zip = zipInput.value.trim();
+    if (!/^\d{5}$/.test(zip)) {
+      if (locationStatus) locationStatus.textContent = 'Enter a valid 5-digit ZIP code.';
+      return;
+    }
+    try {
+      const loc = await geocodeZip(zip);
+      setLocation({ lat: loc.lat, lng: loc.lng }, loc.label);
+    } catch {
+      if (locationStatus) locationStatus.textContent = 'Could not find that ZIP code. Please try again.';
+    }
   });
 
-  [useLocationBtn, sheetUseLocationBtn].forEach(btn => {
-    btn?.addEventListener('click', () => {
-      if (!navigator.geolocation) {
-        if (locationStatus) locationStatus.textContent = 'Geolocation is not supported by your browser.';
-        return;
-      }
-      if (locationStatus) locationStatus.textContent = 'Locating…';
-      navigator.geolocation.getCurrentPosition(
-        pos => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }, 'your current location'),
-        () => { if (locationStatus) locationStatus.textContent = 'Could not get your location. Enter a ZIP code instead.'; },
-        { timeout: 10000 }
-      );
-    });
-  });
-
-  // --- Filter Sheet ---
-  function openFilterSheet() {
-    if (!filterSheet) return;
-    filterSheet.showModal();
-    filterSheetTrigger?.setAttribute('aria-expanded', 'true');
-    // Focus first input
-    setTimeout(() => sheetZipInput?.focus(), 100);
-    // Trap focus
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeFilterSheet() {
-    if (!filterSheet) return;
-    filterSheet.close();
-    filterSheetTrigger?.setAttribute('aria-expanded', 'false');
-    filterSheetTrigger?.focus();
-    document.body.style.overflow = '';
-  }
-
-  filterSheetTrigger?.addEventListener('click', openFilterSheet);
-
-  filterSheet?.addEventListener('close', () => {
-    filterSheetTrigger?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  });
-
-  // Close on backdrop click
-  filterSheet?.addEventListener('click', e => {
-    if (e.target === filterSheet) closeFilterSheet();
-  });
-
-  // Escape key
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && filterSheet && !filterSheet.hidden) closeFilterSheet();
-  });
-
-  // Sheet apply button - sync and close
-  filterSheetApply?.addEventListener('click', () => {
-    // Sheet inputs already synced via their event listeners
-    closeFilterSheet();
-  });
-
-  // Sheet reset button (formmethod="dialog" with value="reset" handles close)
-  // But we also need to clear all filters
-  filterSheet?.querySelector('[value="reset"]')?.addEventListener('click', () => {
-    clearAllFilters();
+  useLocationBtn?.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      if (locationStatus) locationStatus.textContent = 'Geolocation is not supported by your browser.';
+      return;
+    }
+    if (locationStatus) locationStatus.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(
+      pos => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }, 'your current location'),
+      () => { if (locationStatus) locationStatus.textContent = 'Could not get your location. Enter a ZIP code instead.'; },
+      { timeout: 10000 }
+    );
   });
 
   // --- Map ---
@@ -762,8 +664,8 @@
   }
 
   function escapeHTML(value) {
-      return String(value).replace(/[&<>"']/g, c => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" }[c]));
-    }
+    return String(value).replace(/[&<>\"']/g, c => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" }[c]));
+  }
 
   function initMap(container, isMobile = false) {
     if (isMobile) {
@@ -908,7 +810,7 @@
     else showMapView();
   });
 
-  // --- Transit (unchanged) ---
+  // --- Transit ---
   let transitPanel = null, transitPanelClose = null, transitPanelStatus = null, transitPanelBody = null, transitReturnFocus = null;
 
   function googleTransitUrl(toLat, toLng) { return `https://www.google.com/maps/dir/?api=1&destination=${toLat},${toLng}&travelmode=transit`; }
@@ -961,7 +863,7 @@
       if (leg.mode === 'WALK') return `Walk ${fmtMin(leg.durationMin)}${fmtDist(leg.distanceM) ? ` (${fmtDist(leg.distanceM)})` : ''}`;
       const route = leg.routeShortName || leg.route || 'Bus';
       let headsign = leg.headsign || '';
-      if (headsign) { const esc = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); headsign = headsign.replace(new RegExp(`^${esc}\\s*[-:–]?\\s*`, 'i'), ''); }
+      if (headsign) { const esc = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); headsign = headsign.replace(new RegExp(`^${esc}\\s*[-:–]?\s*`, 'i'), ''); }
       return `${route}${headsign ? ` toward ${headsign}` : ''} · ${fmtMin(leg.durationMin)}`;
     };
     const cards = ranked.slice(0, 3).map(itin => {
@@ -1022,9 +924,7 @@
 
   // --- Restore session ---
   if (radiusSelect && radius) radiusSelect.value = String(radius);
-  if (sheetRadiusSelect && radius) sheetRadiusSelect.value = String(radius);
   if (distanceModeSelect) distanceModeSelect.value = roadMode;
-  if (sheetDistanceModeSelect) sheetDistanceModeSelect.value = roadMode;
   if (location && locationStatus) locationStatus.textContent = `Showing results near ${location.label}`;
   syncChips();
   updateSaveButtons();
