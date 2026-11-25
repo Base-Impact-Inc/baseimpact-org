@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Main house body -->
+  <rect x="20" y="50" width="60" height="40" rx="2"/>
+  
+  <!-- Roof -->
+  <path d="M12 50 L50 18 L88 50 Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Roof peak accent (inverted triangle) -->
+  <path d="M46 26 L50 14 L54 26 Z" fill="currentColor"/>
+  
+  <!-- Chimney on right -->
+  <rect x="72" y="22" width="8" height="24" rx="1"/>
+  
+  <!-- Central window - 2x2 grid -->
+  <rect x="42" y="62" width="16" height="16" rx="1" stroke-width="4"/>
+  <line x1="50" y1="62" x2="50" y2="78" stroke-width="4"/>
+  <line x1="42" y1="70" x2="58" y2="70" stroke-width="4"/>
+</svg>

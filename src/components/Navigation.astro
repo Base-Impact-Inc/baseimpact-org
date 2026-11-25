@@ -42,6 +42,15 @@ const connect = [
 <header class="site-header" role="banner">
   <nav class="nav-container" aria-label="Main navigation">
     <a href="/" class="nav-logo">
+      <svg class="logo-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="20" y="50" width="60" height="40" rx="2"/>
+        <path d="M12 50 L50 18 L88 50 Z"/>
+        <path d="M46 26 L50 14 L54 26 Z" fill="currentColor"/>
+        <rect x="72" y="22" width="8" height="24" rx="1"/>
+        <rect x="42" y="62" width="16" height="16" rx="1" stroke-width="4"/>
+        <line x1="50" y1="62" x2="50" y2="78" stroke-width="4"/>
+        <line x1="42" y1="70" x2="58" y2="70" stroke-width="4"/>
+      </svg>
       <span class="logo-text">Base Impact</span>
     </a>
 
@@ -234,6 +243,7 @@ const connect = [
   .site-header { position: sticky; top: 0; z-index: 100; background: var(--color-page); border-bottom: 1px solid var(--color-line); }
   .nav-container { max-width: 1200px; margin: 0 auto; padding: 0.75rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .nav-logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; color: var(--color-body); font-weight: 700; font-size: 1.125rem; flex-shrink: 0; }
+  .logo-icon { width: 2rem; height: 2rem; flex-shrink: 0; }
   .logo-text { font-family: var(--font-display, inherit); }
   .desktop-nav { display: flex; align-items: center; gap: 0.25rem; }
   .nav-link { color: var(--color-muted); text-decoration: none; font-size: 0.9375rem; padding: 0.5rem 0.75rem; border-radius: 0.375rem; transition: color 0.2s, background 0.2s; display: flex; align-items: center; }
