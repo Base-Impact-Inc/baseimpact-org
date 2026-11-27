@@ -72,6 +72,26 @@ Headless Chrome results (live `baseimpact.org`, no page errors):
 - Map click hides grid/shows map; List click reverses
 - Deployed Worker version `d5e93a07`; commits `1a956ef3`, `62e893aa`, `d77a824f`
 
+### 2026-11-27 — Map legend buttons no longer make listings/markers disappear
+
+Reported: desktop showed all listings, then they disappeared after clicking several map buttons.
+Root cause: `filterMap()` removed layers from the Leaflet layer group while iterating it with
+`eachLayer()` — skipped entries and permanently dropped markers, so switching categories after
+the first click showed 0 markers. The map legend also had no "All" chip to reset the filter.
+
+| # | Change | Files |
+|---|---|---|
+| 1 | Keep a persistent `allMarkers` list; `filterMap()` calls `layer.clearLayers()` then re-adds matching markers from that list | `public/js/directory.js` |
+| 2 | Add an "All" chip to the map legend (resets to all 154 markers) | `src/components/DirectoryApp.astro` |
+
+Headless Chrome verification of the exact reported flow (no page errors):
+- Load-all → 154 visible listings; open map → 154 markers
+- Click every category chip in sequence → 5 markers (Crisis), no errors
+- Click map "All" chip → 154 markers restored
+- Back to List → all 154 listings still visible
+- Food chip after map use → 62 results (filters still work)
+- Commits `552b4db7`, `d8cd5dc9`; Worker version `597f07f7`
+
 ### Past-session tasks checked for reapplication
 - Card redesign session (`local-16d6f9e9…`): its clean `ResourceCard.astro` (lightbox, distance
   row, wrapped address) is already in the tree and kept. Its DirectoryApp split view was the
