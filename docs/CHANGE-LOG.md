@@ -49,6 +49,29 @@ Repo: `/home/eric/projects/baseimpact-org` · Production domain: `https://baseim
   the undefined `processed`. Fixed by mapping DB rows with `calculateDistanceMiles` +
   `getNextAvailableInfo`; the live page now renders D1 data (154 results).
 
+### 2026-11-27 — Directory filters fully functional (verified in headless Chrome)
+
+Root cause: `activeGrid()` filtered the *hidden mobile grid* on desktop, so category chips,
+search, state and open-now changed nothing visible. Mobile also had no filter chips (nav was
+`hidden lg:block`), and there was no "All" chip to reset a category.
+
+| # | Change | Files |
+|---|---|---|
+| 1 | Remove duplicated mobile list/map markup; one list + one toggleable map at all widths | `src/components/DirectoryApp.astro` |
+| 2 | Show category chip nav at all widths; add an "All" chip | `src/components/DirectoryApp.astro` |
+| 3 | `activeGrid()` always returns the single visible grid; remove all mobile JS branches | `public/js/directory.js` |
+| 4 | Chip selector includes the "All" chip (`.chip-groups button[data-group]`) | `public/js/directory.js` |
+| 5 | Keep location label on the live object so ZIP status reads "Showing results near Mims, FL" | `public/js/directory.js` |
+
+Headless Chrome results (live `baseimpact.org`, no page errors):
+- Food chip: 154 → 62 results; All: → 154; Shelter: → 30
+- Search "pantry": → 60; Open now: → 17
+- Load more: 12 → 24 visible; State FL: → 115
+- ZIP 32754: "Showing results near Mims, FL · road distance (driving)", nearest 3.3 mi
+- Invalid ZIP: "Enter a valid 5-digit ZIP code."
+- Map click hides grid/shows map; List click reverses
+- Deployed Worker version `d5e93a07`; commits `1a956ef3`, `62e893aa`, `d77a824f`
+
 ### Past-session tasks checked for reapplication
 - Card redesign session (`local-16d6f9e9…`): its clean `ResourceCard.astro` (lightbox, distance
   row, wrapped address) is already in the tree and kept. Its DirectoryApp split view was the
