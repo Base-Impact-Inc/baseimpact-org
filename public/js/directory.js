@@ -32,7 +32,7 @@
   const locationStatus = $('location-status');
 
   // --- Chips ---
-  const desktopChips = Array.from(document.querySelectorAll('.chip-group button[data-group]'));
+  const desktopChips = Array.from(document.querySelectorAll('.chip-groups button[data-group]'));
   const allChips = [...desktopChips];
 
   // --- Map legend chips ---
