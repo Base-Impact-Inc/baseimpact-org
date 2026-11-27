@@ -106,6 +106,7 @@
   let recentSearches = [];
   let map = null;
   let markerLayer = null;
+  let allMarkers = [];
   let mapInitialised = false;
   let currentMapGroup = 'all';
   let roadMode = 'driving';
@@ -676,7 +677,8 @@
       const marker = L.marker([lat, lng]);
       marker.bindPopup(buildPopup(r));
       marker._group = r.group || 'all';
-      marker.addTo(layerGroup);
+      allMarkers.push(marker);
+        marker.addTo(layerGroup);
       bounds.push([lat, lng]);
     });
 
@@ -706,10 +708,11 @@
     });
     const layer = markerLayer;
     if (!layer) return;
-    layer.eachLayer(l => {
-      const show = group === 'all' || l._group === group;
-      if (show) layer.addLayer(l);
-      else layer.removeLayer(l);
+    // Rebuild from the persistent marker list: removing layers while iterating
+    // the layer group skips entries and permanently drops markers.
+    layer.clearLayers();
+    allMarkers.forEach(m => {
+      if (group === 'all' || m._group === group) layer.addLayer(m);
     });
   }
 
