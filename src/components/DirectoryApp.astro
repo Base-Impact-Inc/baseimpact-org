@@ -275,8 +275,11 @@ const mapData = JSON.stringify(cardData);
 
     <!-- Row 3: Category Chips — Accordion Groups (Desktop) + Mobile Trigger -->
     <div class="mt-5">
-      <!-- Desktop: Accordion chip groups -->
-      <nav class="hidden lg:block chip-groups" aria-label="Filter by type of help">
+      <!-- Category filter chips (all screen sizes) -->
+      <nav class="chip-groups" aria-label="Filter by type of help">
+        <div class="chip-row flex flex-wrap gap-2">
+          <button type="button" data-group="all" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.all}</button>
+        </div>
         {chipGroups.map(group => (
           <details class="chip-group" open>
             <summary class="chip-group-title">{group.label}</summary>
@@ -324,7 +327,7 @@ const mapData = JSON.stringify(cardData);
   </div>
 
   <!-- Desktop: Full-width list with toggleable map view -->
-  <div class="hidden lg:block directory-main">
+  <div class="directory-main">
     <!-- List Panel (full width) -->
     <div class="directory-list-panel" role="feed" aria-label="Resources">
       <h2 class="sr-only">{t.results}</h2>
@@ -386,71 +389,6 @@ const mapData = JSON.stringify(cardData);
     </aside>
   </div>
 
-  <!-- Mobile: List/Map Toggle + List View -->
-  <div class="lg:hidden">
-    <div class="flex gap-2 mb-4" id="view-toggle" role="tablist" aria-label="View mode">
-      <button type="button" id="view-list" role="tab" aria-selected="true" class="btn-pill flex-1 bg-fill text-on-fill">{t.list}</button>
-      <button type="button" id="view-map" role="tab" aria-selected="false" class="btn-pill flex-1">{t.map}</button>
-    </div>
-
-    <div id="mobile-list" role="tabpanel" aria-labelledby="view-list">
-      <h2 class="sr-only">{t.results}</h2>
-      <p id="results-count-mobile" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} {t.results}</p>
-
-      <div class="grid gap-4 grid-cols-1" id="resource-grid-mobile">
-        {resources.map((r) => (
-          <div
-            class="resource-item h-full"
-            data-resource-id={r.id}
-            data-group={r.group}
-            data-name={r.name.toLowerCase()}
-            data-desc={r.description.toLowerCase()}
-            data-tags={r.tags.join(' ').toLowerCase()}
-            data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}
-            data-lat={r.lat}
-            data-lng={r.lng}
-            data-city={(r.city || '').toLowerCase()}
-            data-state={(r.state || '').toUpperCase()}
-          >
-            <ResourceCard resource={r} />
-          </div>
-        ))}
-      </div>
-
-      <div id="pagination-mobile" class="mt-6 flex justify-center gap-3">
-        <button type="button" id="load-more-mobile" class="btn btn-soft">{t.loadMore}</button>
-      </div>
-
-      <div id="empty-state-mobile" class="empty-state hidden" role="status" aria-live="polite">
-        <svg class="size-16 mx-auto text-line/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          <line x1="8" y1="8" x2="14" y2="14" />
-          <line x1="14" y1="8" x2="8" y2="14" />
-        </svg>
-        <h3 class="text-lg font-semibold mt-4 text-body">{t.empty}</h3>
-        <p class="text-muted mt-1">Try one of these:</p>
-        <ul class="mt-4 space-y-2 text-sm text-muted text-left max-w-xs mx-auto">
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.widenRadius}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.clearCategory}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.uncheckOpenNow}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.searchDifferent}</li>
-        </ul>
-        <button type="button" id="clear-all-filters-mobile" class="btn-pill mt-6 bg-fill text-on-fill">{t.clearFilters}</button>
-      </div>
-    </div>
-
-    <div id="mobile-map" role="tabpanel" aria-labelledby="view-map" hidden>
-      <div id="map-legend-mobile" class="flex flex-wrap gap-2 mb-4" role="tablist" aria-label="Map categories">
-        {allGroups.filter(g => g !== 'saved' && g !== 'all').map(g => (
-          <button type="button" role="tab" data-mapgroup={g} class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors" aria-selected="false">
-            {t[g] ?? g}
-          </button>
-        ))}
-      </div>
-      <div id="map-container-mobile" class="rounded-2xl overflow-hidden border border-line" style="height: 50vh; min-height: 300px;" aria-hidden="true"></div>
-    </div>
-  </div>
 </section>
 
 <!-- Emergency Help Banner -->

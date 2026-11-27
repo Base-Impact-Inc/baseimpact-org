@@ -15,10 +15,9 @@
 
   // --- Core elements ---
   const grid = $('resource-grid');
-  const gridMobile = $('resource-grid-mobile');
-  if (!grid && !gridMobile) return;
+  if (!grid) return;
 
-  const activeGrid = () => $('mobile-list')?.hidden ? grid : gridMobile;
+  const activeGrid = () => grid;
   const getItems = () => Array.from(activeGrid()?.querySelectorAll('.resource-item') || []);
 
   // --- Filter elements ---
@@ -45,19 +44,13 @@
 
   // --- Map containers ---
   const mapContainer = $('map-container');
-  const mapContainerMobile = $('map-container-mobile');
   const mapLegend = $('map-legend');
-  const mapLegendMobile = $('map-legend-mobile');
 
   // --- Counts & pagination ---
   const countEl = $('results-count');
-  const countElMobile = $('results-count-mobile');
   const emptyState = $('empty-state');
-  const emptyStateMobile = $('empty-state-mobile');
   const loadMoreBtn = $('load-more');
-  const loadMoreBtnMobile = $('load-more-mobile');
   const pagination = $('pagination');
-  const paginationMobile = $('pagination-mobile');
 
   // --- Saved ---
   const saveAllBtn = $('save-all-btn');
@@ -112,11 +105,8 @@
   let savedIds = [];
   let recentSearches = [];
   let map = null;
-  let mapMobile = null;
   let markerLayer = null;
-  let markerLayerMobile = null;
   let mapInitialised = false;
-  let mapMobileInitialised = false;
   let currentMapGroup = 'all';
   let roadMode = 'driving';
   let roadDistances = new Map();
@@ -324,10 +314,10 @@
   // --- Render ---
   function render() {
     const itemsNow = getItems();
-    const currentCountEl = activeGrid() === grid ? countEl : countElMobile;
-    const currentEmptyState = activeGrid() === grid ? emptyState : emptyStateMobile;
-    const currentPagination = activeGrid() === grid ? pagination : paginationMobile;
-    const currentLoadMoreBtn = activeGrid() === grid ? loadMoreBtn : loadMoreBtnMobile;
+    const currentCountEl = countEl;
+    const currentEmptyState = emptyState;
+    const currentPagination = pagination;
+    const currentLoadMoreBtn = loadMoreBtn;
     const currentGrid = activeGrid();
 
     if (!currentGrid) return;
@@ -370,7 +360,7 @@
   }
 
   // --- Load more ---
-  [loadMoreBtn, loadMoreBtnMobile].forEach(btn => {
+  [loadMoreBtn].forEach(btn => {
     btn?.addEventListener('click', () => {
       visibleCount += PAGE_SIZE;
       render();
@@ -667,15 +657,10 @@
     return String(value).replace(/[&<>\"']/g, c => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" }[c]));
   }
 
-  function initMap(container, isMobile = false) {
-    if (isMobile) {
-      if (mapMobileInitialised) return;
-      mapMobileInitialised = true;
-    } else {
-      if (mapInitialised) return;
-      mapInitialised = true;
-    }
-    if (typeof L === 'undefined') { setTimeout(() => initMap(container, isMobile), 200); return; }
+  function initMap(container) {
+    if (mapInitialised) return;
+    mapInitialised = true;
+    if (typeof L === 'undefined') { setTimeout(() => initMap(container), 200); return; }
 
     const mapInstance = L.map(container, { scrollWheelZoom: false }).setView([28.6653, -80.8481], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -697,23 +682,20 @@
 
     if (bounds.length) mapInstance.fitBounds(bounds, { padding: [40, 40] });
 
-    const legend = isMobile ? mapLegendMobile : mapLegend;
+    const legend = mapLegend;
     legend?.classList.remove('hidden');
     legend?.querySelectorAll('.map-legend-chip').forEach(chip => {
-      chip.addEventListener('click', () => filterMap(chip.getAttribute('data-mapgroup') || 'all', isMobile));
+      chip.addEventListener('click', () => filterMap(chip.getAttribute('data-mapgroup') || 'all'));
     });
 
-    if (isMobile) { mapMobile = mapInstance; markerLayerMobile = layerGroup; }
-    else { map = mapInstance; markerLayer = layerGroup; }
+    map = mapInstance; markerLayer = layerGroup;
 
-    filterMap(currentMapGroup, isMobile);
+    filterMap(currentMapGroup);
   }
 
-  function filterMap(group, isMobile = false) {
+  function filterMap(group) {
     currentMapGroup = group;
-    const chips = isMobile
-      ? Array.from(document.querySelectorAll('#map-legend-mobile .map-legend-chip'))
-      : mapChips;
+    const chips = mapChips;
     chips.forEach(chip => {
       const active = chip.getAttribute('data-mapgroup') === group;
       chip.classList.toggle('bg-fill', active);
@@ -722,7 +704,7 @@
       chip.classList.toggle('text-body', !active);
       chip.setAttribute('aria-selected', active ? 'true' : 'false');
     });
-    const layer = isMobile ? markerLayerMobile : markerLayer;
+    const layer = markerLayer;
     if (!layer) return;
     layer.eachLayer(l => {
       const show = group === 'all' || l._group === group;
@@ -745,21 +727,6 @@
     viewListBtn?.setAttribute('aria-selected', 'true');
     viewMapBtn?.setAttribute('aria-selected', 'false');
 
-    // Mobile
-    const mobileList = $('mobile-list');
-    const mobileMap = $('mobile-map');
-    if (mobileList && mobileMap) {
-      mobileList.hidden = false;
-      mobileMap.hidden = true;
-      const mobileListTab = mobileList.querySelector('#view-list');
-      const mobileMapTab = mobileMap.querySelector('#view-map');
-      mobileListTab?.classList.add('bg-fill', 'text-on-fill');
-      mobileListTab?.classList.remove('bg-inset', 'text-body');
-      mobileMapTab?.classList.remove('bg-fill', 'text-on-fill');
-      mobileMapTab?.classList.add('bg-inset', 'text-body');
-      mobileListTab?.setAttribute('aria-selected', 'true');
-      mobileMapTab?.setAttribute('aria-selected', 'false');
-    }
   }
 
   function showMapView() {
@@ -777,38 +744,11 @@
     if (!mapInitialised) setTimeout(() => initMap('map-container'), 200);
     if (map) setTimeout(() => map.invalidateSize(), 250);
 
-    // Mobile
-    const mobileList = $('mobile-list');
-    const mobileMap = $('mobile-map');
-    if (mobileList && mobileMap) {
-      mobileList.hidden = true;
-      mobileMap.hidden = false;
-      const mobileListTab = mobileList.querySelector('#view-list');
-      const mobileMapTab = mobileMap.querySelector('#view-map');
-      mobileMapTab?.classList.add('bg-fill', 'text-on-fill');
-      mobileMapTab?.classList.remove('bg-inset', 'text-body');
-      mobileListTab?.classList.remove('bg-fill', 'text-on-fill');
-      mobileListTab?.classList.add('bg-inset', 'text-body');
-      mobileMapTab?.setAttribute('aria-selected', 'true');
-      mobileListTab?.setAttribute('aria-selected', 'false');
-      if (!mapMobileInitialised) setTimeout(() => initMap('map-container-mobile', true), 200);
-      if (mapMobile) setTimeout(() => mapMobile.invalidateSize(), 250);
-    }
   }
 
   // Desktop view toggle
   viewListBtn?.addEventListener('click', showListView);
   viewMapBtn?.addEventListener('click', showMapView);
-
-  // Mobile view toggle (both tabs have same IDs, use delegation)
-  document.addEventListener('click', e => {
-    const btn = e.target.closest('#view-list, #view-map');
-    if (!btn) return;
-    // Only handle if in mobile context (map container hidden on desktop)
-    if (mapContainer && !mapContainer.classList.contains('hidden')) return; // desktop map visible
-    if (btn.id === 'view-list') showListView();
-    else showMapView();
-  });
 
   // --- Transit ---
   let transitPanel = null, transitPanelClose = null, transitPanelStatus = null, transitPanelBody = null, transitReturnFocus = null;
