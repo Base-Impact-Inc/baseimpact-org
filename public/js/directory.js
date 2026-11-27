@@ -574,8 +574,8 @@
 
   // --- Location ---
   function setLocation(loc, label) {
-    location = loc;
-    sessionStorage.setItem(LOCATION_KEY, JSON.stringify({ lat: loc.lat, lng: loc.lng, label }));
+    location = { lat: loc.lat, lng: loc.lng, label };
+    sessionStorage.setItem(LOCATION_KEY, JSON.stringify(location));
     if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label}` : '';
     syncSelectors([zipInput], '');
     visibleCount = PAGE_SIZE;
