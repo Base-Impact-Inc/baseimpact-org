@@ -1509,67 +1509,10 @@ html {
   .resource-item {
     break-inside: avoid;
     page-break-inside: avoid;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-xl);
+    margin-bottom: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 0;
     box-shadow: none !important;
-  }
-  
-  /* Full width resource card - one resource per row */
-  .resource-item .resource-card {
-    width: 100%;
-    border-radius: var(--radius-xl);
-  }
-  
-  .resource-item .resource-card .resource-card-cover {
-    aspect-ratio: 16/9;
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  }
-  
-  .resource-item .resource-card-header {
-    padding: 0.75rem 1rem;
-  }
-  
-  .resource-item .resource-card-distance {
-    padding: 0.5rem 1rem;
-  }
-  
-  .resource-item .resource-card-body {
-    padding: 0.75rem 1rem 1rem;
-  }
-  
-  .resource-item .resource-card-actions {
-    padding: 0.75rem 1rem;
-  }
-  
-  .resource-item .resource-card-footer {
-    padding: 0.75rem 1rem;
-  }
-  
-  .resource-card-address {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-  }
-  
-  .resource-card-address-value {
-    font-size: 0.75rem;
-    color: var(--color-muted);
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-  
-  .resource-card-info-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-  
-  @media (min-width: 640px) {
-    .resource-card-info-row {
-      grid-template-columns: 1fr 1fr;
-    }
   }
 
   /* Show full details on print */
@@ -2220,6 +2163,13 @@ li .link-fancy::after {
 .filter-section-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
 /* Hybrid map layout (desktop) */
+/* Directory full-width layout: one resource per row, no side panel */
+.directory-list-panel { width: 100%; }
+.directory-list { width: 100%; grid-template-columns: 1fr !important; }
+.resource-item,
+.resource-item .resource-card { width: 100%; min-width: 0; }
+.resource-card-address-value { overflow-wrap: anywhere; word-break: break-word; min-width: 0; }
+
 @media (min-width: 1024px) {
   .directory-split {
     display: grid;
@@ -2227,14 +2177,8 @@ li .link-fancy::after {
     gap: 1.5rem;
   }
   .directory-list-panel {
-    overflow-y: auto;
-    max-height: calc(100vh - 14rem);
-  }
-  
-  /* Directory list panels - stack vertically on full width */
-  .directory-list-panel,
-  .directory-map-panel {
-    display: block;
+    /* Full-width list: let the page scroll naturally instead of an inner scroll box */
+    width: 100%;
   }
   .directory-map-panel {
     position: sticky;
