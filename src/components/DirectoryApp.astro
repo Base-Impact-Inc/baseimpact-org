@@ -379,6 +379,7 @@ const mapData = JSON.stringify(cardData);
     <!-- Map Panel (toggleable view) -->
     <aside class="directory-map-panel-flow mt-4" aria-label="Map view">
       <div id="map-legend" class="directory-map-legend hidden" role="tablist" aria-label="Map categories">
+        <button type="button" role="tab" data-mapgroup="all" class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-fill text-on-fill transition-colors" aria-selected="true">{t.all}</button>
         {allGroups.filter(g => g !== 'saved' && g !== 'all').map(g => (
           <button type="button" role="tab" data-mapgroup={g} class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors" aria-selected="false">
             {t[g] ?? g}
