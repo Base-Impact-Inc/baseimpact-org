@@ -22,16 +22,32 @@ Repo: `/home/eric/projects/baseimpact-org` · Production domain: `https://baseim
 | 5 | Remove stale CSS overrides; keep single-column address wrapping | `src/styles/global.css` |
 | 6 | ZIP lookup stays server-side via existing `/api/geocode` (no inline Nominatim fetch) | (no change — verified present) |
 
-### Verification (fill after each step — do not report done until all pass)
-- [ ] `npm run build` passes (Node >= 22.23.4)
-- [ ] `dist/server/chunks/directory_*.mjs` contains `grid-cols-1` and no `grid-cols-3` for the list
-- [ ] artifact mtime > `src/components/DirectoryApp.astro` mtime
-- [ ] `id="load-more"` count == 1; `lookupZipCode` count == 0 in component
-- [ ] no `<script src=...>` with a body
-- [ ] `git status --short` reviewed; `dist/` not staged
-- [ ] push to `main`; git-connected Production deploy confirms
-- [ ] `curl -s 'https://baseimpact.org/directory/?v=<ts>' | grep -o 'grid-cols-1'` shows the new layout
-- [ ] `curl -s 'https://baseimpact.org/api/geocode?zip=32754'` returns lat/lng
+### Verification (all passed 2026-11-27)
+- [x] `npm run build` passes (Node 26.12.1)
+- [x] `dist/server/chunks/directory_*.mjs` has `grid-cols-1 w-full`, no `grid-cols-3`, no `1fr_420px`
+- [x] artifact mtime > source mtime (both DirectoryApp.astro and directory.astro)
+- [x] `id="load-more"` count == 1; `lookupZipCode` count == 0 in component
+- [x] no `<script src=...>` with a body (all 3 script bodies empty)
+- [x] `git status --short` clean before commit; `dist/` not staged
+- [x] push to `main` (rebased, no force)
+- [x] `curl https://baseimpact.org/directory/?v=<ts>` → HTTP 200, `grid-cols-1 w-full` present,
+      `grid-cols-3` and `1fr_420px` absent, 154 results from D1
+- [x] shipped CSS contains `overflow-wrap:anywhere` and `width:100%`
+- [x] `https://baseimpact.org/api/geocode?zip=32754` → `{"lat":28.6974,"lng":-80.8663,"label":"Mims, FL"}`
+
+### Production target CORRECTION (important)
+`baseimpact.org` is served by the **Cloudflare Worker** `baseimpact-org`
+(worker custom domains: baseimpact.org + www.baseimpact.org), NOT by a Pages project.
+- Correct release: `npm run build` then `npx wrangler deploy` (deploys `baseimpact-org` Worker).
+- `wrangler pages deploy dist/client --project-name=baseimpact-org(-git)` only updates
+  `*.pages.dev` preview URLs and does NOT change baseimpact.org. This was the root cause
+  of the earlier "fix not showing".
+- Git push to main is for version control / the git Pages project's own CI; the Worker is
+  what serves production and must be deployed explicitly after each build.
+- During this fix, the Worker deploy initially returned 500 because a prior commit had
+  renamed `processed` → `resources` in `src/pages/directory.astro` but left two usages of
+  the undefined `processed`. Fixed by mapping DB rows with `calculateDistanceMiles` +
+  `getNextAvailableInfo`; the live page now renders D1 data (154 results).
 
 ### Past-session tasks checked for reapplication
 - Card redesign session (`local-16d6f9e9…`): its clean `ResourceCard.astro` (lightbox, distance

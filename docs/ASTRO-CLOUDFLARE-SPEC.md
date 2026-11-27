@@ -47,20 +47,21 @@ Astro 7 hard-gates on Node >= 22.23.4. System node is older. Prepend for every n
 export PATH=/home/eric/.hermes/tools/node-26.12.1-linux-x64/bin:$PATH
 ```
 
-## 3. Cloudflare Pages projects (which one serves production)
+## 3. Production target: Cloudflare Worker (NOT Pages)
 
-| Project | Type | Serves |
-|---|---|---|
-| `baseimpact-org-git` | Git-connected (auto-deploys on push to `main`) | **`baseimpact.org` Production** |
-| `baseimpact-org` | Manual `wrangler pages deploy` | preview `*.pages.dev` only — do NOT use for releases |
+`baseimpact.org` and `www.baseimpact.org` are **custom domains on the Worker**
+`baseimpact-org` (verified via Cloudflare API `workers/scripts/baseimpact-org/domains`).
+The two Pages projects (`baseimpact-org`, `baseimpact-org-git`) only serve
+`*.pages.dev` preview URLs and do **not** update the custom domain.
 
-**Release procedure = push to `main`.** Do not run `wrangler pages deploy dist/client` expecting
-the custom domain to update; it won't. Check with:
-
+**Release procedure (only correct path):**
 ```bash
-npx wrangler pages deployment list --project-name=baseimpact-org-git
-# look for Environment: Production, Branch: main
+npm run build
+npx wrangler deploy            # deploys the baseimpact-org Worker -> baseimpact.org
+curl -s 'https://baseimpact.org/directory/?v=<ts>' | grep '<marker>'
 ```
+Git push to `main` is for version control and the Pages CI; it does **not** deploy the Worker.
+Do not rely on `wrangler pages deploy` for production.
 
 ## 4. Editing complex components without breaking them
 
