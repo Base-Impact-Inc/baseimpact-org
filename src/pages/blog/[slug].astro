@@ -14,10 +14,16 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<Base title={`${post.data.title} — Base Impact`} description={post.data.description}>
+<Base
+  title={`${post.data.title} — Base Impact`}
+  description={post.data.description}
+  ogImage={post.data.image ? `https://baseimpact.org${post.data.image}` : undefined}
+>
   <article class="max-w-3xl mx-auto fade-in">
     {post.data.image && (
-      <img src={post.data.image} alt={post.data.title} class:list={["w-full rounded-2xl mb-8", post.data.imageFit === "contain" ? "object-contain bg-band" : "h-72 object-cover"]} loading="lazy" />
+      <div class="rounded-2xl overflow-hidden mb-8 bg-band" style="aspect-ratio: 16/9; min-height: 320px;">
+        <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover" loading="lazy" decoding="async" width={1600} height={900} />
+      </div>
     )}
     <div class="mb-6">
       <h1 class="font-display text-4xl font-semibold text-body mb-3 leading-tight">{post.data.title}</h1>
@@ -26,12 +32,8 @@ const { Content } = await render(post);
       )}
       <p class="text-sm text-faint mt-4">
         {post.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-        {post.data.categories.length > 0 && (
-          <span> · {post.data.categories.join(', ')}</span>
-        )}
-        {post.data.tags.length > 0 && (
-          <span> · {post.data.tags.join(', ')}</span>
-        )}
+        {post.data.categories.length > 0 && <span> · {post.data.categories.join(', ')}</span>}
+        {post.data.tags.length > 0 && <span> · {post.data.tags.join(', ')}</span>}
       </p>
     </div>
     <div class="prose-content text-body leading-relaxed">

@@ -677,7 +677,7 @@
     }
     if (typeof L === 'undefined') { setTimeout(() => initMap(container, isMobile), 200); return; }
 
-    const mapInstance = L.map(container, { scrollWheelZoom: false }).setView([28.0836, -80.6081], 10);
+    const mapInstance = L.map(container, { scrollWheelZoom: false }).setView([28.6653, -80.8481], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors', maxZoom: 19,
     }).addTo(mapInstance);

@@ -2,7 +2,7 @@
 title: "Inclement Weather Shelter Training Day with LifePointe Ministries"
 description: "How Base Impact and LifePointe's CREW 29 team trained for cot setup, hospitality, and volunteer shifts at Titusville's inclement weather shelter — and why preparation matters when a cold night arrives."
 date: 2026-09-19
-image: /assets/lifepointe-cold-weather-shelter-cots-2026-09-19.jpg
+image: /assets/lifepointe-cold-weather-cots.jpg
 categories: ["Impact Stories"]
 tags: ["LifePointe Ministries", "CREW 29", "inclement weather shelter", "Titusville", "volunteers"]
 featured: false
@@ -23,7 +23,7 @@ That kind of demand is why training days matter. A shelter is only as ready as t
 
 The training-day flyer spelled out the purpose plainly: learn how the shelter operates, ask questions, and find a role before the weather turns.
 
-![LifePointe Ministries inclement weather shelter volunteer education day flyer, September 19, 2026](/assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg)
+![Cots set up for the inclement weather shelter training day](/assets/lifepointe-cold-weather-cots.jpg)
 
 ## CREW 29: the team behind the work
 

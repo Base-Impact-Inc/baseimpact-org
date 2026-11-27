@@ -2,7 +2,7 @@
 title: "Helping Travelers and Neighbors in the Florida Heat"
 description: "Base Impact provided food, water, and rides to travelers on a bike path near Mims, FL, and to neighbors walking in the Florida heat."
 date: 2026-08-15
-image: /assets/traveler-florida-heat-road.jpg
+image: /assets/no-one-hungry-food-pantry.jpg
 categories: ["Impact Stories"]
 tags: ["community", "outreach", "food", "water", "transportation"]
 featured: false

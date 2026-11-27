@@ -16,7 +16,7 @@ export const PRESET_TOWNS: Record<TownName, Coordinates> = {
   "Edgewater": { lat: 28.9886, lng: -80.902 },
   "Melbourne": { lat: 28.0784, lng: -80.6026 },
   "Merritt Island": { lat: 28.5392, lng: -80.672 },
-  "Mims": { lat: 28.6653, lng: -80.8481 },
+  "Mims": { lat: 28.326, lng: -80.751 },
   "Mobile": { lat: 28.7617, lng: -80.8625 },
   "National": { lat: 28.7617, lng: -80.8625 },
   "New Smyrna Beach": { lat: 29.0258, lng: -80.927 },

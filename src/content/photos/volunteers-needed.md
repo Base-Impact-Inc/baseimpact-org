@@ -1,6 +1,6 @@
 ---
 title: "Volunteers needed"
-image: /assets/volunteers-needed.jpg
+image: /assets/brevard-homeless-coc-meeting.jpg
 caption: "A community organization looking for helping hands."
 state: "FL"
 album: "volunteering"

@@ -8,7 +8,7 @@ tags: ["veterans", "active duty", "technology", "computer parts", "partnership"]
 featured: false
 ---
 
-![A black mid-tower PC mid-build on a gridded cutting mat: the ASRock Phantom Gaming motherboard, Cougar liquid cooler with white pump fans, Montech case fans, a black graphics card, and a screwdriver beside the open case](/assets/active-duty-pc-build-2026-11-18.jpg)
+![A black mid-tower PC mid-build on a gridded cutting mat: the ASRock Phantom Gaming motherboard, Cougar liquid cooler with white pump fans, Montech case fans, a black graphics card, and a screwdriver beside the open case](/assets/active-duty-pc-build-cover-2026-11-18.jpg)
 
 This is what a request for help can look like: not a person standing at a pantry door, but a workbench, a screwdriver, and an open PC case on a cutting mat.
 

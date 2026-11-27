@@ -2,7 +2,7 @@
 title: "A Home Visit to Help a Senior Neighbor Get Connected"
 description: "Base Impact volunteers visited a senior neighbor at home to provide technology help and a friendly check-in."
 date: 2026-10-29
-image: /assets/helping-seniors-home-visit-2026-10-29.jpg
+image: /assets/helping-seniors.jpg
 categories: ["Impact Stories"]
 tags: ["seniors", "home visit", "technology help", "Titusville", "digital inclusion"]
 featured: false

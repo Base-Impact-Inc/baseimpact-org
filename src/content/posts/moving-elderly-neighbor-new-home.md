@@ -2,7 +2,7 @@
 title: "From Her Car to a Room of Her Own: Helping a 73-Year-Old Neighbor Find Home"
 description: "A 73-year-old neighbor was living in her car. Base Impact helped search for housing until an 83-year-old woman living alone offered a room — then we helped move boxes and furniture and clean the space so she could settle in comfortably."
 date: 2026-10-27
-image: /assets/homeless-shelter-community.jpg
+image: /assets/dorothy-day-shelter-homeless-shelter-campus-st.jpg
 categories: ["Impact Stories"]
 tags: ["community", "seniors", "housing", "volunteer", "homelessness"]
 featured: false

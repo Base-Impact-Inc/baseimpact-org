@@ -2,7 +2,7 @@
 title: "Days at the Weather Shelter: Serving Neighbors Through Rain and Flooding"
 description: "A few days spent alongside LifePointe Ministries as its Titusville weather shelter opened for neighbors during heavy rain and flooding."
 date: 2026-11-18
-image: /assets/lifepointe-cold-weather-shelter-flyer-2026-09-19.jpg
+image: /assets/iws-shelter-1.jpg
 categories: ["Impact Stories"]
 tags: ["LifePointe Ministries", "weather shelter", "Titusville", "flooding", "volunteers"]
 featured: false
@@ -57,6 +57,14 @@ The shelter was opened independently of Brevard County government. County offici
   <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
     <img src="/assets/iws-shelter-5.jpg" alt="Supplies and registration table at the shelter" loading="lazy" decoding="async" width="800" height="600" />
     <figcaption class="p-4 text-sm text-muted">Supplies and registration table</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-7.jpg" alt="Shelter hall with cots set up for overnight guests" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Shelter hall with cots set up for overnight guests</figcaption>
+  </figure>
+  <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
+    <img src="/assets/iws-shelter-8.jpg" alt="Breakfast served at the shelter" loading="lazy" decoding="async" width="800" height="600" />
+    <figcaption class="p-4 text-sm text-muted">Hot breakfast served to guests</figcaption>
   </figure>
   <figure class="rounded-xl bg-card overflow-hidden shadow-[var(--shadow-border)]">
     <img src="/assets/iws-shelter-6.jpg" alt="Breakfast served at the shelter" loading="lazy" decoding="async" width="800" height="600" />

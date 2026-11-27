@@ -2,7 +2,7 @@
 title: "Scam Awareness at LifePointe Ministries: Protecting Neighbors from Fraud"
 description: "A free community scam-awareness event at LifePointe Ministries in Titusville, with detectives from the Titusville Police Department answering questions."
 date: 2026-10-21
-image: /assets/lifepointe-scam-education-flyer-2026-10-20.jpg
+image: /assets/lifepointe-scam-education.jpg
 categories: ["Community News"]
 tags: ["LifePointe Ministries", "scam awareness", "Titusville Police Department", "digital safety", "Titusville"]
 featured: false

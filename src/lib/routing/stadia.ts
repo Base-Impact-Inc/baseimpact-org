@@ -95,7 +95,7 @@ export class StadiaProvider implements RoutingProvider {
     try {
       // Quick test: matrix with 1 target
       const testResp = await this.getMatrix({
-        origin: { lat: 28.0836, lng: -80.6081 }, // Melbourne, FL
+        origin: { lat: 28.326, lng: -80.751 }, // Mims, FL 32754
         destinations: [{ lat: 28.1, lng: -80.6 }],
         mode: 'driving',
       });

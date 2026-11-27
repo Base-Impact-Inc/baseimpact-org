@@ -6,7 +6,7 @@ image: /assets/operation-christmas-child-shoebox-gift-2026-11-16.jpg
 categories: ["Community News"]
 tags: ["Operation Christmas Child", "Samaritan's Purse", "shoebox", "children", "Titusville"]
 featured: false
-draft: true
+draft: false
 ---
 
 <!-- Merged into /blog/rock-church-operation-christmas-child on 2026-11-22. Kept inactive for history. -->

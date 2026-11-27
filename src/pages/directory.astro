@@ -9,22 +9,18 @@
 import Base from '../layouts/Base.astro';
 import DirectoryApp from '../components/DirectoryApp.astro';
 import { loadResources } from '../lib/resources/load';
-import { processResources } from '../lib/resources/logic';
+import type { Resource } from '@/lib/resources/types';
 
 export const prerender = false;
 
+// Load raw resources from the database. Distances are NOT calculated server-side
+// because this is a resource directory — the user needs to see distances from
+// THEIR location (ZIP or GPS), not from our default location. We pass the raw
+// resources to the DirectoryApp component, which renders cards with location
+// data only. Client-side JavaScript calculates distances based on the user's
+// current location, so every visitor sees their own distances.
 const { resources, source } = await loadResources();
-
-const origin = { lat: 28.0836, lng: -80.6081 };
-const processed = processResources(origin, 200, {
-  category: 'All',
-  tag: 'All',
-  query: '',
-  onlySaved: false,
-  savedIds: [],
-  openNow: false,
-});
-
+const origin = { lat: 28.326, lng: -80.751 }; // Mims, FL 32754 (fallback default)
 // Closest first: a person looking for help cares about distance before anything else.
 processed.sort((a, b) => a.distanceMiles - b.distanceMiles);
 ---

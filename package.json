@@ -13,7 +13,9 @@
     "generate-types": "wrangler types",
     "db:dump": "esbuild scripts/_dump-entry.ts --bundle --platform=node --format=cjs --outfile=.tmp-resources.cjs --log-level=error && node -e \"console.log(require('./.tmp-resources.cjs').ALL_RESOURCES.length)\"",
     "db:seed": "node scripts/seed-resources.mjs",
-    "db:seed:local": "LOCAL=1 node scripts/seed-resources.mjs"
+    "db:seed:local": "LOCAL=1 node scripts/seed-resources.mjs",
+    "db:import-third-party": "node scripts/import-third-party.mjs",
+    "db:import-findhelp": "node scripts/import-third-party.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.4.9",

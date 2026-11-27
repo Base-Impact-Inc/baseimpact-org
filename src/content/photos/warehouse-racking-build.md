@@ -1,6 +1,6 @@
 ---
 title: "Building storage racking for a nonprofit warehouse"
-image: /assets/lifepointe-warehouse-shelves-2026-09-17.jpg
+image: /assets/lifepointe-warehouse-shelves.jpg
 caption: "Volunteers built organized space for donated goods and supplies."
 date: 2026-09-17
 state: "FL"

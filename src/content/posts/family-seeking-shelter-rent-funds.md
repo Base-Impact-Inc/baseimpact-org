@@ -2,7 +2,7 @@
 title: "Supporting a Family Seeking Shelter and Rent Assistance"
 description: "Base Impact is currently helping a family facing housing instability — connecting them with shelter resources, rental assistance programs, and community support."
 date: 2026-10-20
-image: /assets/homeless-shelter-community.jpg
+image: /assets/dorothy-day-shelter-homeless-shelter-campus-st.jpg
 categories: ["Impact Stories"]
 tags: ["housing", "shelter", "rent assistance", "family support"]
 featured: false

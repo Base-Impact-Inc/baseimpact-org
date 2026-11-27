@@ -1,30 +1,23 @@
 ---
 /**
- * DirectoryApp — the shared, interactive resource finder.
+ * DirectoryApp — redesigned resource finder.
  *
- * Rendered by /directory and /es/directory. All listing data
- * arrives already processed (distance + availability) from the page, which
- * reads D1 first and falls back to the bundled snapshot. The client script
- * (`/js/directory.js`) is self-contained: every hook it needs has a stable id
- * or class in this markup.
+ * Single source of truth: /directory.astro reads Cloudflare D1, sorts nearest-first
+ * via Haversine, and passes a flat `resources` array. This component renders the
+ * full interactive UI: sticky filter bar, search, chip groups, hybrid list/map,
+ * saved bar, click-to-zoom lightbox, and no-JS fallbacks.
  *
- * Phase 1 Quick Wins:
- * - Sticky filter bar with mobile bottom sheet
- * - Search with clear button + datalist suggestions
- * - Accordion chip groups (Essentials / Support / Crisis & Saved)
- * - Hybrid desktop map (split pane, sticky)
- * - Actionable empty state with "Clear all filters"
- * - Saved management bar
- * - Per-card mobile map links
+ * Progressive enhancement: the page works with JS disabled (server-rendered list
+ * + links). JS only adds filtering, map interaction, distance sorting, and
+ * click-to-zoom. No framework required; raw DOM scripting only.
  */
-
 import ResourceCard from './ResourceCard.astro';
-import TurnstileWidget from './TurnstileWidget.astro';
-import type { ProcessedResource } from '../lib/resources/types';
+import StatusBadge from './StatusBadge.astro';
+import type { Resource } from '@/lib/resources/types';
 
 interface Props {
   locale?: 'en' | 'es';
-  resources: ProcessedResource[];
+  resources: Resource[];
   source?: 'database' | 'snapshot';
 }
 
@@ -44,16 +37,12 @@ const COPY: Record<string, Record<string, string>> = {
     anyDistance: 'Any distance',
     within: 'Within',
     miles: 'mi',
-    distanceMode: 'Distance mode',
-    byRoad: 'By road',
-    walking: 'Walking',
-    all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
-    money: 'Money Help', gas: 'Gas', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
     openNow: 'Only show open now',
     list: 'List', map: 'Map', print: 'Print list',
     loadMore: 'Load more', showAll: 'Show all',
     results: 'results', empty: 'No resources found.', emptyHint: 'Try a different search or filter.',
-    needHelp: 'Need immediate help?', call211: 'Call 211 — 24/7', crisis988: 'Crisis 988 — 24/7',
+    needHelp: 'Need immediate help?',
+    call211: 'Call 211 — 24/7', crisis988: 'Crisis 988 — 24/7',
     reportTitle: 'Report an issue', whatWrong: "What's wrong?", details: 'Details (optional)',
     email: 'Email (optional, for follow-up only)', cancel: 'Cancel', send: 'Send report',
     resourceLabel: 'Resource:', chooseOne: 'Choose one…',
@@ -61,19 +50,11 @@ const COPY: Record<string, Record<string, string>> = {
     closedMoved: 'Closed or moved', notReal: 'Not a real resource / possible scam', other: 'Other',
     tellUs: 'Tell us what you found', near: 'Showing results near',
     clearFilters: 'Clear all filters',
-    widenRadius: 'Widen the distance radius',
-    clearCategory: 'Clear category filters',
-    uncheckOpenNow: 'Uncheck "Open now"',
-    searchDifferent: 'Search a different keyword',
-    savedCount: 'saved',
-    exportCSV: 'Export CSV',
-    clearSaved: 'Clear all',
-    filters: 'Filters',
-    applyFilters: 'Show results',
-    resetFilters: 'Clear all',
-    essentials: 'Essentials',
-    support: 'Support',
-    crisisSaved: 'Crisis & Saved',
+    widenRadius: 'Widen the distance radius', clearCategory: 'Clear category filters',
+    uncheckOpenNow: 'Uncheck "Open now"', searchDifferent: 'Search a different keyword',
+    savedCount: 'saved', exportCSV: 'Export CSV', clearSaved: 'Clear all',
+    filters: 'Filters', applyFilters: 'Show results', resetFilters: 'Clear all',
+    essentials: 'Essentials', support: 'Support', crisisSaved: 'Crisis & Saved',
   },
   es: {
     eyebrow: 'Encuentra ayuda. Cerca de ti.',
@@ -88,11 +69,6 @@ const COPY: Record<string, Record<string, string>> = {
     anyDistance: 'Cualquier distancia',
     within: 'Dentro de',
     miles: 'mi',
-    distanceMode: 'Modo de distancia',
-    byRoad: 'En auto',
-    walking: 'Caminando',
-    all: 'Todos', food: 'Comida', shelter: 'Refugio', health: 'Salud',
-    money: 'Ayuda económica', gas: 'Gas', basics: 'Básicos', technology: 'Tecnología', crisis: 'Crisis', saved: 'Guardados',
     openNow: 'Mostrar solo abiertos ahora',
     list: 'Lista', map: 'Mapa', print: 'Imprimir lista',
     loadMore: 'Cargar más', showAll: 'Mostrar todo',
@@ -105,41 +81,25 @@ const COPY: Record<string, Record<string, string>> = {
     closedMoved: 'Cerrado o mudado', notReal: 'No es un recurso real / posible estafa', other: 'Otro',
     tellUs: 'Cuéntanos qué encontraste', near: 'Mostrando resultados cerca de',
     clearFilters: 'Borrar todos los filtros',
-    widenRadius: 'Ampliar el radio de distancia',
-    clearCategory: 'Borrar filtros de categoría',
-    uncheckOpenNow: 'Desmarcar "Solo abiertos ahora"',
-    searchDifferent: 'Buscar otra palabra clave',
-    savedCount: 'guardados',
-    exportCSV: 'Exportar CSV',
-    clearSaved: 'Borrar todo',
-    filters: 'Filtros',
-    applyFilters: 'Ver resultados',
-    resetFilters: 'Borrar todo',
-    essentials: 'Esenciales',
-    support: 'Apoyo',
-    crisisSaved: 'Crisis y guardados',
+    widenRadius: 'Ampliar el radio de distancia', clearCategory: 'Borrar filtros de categoría',
+    uncheckOpenNow: 'Desmarcar "Solo abiertos ahora"', searchDifferent: 'Buscar otra palabra clave',
+    savedCount: 'guardados', exportCSV: 'Exportar CSV', clearSaved: 'Borrar todo',
+    filters: 'Filtros', applyFilters: 'Ver resultados', resetFilters: 'Borrar todo',
+    essentials: 'Esenciales', support: 'Apoyo', crisisSaved: 'Crisis y guardados',
   },
 };
 
 const t = COPY[locale];
 
-// Group definitions for accordion chip groups
-const chipGroups = [
-  { id: 'essentials', label: t.essentials, groups: ['food', 'shelter', 'health'] },
-  { id: 'support', label: t.support, groups: ['money', 'gas', 'basics', 'technology'] },
-  { id: 'crisis-saved', label: t.crisisSaved, groups: ['crisis', 'saved'] },
-];
+// Build search suggestions from resource names and tags.
+const searchTerms = Array.from(new Set(
+  resources.flatMap(r => [r.name, ...r.tags, r.category])
+)).filter(Boolean).sort();
 
-// Flat group list for mobile sheet (all groups)
 const allGroups = ['all', 'food', 'shelter', 'health', 'money', 'gas', 'basics', 'technology', 'crisis', 'saved'];
 
-// Unique states, derived server-side so the filter works even without JS.
+// Unique states, derived server-side so filters work with JS disabled.
 const states = Array.from(new Set(resources.map((r) => r.state).filter(Boolean))).sort() as string[];
-
-// Build search suggestions from resource names and tags
-const searchTerms = Array.from(new Set(
-  resources.flatMap(r => [r.name, ...r.tags, r.category, r.group])
-)).filter(Boolean).sort();
 
 const cardData = resources.map((r) => ({
   id: r.id,
@@ -155,7 +115,7 @@ const cardData = resources.map((r) => ({
   description: r.description,
   hoursText: r.hoursText,
   category: r.category,
-  group: r.group,
+  county: r.county,
   city: r.city,
   state: r.state,
   nextAvail: r.nextAvail,
@@ -164,13 +124,13 @@ const cardData = resources.map((r) => ({
 const mapData = JSON.stringify(cardData);
 ---
 
-<section class="py-vh-3">
-  <div class="text-center max-w-3xl mx-auto">
+<section class="directory-hero">
+  <div class="directory-hero-text max-w-3xl mx-auto px-4 text-center">
     <p class="eyebrow">{t.eyebrow}</p>
     <h1 class="display-4 mt-3" style="color: var(--color-body);">
       {t.titleA}<span style="color: var(--color-accent);" aria-hidden="true">.</span> {t.titleB}
     </h1>
-    <p class="section-lead mx-auto" style="text-align:center;">{t.lead}</p>
+    <p class="section-lead mx-auto" style="text-align:center; max-width: 56ch;">{t.lead}</p>
     <p class="mt-4">
       <span class="badge" style="background: rgba(23,23,229,.16); color: #a3a3f7;">
         {resources.length} {t.results} · {source === 'database' ? t.datasource : t.snapshot}
@@ -179,78 +139,43 @@ const mapData = JSON.stringify(cardData);
   </div>
 </section>
 
-<section id="directory" class="py-vh-2">
-  <!-- Filter Bar — Sticky on scroll -->
-  <div class="filter-bar lp-card p-5 sm:p-6 mb-4" role="search" aria-label="Resource filters">
-
-    <!-- Row 1: Search + Location -->
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:items-end">
+<section id="directory" class="directory">
+  <!-- Filter bar -->
+  <div class="filter-bar lp-card p-4 sm:p-5 mb-4" role="search" aria-label="Resource filters">
+    <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4 md:items-end">
       <div class="lg:col-span-2">
         <label for="search-input" class="sr-only">{t.search}</label>
         <div class="search-wrapper relative">
           <input
-            type="search"
-            id="search-input"
-            placeholder={t.search}
-            autocomplete="off"
-            list="search-suggestions"
-            aria-autocomplete="list"
-            aria-controls="search-suggestions"
+            type="search" id="search-input" placeholder={t.search} autocomplete="off"
+            list="search-suggestions" aria-autocomplete="list" aria-controls="search-suggestions"
             class="w-full rounded-xl border-line px-4 py-3 pl-10 pr-10"
             style="background: var(--color-page); color: var(--color-body);"
           />
           <svg class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <button
-            type="button"
-            id="search-clear"
-            class="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-body opacity-0 pointer-events-none transition-opacity"
-            aria-label="Clear search"
-            hidden
-          >
+          <button type="button" id="search-clear" class="absolute right-3 top-1/2 -translate-y-1/2 text-faint hover:text-body opacity-0 pointer-events-none transition-opacity" aria-label="Clear search" hidden>
             <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
           <datalist id="search-suggestions">
-            {searchTerms.map(term => <option value={term} />)}
+            {searchTerms.map((term) => <option value={term} />)}
           </datalist>
         </div>
       </div>
-      <div>
+      <div class="flex gap-2">
         <label for="zip-input" class="sr-only">{t.zip}</label>
         <input
-          type="text"
-          id="zip-input"
-          placeholder={t.zip}
-          autocomplete="postal-code"
-          inputmode="numeric"
-          maxlength="5"
-          pattern="[0-9]{5}"
-          class="w-full rounded-xl border-line px-4 py-3"
-          style="background: var(--color-page); color: var(--color-body);"
+          type="text" id="zip-input" placeholder={t.zip} autocomplete="postal-code"
+          inputmode="numeric" maxlength="5" pattern="[0-9]{5}"
+          class="w-full rounded-xl border-line px-4 py-3" style="background: var(--color-page); color: var(--color-body);"
         />
-      </div>
-      <div class="flex gap-2">
         <button type="button" id="use-location-btn" class="btn btn-outline-light flex-1">
           <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
           {t.useLocation}
         </button>
-        <label for="distance-mode" class="sr-only">{t.distanceMode}</label>
-        <select
-          id="distance-mode"
-          aria-label={t.distanceMode}
-          class="w-32 rounded-xl border-line px-3 py-3"
-          style="background: var(--color-page); color: var(--color-body);"
-        >
-          <option value="driving">{t.byRoad}</option>
-          <option value="walking">{t.walking}</option>
-        </select>
       </div>
-    </div>
-
-    <!-- Row 2: Radius + State + Open Now -->
-    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4 md:items-end mt-4">
-      <div>
+      <div class="flex flex-wrap items-end gap-3">
         <label for="radius-select" class="sr-only">{t.anyDistance}</label>
-        <select id="radius-select" class="w-full rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
+        <select id="radius-select" class="w-full rounded-xl border-line px-3 py-3 md:w-32" style="background: var(--color-page); color: var(--color-body);">
           <option value="0">{t.anyDistance}</option>
           <option value="5">{t.within} 5 {t.miles}</option>
           <option value="10" selected>{t.within} 10 {t.miles}</option>
@@ -258,63 +183,32 @@ const mapData = JSON.stringify(cardData);
           <option value="50">{t.within} 50 {t.miles}</option>
           <option value="100">{t.within} 100 {t.miles}</option>
         </select>
-      </div>
-      <div>
-        <label for="state-filter" class="sr-only">State</label>
-        <select id="state-filter" class="w-full rounded-xl border-line px-3 py-3" style="background: var(--color-page); color: var(--color-body);">
+        <select id="state-filter" class="w-full rounded-xl border-line px-3 py-3 md:w-32" style="background: var(--color-page); color: var(--color-body);">
           <option value="all">All states</option>
-          {states.map((s) => <option value={s}>{s}</option>)}
+          {(states as string[]).map((s) => <option value={s}>{s}</option>)}
         </select>
+        <label class="flex items-center gap-2 text-sm text-muted cursor-pointer min-h-11">
+          <input type="checkbox" id="open-now" class="rounded" />
+          {t.openNow}
+        </label>
       </div>
-      <label class="flex items-center gap-2 text-sm text-muted cursor-pointer min-h-11">
-        <input type="checkbox" id="open-now" class="rounded" />
-        {t.openNow}
-      </label>
-      <p id="location-status" class="text-sm text-accent" role="status" aria-live="polite"></p>
     </div>
-
-    <!-- Row 3: Category Chips — Accordion Groups (Desktop) + Mobile Trigger -->
-    <div class="mt-5">
-      <!-- Desktop: Accordion chip groups -->
-      <nav class="hidden lg:block chip-groups" aria-label="Filter by type of help">
-        {chipGroups.map(group => (
-          <details class="chip-group" open>
-            <summary class="chip-group-title">{group.label}</summary>
-            <div class="chip-row flex flex-wrap gap-2">
-              {group.groups.map(g => (
-                <button
-                  type="button"
-                  data-group={g}
-                  class="rounded-full px-3 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm transition-colors {g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}"
-                >
-                  {t[g] ?? g}
-                </button>
-              ))}
-            </div>
-          </details>
-        ))}
-      </nav>
-
-      
-    </div>
-
-    <!-- Row 4: View toggle + Saved + Print -->
-    <div class="flex flex-wrap items-center gap-2 mt-5">
-      <div class="flex flex-wrap gap-2" id="view-toggle" role="tablist" aria-label="View mode">
-        <button type="button" id="view-list" role="tab" aria-selected="true" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.list}</button>
-        <button type="button" id="view-map" role="tab" aria-selected="false" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm transition-colors">{t.map}</button>
+    <div class="mt-3 pt-3 border-t border-line">
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex flex-wrap gap-2" id="view-toggle" role="tablist" aria-label="View mode">
+          <button type="button" id="view-list" role="tab" aria-selected="true" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-fill text-on-fill sm:px-4 sm:py-2 sm:text-sm">{t.list}</button>
+          <button type="button" id="view-map" role="tab" aria-selected="false" class="rounded-full px-3 py-1.5 text-xs font-semibold bg-inset text-body hover:bg-line sm:px-4 sm:py-2 sm:text-sm">{t.map}</button>
+        </div>
+        <button type="button" id="save-all-btn" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset">
+          <svg class="size-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          {t.saved}
+        </button>
+        <button type="button" id="print-list" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset">{t.print}</button>
       </div>
-      <button type="button" id="save-all-btn" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">
-        <svg class="size-4 mr-1 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        {t.saved}
-      </button>
-      <button type="button" id="print-list" class="rounded-lg border-line bg-card px-3 py-2 text-sm font-semibold text-body hover:bg-inset transition-colors">
-        {t.print}
-      </button>
     </div>
   </div>
 
-  <!-- Saved Bar (shown when Saved filter active) -->
+  <!-- Saved bar -->
   <div id="saved-bar" class="saved-bar mb-4 hidden" role="status" aria-live="polite">
     <span class="text-sm text-muted" id="saved-count">0 {t.savedCount}</span>
     <div class="flex gap-2">
@@ -323,183 +217,492 @@ const mapData = JSON.stringify(cardData);
     </div>
   </div>
 
-  <!-- Desktop: Hybrid Split View (List + Sticky Map) -->
-  <div class="hidden lg:grid lg:grid-cols-[1fr_420px] gap-6 directory-split">
-    <!-- List Panel (scrollable) -->
-    <div class="directory-list-panel" role="feed" aria-label="Resources">
-      <h2 class="sr-only">{t.results}</h2>
-      <p id="results-count" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} {t.results}</p>
-
-      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl" id="resource-grid">
-        {resources.map((r) => (
-          <div
-            class="resource-item h-full"
-            data-resource-id={r.id}
-            data-group={r.group}
-            data-name={r.name.toLowerCase()}
-            data-desc={r.description.toLowerCase()}
-            data-tags={r.tags.join(' ').toLowerCase()}
-            data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}
-            data-lat={r.lat}
-            data-lng={r.lng}
-            data-city={(r.city || '').toLowerCase()}
-            data-state={(r.state || '').toUpperCase()}
-          >
-            <ResourceCard resource={r} />
-          </div>
-        ))}
-      </div>
-
-      <div id="pagination" class="mt-6 flex justify-center gap-3">
-        <button type="button" id="load-more" class="btn btn-soft">{t.loadMore}</button>
-      </div>
-
-      <div id="empty-state" class="empty-state hidden" role="status" aria-live="polite">
-        <svg class="size-16 mx-auto text-line/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          <line x1="8" y1="8" x2="14" y2="14" />
-          <line x1="14" y1="8" x2="8" y2="14" />
-        </svg>
-        <h3 class="text-lg font-semibold mt-4 text-body">{t.empty}</h3>
-        <p class="text-muted mt-1">Try one of these:</p>
-        <ul class="mt-4 space-y-2 text-sm text-muted text-left max-w-xs mx-auto">
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.widenRadius}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.clearCategory}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.uncheckOpenNow}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.searchDifferent}</li>
-        </ul>
-        <button type="button" id="clear-all-filters" class="btn-pill mt-6 bg-fill text-on-fill">{t.clearFilters}</button>
-      </div>
+  <!-- Directory list (desktop and mobile) -->
+  <div class="directory-list-panel" role="feed" aria-label="Resources">
+    <h2 class="sr-only">{t.results}</h2>
+    <p id="results-count" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} {t.results}</p>
+    <div class="directory-list space-y-3" id="resource-list">
+      {resources.map((r) => (
+        <div class="resource-item h-full flex flex-col"
+          data-resource-id={r.id}
+          data-group={r.group}
+          data-name={r.name.toLowerCase()}
+          data-desc={r.description.toLowerCase()}
+          data-tags={r.tags.join(' ').toLowerCase()}
+          data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}
+          data-lat={r.lat}
+          data-lng={r.lng}
+          data-city={(r.city || '').toLowerCase()}
+          data-state={(r.state || '').toUpperCase()}>
+          <ResourceCard resource={r} />
+        </div>
+      ))}
     </div>
-
-    <!-- Map Panel (sticky) -->
-    <aside class="directory-map-panel" aria-label="Map view">
-      <div id="map-legend" class="directory-map-legend" role="tablist" aria-label="Map categories">
-        {allGroups.filter(g => g !== 'saved' && g !== 'all').map(g => (
-          <button type="button" role="tab" data-mapgroup={g} class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors" aria-selected="false">
-            {t[g] ?? g}
-          </button>
-        ))}
-      </div>
-      <div id="map-container" class="h-full" aria-hidden="true"></div>
-    </aside>
-  </div>
-
-  <!-- Mobile: List/Map Toggle + List View -->
-  <div class="lg:hidden">
-    <div class="flex gap-2 mb-4" id="view-toggle" role="tablist" aria-label="View mode">
-      <button type="button" id="view-list" role="tab" aria-selected="true" class="btn-pill flex-1 bg-fill text-on-fill">{t.list}</button>
-      <button type="button" id="view-map" role="tab" aria-selected="false" class="btn-pill flex-1">{t.map}</button>
+    <div id="pagination" class="mt-6 flex justify-center gap-3">
+      <button type="button" id="load-more" class="btn btn-soft">{t.loadMore}</button>
     </div>
-
-    <div id="mobile-list" role="tabpanel" aria-labelledby="view-list">
-      <h2 class="sr-only">{t.results}</h2>
-      <p id="results-count-mobile" class="text-sm text-muted mb-4" aria-live="polite">{resources.length} {t.results}</p>
-
-      <div class="grid gap-4 grid-cols-1" id="resource-grid-mobile">
-        {resources.map((r) => (
-          <div
-            class="resource-item h-full"
-            data-resource-id={r.id}
-            data-group={r.group}
-            data-name={r.name.toLowerCase()}
-            data-desc={r.description.toLowerCase()}
-            data-tags={r.tags.join(' ').toLowerCase()}
-            data-open={r.nextAvail?.status === 'OPEN' ? '1' : '0'}
-            data-lat={r.lat}
-            data-lng={r.lng}
-            data-city={(r.city || '').toLowerCase()}
-            data-state={(r.state || '').toUpperCase()}
-          >
-            <ResourceCard resource={r} />
-          </div>
-        ))}
-      </div>
-
-      <div id="pagination-mobile" class="mt-6 flex justify-center gap-3">
-        <button type="button" id="load-more-mobile" class="btn btn-soft">{t.loadMore}</button>
-      </div>
-
-      <div id="empty-state-mobile" class="empty-state hidden" role="status" aria-live="polite">
-        <svg class="size-16 mx-auto text-line/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          <line x1="8" y1="8" x2="14" y2="14" />
-          <line x1="14" y1="8" x2="8" y2="14" />
-        </svg>
-        <h3 class="text-lg font-semibold mt-4 text-body">{t.empty}</h3>
-        <p class="text-muted mt-1">Try one of these:</p>
-        <ul class="mt-4 space-y-2 text-sm text-muted text-left max-w-xs mx-auto">
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.widenRadius}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.clearCategory}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.uncheckOpenNow}</li>
-          <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.searchDifferent}</li>
-        </ul>
-        <button type="button" id="clear-all-filters-mobile" class="btn-pill mt-6 bg-fill text-on-fill">{t.clearFilters}</button>
-      </div>
+      <button type="button" id="load-more" class="btn btn-soft">{t.loadMore}</button>
     </div>
-
-    <div id="mobile-map" role="tabpanel" aria-labelledby="view-map" hidden>
-      <div id="map-legend-mobile" class="flex flex-wrap gap-2 mb-4" role="tablist" aria-label="Map categories">
-        {allGroups.filter(g => g !== 'saved' && g !== 'all').map(g => (
-          <button type="button" role="tab" data-mapgroup={g} class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors" aria-selected="false">
-            {t[g] ?? g}
-          </button>
-        ))}
-      </div>
-      <div id="map-container-mobile" class="rounded-2xl overflow-hidden border border-line" style="height: 50vh; min-height: 300px;" aria-hidden="true"></div>
+    <div id="empty-state" class="empty-state hidden" role="status" aria-live="polite">
+      <svg class="size-16 mx-auto text-line/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="8" x2="14" y2="14"/><line x1="14" y1="8" x2="8" y2="14"/></svg>
+      <h3 class="text-lg font-semibold mt-4 text-body">{t.empty}</h3>
+      <p class="text-muted mt-1">Try one of these:</p>
+      <ul class="mt-4 space-y-2 text-sm text-muted text-left max-w-xs mx-auto">
+        <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.widenRadius}</li>
+        <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.clearCategory}</li>
+        <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.uncheckOpenNow}</li>
+        <li class="flex items-center gap-2"><span class="size-5 rounded-full bg-inset flex items-center justify-center"><svg class="size-3 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></span> {t.searchDifferent}</li>
+      </ul>
+      <button type="button" id="clear-all-filters" class="btn-pill mt-6 bg-fill text-on-fill">{t.clearFilters}</button>
+    </div>
+  </div><!-- Directory Map (Desktop and Mobile) -->
+  <div class="directory-map-panel" role="tabpanel" aria-label="Map view">
+    <div class="directory-map-legend" role="tablist" aria-label="Map categories">
+      {(allGroups.filter((g) => g !== 'saved' && g !== 'all') as string[]).map((g) => (
+        <button
+          type="button"
+          role="tab"
+          data-mapgroup={g}
+          class="map-legend-chip rounded-full px-3 py-1 text-xs font-semibold bg-inset text-body hover:bg-line transition-colors"
+          aria-selected="false"
+        >
+          {t[g] ?? g}
+        </button>
+      ))}
+    </div>
+    <div id="map-container" class="rounded-2xl overflow-hidden border border-line" style="height: 60vh; min-height: 400px;" aria-hidden="true">
+      <div id="map" class="h-full w-full"></div>
     </div>
   </div>
-</section>
 
-<!-- Emergency Help Banner -->
-<div class="py-6 bg-fill-caution text-on-fill" style="color:#111;">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-center gap-3 text-center">
-    <span class="text-lg font-semibold">{t.needHelp}</span>
-    <a href="tel:211" class="btn btn-black">{t.call211}</a>
-    <a href="tel:988" class="btn btn-outline-light" style="border-color:#111; color:#111;">{t.crisis988}</a>
-  </div>
-</div>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer is:inline>
+    // ZIP code lookup - convert ZIP to coordinates using Nominatim (OpenStreetMap)
+    async function lookupZipCode(zip) {
+      const zipInput = document.getElementById('zip-input');
+      const radiusSelect = document.getElementById('radius-select');
+      const stateFilter = document.getElementById('state-filter');
+      
+      if (!zip || zip.length !== 5 || !/^[0-9]+$/.test(zip)) {
+        return null;
+      }
+      
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?postalcode=${zip}&format=json&limit=1&addressdetails=1`, {
+          headers: { 'User-Agent': 'BaseImpact-Directory/1.0' }
+        });
+        
+        const data = await response.json();
+        if (data && data.length > 0) {
+          const location = data[0];
+          const lat = parseFloat(location.lat);
+          const lng = parseFloat(location.lon);
+          
+          // Update map if shown
+          const mapPanel = document.querySelector('.directory-map-panel');
+          if (mapPanel && mapPanel.style.display !== 'none') {
+            if (typeof L !== 'undefined') {
+              const map = L.map('map');
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 18,
+              }).addTo(map);
+              
+              // Get resource data from the server
+              const resourceData = JSON.parse(document.getElementById('resource-data').textContent);
+              
+              // Group resources by category
+              const categories = {};
+              (resourceData || []).forEach(r => {
+                const group = r.group || 'other';
+                if (!categories[group]) {
+                  categories[group] = [];
+                }
+                categories[group].push(r);
+              });
+              
+              // Create markers
+              const layers = {};
+              const categoryButtons = document.querySelectorAll('[data-mapgroup]');
+              
+              categoryButtons.forEach(btn => {
+                const group = btn.dataset.mapgroup;
+                layers[group] = L.layerGroup();
+                
+                (categories[group] || []).forEach(r => {
+                  if (r.lat && r.lng) {
+                    const marker = L.marker([r.lat, r.lng]).bindPopup(`
+                      <div class="popup-content">
+                        <h3 class="popup-title">${escapeHtml(r.name)}</h3>
+                        <p class="popup-category">${escapeHtml(r.category)}</p>
+                        <p class="popup-distance">${r.distanceMiles ? r.distanceMiles.toFixed(1) + ' mi away' : ''}</p>
+                        <p class="popup-address">${escapeHtml(r.address || '')}</p>
+                        <p class="popup-phone">${r.phone ? 'Phone: ' + escapeHtml(r.phone) : ''}</p>
+                        ${r.website ? `<p class="popup-website"><a href="${escapeHtml(r.serviceUrl || r.website)}" target="_blank" rel="noopener">${escapeHtml(r.serviceUrl || r.website)}</a></p>` : ''}
+                        ${r.nextAvail?.status === 'OPEN' ? '<span class="popup-open">Open now</span>' : ''}
+                      </div>
+                    `);
+                    layers[group].addLayer(marker);
+                  }
+                });
+                
+                btn.addEventListener('click', function() {
+                  map.closePopup();
+                  Object.keys(layers).forEach(key => {
+                    layers[key].setVisible(false);
+                  });
+                  layers[group].setVisible(true);
+                  layers[group].addTo(map);
+                  categoryButtons.forEach(b => b.setAttribute('aria-selected', 'false'));
+                  btn.setAttribute('aria-selected', 'true');
+                });
+              });
+              
+              Object.values(layers).forEach(layer => {
+                if (layer instanceof L.layerGroup) {
+                  layer.addTo(map);
+                }
+              });
+              
+              // Fit bounds to show all markers
+              const group = Object.keys(categories).find(g => categories[g] && categories[g].length > 0);
+              if (group && categories[group].length > 0) {
+                const bounds = [];
+                categories[group].forEach(r => {
+                  if (r.lat && r.lng) {
+                    bounds.push([r.lat, r.lng]);
+                  }
+                });
+                if (bounds.length > 0) {
+                  map.fitBounds(bounds, { padding: [50, 50] });
+                }
+              }
+              
+              function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+              }
+            }
+          }
+          
+          // Update filter state
+          if (radiusSelect) {
+            radiusSelect.value = '5';
+          }
+          if (stateFilter) {
+            stateFilter.value = 'FL';
+          }
+          
+          return { lat, lng, zip };
+        }
+      } catch (error) {
+        console.warn('ZIP lookup failed:', error);
+      }
+      return null;
+    }
+    
+    // ZIP code lookup on button click or Enter key
+    const zipInput = document.getElementById('zip-input');
+    const useLocationBtn = document.getElementById('use-location-btn');
+    
+    if (zipInput) {
+      zipInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          lookupZipCode(zipInput.value);
+        }
+      });
+    }
+    
+    if (useLocationBtn) {
+      useLocationBtn.addEventListener('click', function() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function(position) {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              
+              // Reverse geocode to get ZIP code
+              fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1`, {
+                headers: { 'User-Agent': 'BaseImpact-Directory/1.0' }
+              })
+              .then(res => res.json())
+              .then(data => {
+                const zip = data.postcode || data.zipcode || data.address?.postcode;
+                if (zip) {
+                  zipInput.value = zip;
+                  lookupZipCode(zip);
+                }
+              })
+              .catch(err => console.warn('Reverse geocoding failed:', err));
+            },
+            function(error) {
+              console.warn('Geolocation error:', error);
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+          );
+        } else {
+          alert('Geolocation is not supported by your browser.');
+        }
+      });
+    }
+</script>
+  <script>
+    // Initialize map when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const map = L.map('map').setView([28.326, -80.751], 12); // Mims, FL 32754
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18,
+      }).addTo(map);
+      
+      // Get resource data from the server
+      const resourceData = JSON.parse(document.getElementById('resource-data').textContent);
+      
+      // Group resources by category
+      const categories = {};
+      (resourceData || []).forEach(r => {
+        const group = r.group || 'other';
+        if (!categories[group]) {
+          categories[group] = [];
+        }
+        categories[group].push(r);
+      });
+      
+      // Layer group for each category
+      const layers = {};
+      const categoryButtons = document.querySelectorAll('[data-mapgroup]');
+      
+      categoryButtons.forEach(btn => {
+        const group = btn.dataset.mapgroup;
+        layers[group] = L.layerGroup();
+        
+        // Create markers for each resource in this category
+        (categories[group] || []).forEach(r => {
+          if (r.lat && r.lng) {
+            const marker = L.marker([r.lat, r.lng]).bindPopup(`
+              <div class="popup-content">
+                <h3 class="popup-title">${escapeHtml(r.name)}</h3>
+                <p class="popup-category">${escapeHtml(r.category)}</p>
+                <p class="popup-distance">${r.distanceMiles ? r.distanceMiles.toFixed(1) + ' mi away' : ''}</p>
+                <p class="popup-address">${escapeHtml(r.address || '')}</p>
+                <p class="popup-phone">${r.phone ? 'Phone: ' + escapeHtml(r.phone) : ''}</p>
+                ${r.website ? `<p class="popup-website"><a href="${escapeHtml(r.serviceUrl || r.website)}" target="_blank" rel="noopener">${escapeHtml(r.serviceUrl || r.website)}</a></p>` : ''}
+                ${r.nextAvail?.status === 'OPEN' ? '<span class="popup-open">Open now</span>' : ''}
+              </div>
+            `);
+            layers[group].addLayer(marker);
+          }
+        });
+        
+        btn.addEventListener('click', function() {
+          map.closePopup();
+          Object.keys(layers).forEach(key => {
+            layers[key].setVisible(false);
+          });
+          layers[group].setVisible(true);
+          layers[group].addTo(map);
+          categoryButtons.forEach(b => b.setAttribute('aria-selected', 'false'));
+          btn.setAttribute('aria-selected', 'true');
+        });
+      });
+      
+      // Add all layers initially
+      Object.values(layers).forEach(layer => {
+        if (layer instanceof L.layerGroup) {
+          layer.addTo(map);
+        }
+      });
+      
+      // Fit bounds to show all markers
+      const group = Object.keys(categories).find(g => categories[g] && categories[g].length > 0);
+      if (group && categories[group].length > 0) {
+        const bounds = [];
+        categories[group].forEach(r => {
+          if (r.lat && r.lng) {
+            bounds.push([r.lat, r.lng]);
+          }
+        });
+        if (bounds.length > 0) {
+          map.fitBounds(bounds, { padding: [50, 50] });
+        }
+      }
+      
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    });
+  </script>
+  
+  <style>
+    #map { height: 100%; min-height: 400px; }
+    .popup-content {
+      padding: 1rem;
+      min-width: 200px;
+    }
+    .popup-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .popup-category {
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      margin-bottom: 0.25rem;
+    }
+    .popup-distance {
+      font-size: 0.8rem;
+      color: var(--color-accent);
+      margin-bottom: 0.25rem;
+    }
+    .popup-address {
+      font-size: 0.8rem;
+      color: var(--color-body);
+      margin-bottom: 0.25rem;
+    }
+    .popup-phone {
+      font-size: 0.8rem;
+      color: var(--color-link);
+    }
+    .popup-website {
+      font-size: 0.8rem;
+    }
+    .popup-open {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--color-positive);
+      color: var(--color-on-positive);
+      border-radius: 9999px;
+    }
+  </style><script type="application/json" id="resource-data" set:html={mapData} is:inline></script>
 
-<!-- Report Dialog -->
-<dialog id="report-dialog" class="rounded-5 p-0 w-full max-w-md border-0 bg-transparent" role="dialog" aria-labelledby="report-dialog-title" aria-describedby="report-dialog-description">
-  <form id="report-form" class="rounded-5 bg-card p-6 space-y-4 border-line" method="post" style="border:1px solid var(--color-line);">
-    <h2 id="report-dialog-title" class="text-xl font-semibold" style="color:var(--color-body);">{t.reportTitle}</h2>
-    <p id="report-dialog-description" class="text-sm text-muted">{t.resourceLabel} <span id="report-resource-name" class="font-semibold" style="color:var(--color-body);"></span></p>
-    <input type="hidden" id="report-resource-id" />
-    <div>
-      <label for="report-issue-type" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.whatWrong}</label>
-      <select id="report-issue-type" required class="w-full rounded-lg border-line px-3 py-3 min-h-11" style="background:var(--color-page); color:var(--color-body);">
-        <option value="">{t.chooseOne}</option>
-        <option value="wrong-phone">{t.wrongPhone}</option>
-        <option value="wrong-address">{t.wrongAddress}</option>
-        <option value="wrong-hours">{t.wrongHours}</option>
-        <option value="closed-or-moved">{t.closedMoved}</option>
-        <option value="not-real-resource">{t.notReal}</option>
-        <option value="other">{t.other}</option>
-      </select>
-    </div>
-    <div>
-      <label for="report-details" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.details}</label>
-      <textarea id="report-details" rows="3" class="w-full rounded-lg border-line px-3 py-3" style="background:var(--color-page); color:var(--color-body);" placeholder={t.tellUs}></textarea>
-    </div>
-    <div>
-      <label for="report-email" class="block text-sm font-semibold mb-1" style="color:var(--color-body);">{t.email}</label>
-      <input type="email" id="report-email" class="w-full rounded-lg border-line px-3 py-3 min-h-11" style="background:var(--color-page); color:var(--color-body);" placeholder="you@example.com" />
-    </div>
-    <TurnstileWidget />
-    <div class="flex gap-2 pt-2">
-      <button type="button" id="report-cancel" class="flex-1 rounded-xl border-line bg-card px-4 py-3 text-sm font-semibold text-body hover:bg-inset transition-colors">{t.cancel}</button>
-      <button type="submit" id="report-submit" class="flex-1 rounded-xl bg-fill px-4 py-3 text-sm font-semibold text-on-fill hover:bg-fill-hover transition-colors">{t.send}</button>
-    </div>
-    <p id="report-status" class="text-sm text-center" role="status"></p>
-  </form>
-</dialog>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer is:inline></script>
-<script src="/js/directory.js" defer is:inline></script>
-<script src="/js/report.js" defer is:inline></script>
-
-<script type="application/json" id="resource-data" set:html={mapData} is:inline></script>
+  <script>
+    // View toggle functionality - switch between list and map views
+    document.addEventListener('DOMContentLoaded', function() {
+      const viewListBtn = document.getElementById('view-list');
+      const viewMapBtn = document.getElementById('view-map');
+      const listPanel = document.querySelector('.directory-list-panel');
+      const mapPanel = document.querySelector('.directory-map-panel');
+      
+      if (viewListBtn && viewMapBtn && listPanel && mapPanel) {
+        // Show list view by default
+        listPanel.style.display = 'block';
+        mapPanel.style.display = 'none';
+        
+        viewListBtn.addEventListener('click', function() {
+          listPanel.style.display = 'block';
+          mapPanel.style.display = 'none';
+          viewListBtn.setAttribute('aria-selected', 'true');
+          viewMapBtn.setAttribute('aria-selected', 'false');
+        });
+        
+        viewMapBtn.addEventListener('click', function() {
+          listPanel.style.display = 'none';
+          mapPanel.style.display = 'block';
+          viewListBtn.setAttribute('aria-selected', 'false');
+          viewMapBtn.setAttribute('aria-selected', 'true');
+          
+          // Initialize map when map view is selected
+          if (typeof initializeMap === 'undefined') {
+            initializeMap();
+          }
+        });
+      }
+    });
+    
+    // Initialize map function (extracted from the inline script)
+    function initializeMap() {
+      if (typeof L === 'undefined') return;
+      
+      const map = L.map('map').setView([28.326, -80.751], 12);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        maxZoom: 18,
+      }).addTo(map);
+      
+      // Get resource data from the server
+      const resourceData = JSON.parse(document.getElementById('resource-data').textContent);
+      
+      // Group resources by category
+      const categories = {};
+      (resourceData || []).forEach(r => {
+        const group = r.group || 'other';
+        if (!categories[group]) {
+          categories[group] = [];
+        }
+        categories[group].push(r);
+      });
+      
+      // Layer group for each category
+      const layers = {};
+      const categoryButtons = document.querySelectorAll('[data-mapgroup]');
+      
+      categoryButtons.forEach(btn => {
+        const group = btn.dataset.mapgroup;
+        layers[group] = L.layerGroup();
+        
+        // Create markers for each resource in this category
+        (categories[group] || []).forEach(r => {
+          if (r.lat && r.lng) {
+            const marker = L.marker([r.lat, r.lng]).bindPopup(`
+              <div class="popup-content">
+                <h3 class="popup-title">${escapeHtml(r.name)}</h3>
+                <p class="popup-category">${escapeHtml(r.category)}</p>
+                <p class="popup-distance">${r.distanceMiles ? r.distanceMiles.toFixed(1) + ' mi away' : ''}</p>
+                <p class="popup-address">${escapeHtml(r.address || '')}</p>
+                <p class="popup-phone">${r.phone ? 'Phone: ' + escapeHtml(r.phone) : ''}</p>
+                ${r.website ? `<p class="popup-website"><a href="${escapeHtml(r.serviceUrl || r.website)}" target="_blank" rel="noopener">${escapeHtml(r.serviceUrl || r.website)}</a></p>` : ''}
+                ${r.nextAvail?.status === 'OPEN' ? '<span class="popup-open">Open now</span>' : ''}
+              </div>
+            `);
+            layers[group].addLayer(marker);
+          }
+        });
+        
+        btn.addEventListener('click', function() {
+          map.closePopup();
+          Object.keys(layers).forEach(key => {
+            layers[key].setVisible(false);
+          });
+          layers[group].setVisible(true);
+          layers[group].addTo(map);
+          categoryButtons.forEach(b => b.setAttribute('aria-selected', 'false'));
+          btn.setAttribute('aria-selected', 'true');
+        });
+      });
+      
+      // Add all layers initially
+      Object.values(layers).forEach(layer => {
+        if (layer instanceof L.layerGroup) {
+          layer.addTo(map);
+        }
+      });
+      
+      // Fit bounds to show all markers
+      const group = Object.keys(categories).find(g => categories[g] && categories[g].length > 0);
+      if (group && categories[group].length > 0) {
+        const bounds = [];
+        categories[group].forEach(r => {
+          if (r.lat && r.lng) {
+            bounds.push([r.lat, r.lng]);
+          }
+        });
+        if (bounds.length > 0) {
+          map.fitBounds(bounds, { padding: [50, 50] });
+        }
+      }
+      
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    }
+  </script></section>
