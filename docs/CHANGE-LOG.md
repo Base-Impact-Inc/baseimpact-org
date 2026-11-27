@@ -2,6 +2,13 @@
 
 Repo: `/home/eric/projects/baseimpact-org` · Production domain: `https://baseimpact.org` (only domain)
 
+## 2026-11-27 — AI campaign expanded: rural enterprise, Life Group, skills training (deployed)
+
+- Added to `/ai-hardware-campaign/`: "From casework to local enterprise" (startups, websites, jobs, existing small businesses, shared tools, keeping value local), "What we intend to teach" (AI literacy, prompting, programming, web, ML, workplace skills), and a Life Group section with do/don't lists and join/ask CTAs.
+- Funder section now accepts instructor time, curriculum, venues and student devices as donations, and reports workshop attendance, skills sessions, and consented job/business outcomes. "Four ways" became six with /join and workshop-hosting cards.
+- Blog article gained matching sections on rural development and the Life Group/teaching plan; description and tags updated; honest-status wording now says the group is starting and workshops are planned, not scheduled.
+- Verification: `npm run build` passed; built HTML contains all five new headings; headless Chrome 1280px + 390px returned 200 on both pages with H1 visible, no missing alt, no horizontal overflow (390/390), zero `pageerror`; `npx wrangler deploy` → version `2869bfb6`; live curl confirmed all five new headings on both URLs.
+
 ## 2026-11-27 — Resource notes, reclassification, link audit & distance research (deployed)
 
 ### Changes
