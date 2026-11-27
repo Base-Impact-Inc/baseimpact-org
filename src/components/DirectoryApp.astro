@@ -49,6 +49,7 @@ const COPY: Record<string, Record<string, string>> = {
     walking: 'Walking',
     all: 'All', food: 'Food', shelter: 'Shelter', health: 'Health',
     money: 'Money Help', gas: 'Gas', basics: 'Basics', technology: 'Technology', crisis: 'Crisis', saved: 'Saved',
+    education: 'Education', work: 'Work & Jobs', legal: 'Legal Aid',
     openNow: 'Only show open now',
     list: 'List', map: 'Map', print: 'Print list',
     loadMore: 'Load more', showAll: 'Show all',
@@ -93,6 +94,7 @@ const COPY: Record<string, Record<string, string>> = {
     walking: 'Caminando',
     all: 'Todos', food: 'Comida', shelter: 'Refugio', health: 'Salud',
     money: 'Ayuda económica', gas: 'Gas', basics: 'Básicos', technology: 'Tecnología', crisis: 'Crisis', saved: 'Guardados',
+    education: 'Educación', work: 'Trabajo', legal: 'Ayuda legal',
     openNow: 'Mostrar solo abiertos ahora',
     list: 'Lista', map: 'Mapa', print: 'Imprimir lista',
     loadMore: 'Cargar más', showAll: 'Mostrar todo',
@@ -126,12 +128,12 @@ const t = COPY[locale];
 // Group definitions for accordion chip groups
 const chipGroups = [
   { id: 'essentials', label: t.essentials, groups: ['food', 'shelter', 'health'] },
-  { id: 'support', label: t.support, groups: ['money', 'gas', 'basics', 'technology'] },
-  { id: 'crisis-saved', label: t.crisisSaved, groups: ['crisis', 'saved'] },
+  { id: 'support', label: t.support, groups: ['money', 'gas', 'basics', 'technology', 'education', 'work'] },
+  { id: 'crisis-saved', label: t.crisisSaved, groups: ['crisis', 'legal', 'saved'] },
 ];
 
 // Flat group list for mobile sheet (all groups)
-const allGroups = ['all', 'food', 'shelter', 'health', 'money', 'gas', 'basics', 'technology', 'crisis', 'saved'];
+const allGroups = ['all', 'food', 'shelter', 'health', 'money', 'gas', 'basics', 'technology', 'education', 'work', 'crisis', 'legal', 'saved'];
 
 // Unique states, derived server-side so the filter works even without JS.
 const states = Array.from(new Set(resources.map((r) => r.state).filter(Boolean))).sort() as string[];
@@ -288,7 +290,7 @@ const mapData = JSON.stringify(cardData);
                 <button
                   type="button"
                   data-group={g}
-                  class="rounded-full px-3 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm transition-colors {g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line'}"
+                  class:list={['rounded-full px-3 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm transition-colors', g === 'all' ? 'bg-fill text-on-fill' : 'bg-inset text-body hover:bg-line']}
                 >
                   {t[g] ?? g}
                 </button>

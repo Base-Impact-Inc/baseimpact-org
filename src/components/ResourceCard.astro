@@ -162,6 +162,12 @@ const photoCandidate = resource.photo || resource.image || '';
         <p>{descPreview}</p>
       </details>
     )}
+    {resource.notes && (
+      <details class="resource-card-description">
+        <summary>Research notes</summary>
+        <p style="white-space: pre-line;">{resource.notes}</p>
+      </details>
+    )}
   </div>
 
   <!-- Primary actions -->

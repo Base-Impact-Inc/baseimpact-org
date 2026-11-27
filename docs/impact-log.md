@@ -29,6 +29,7 @@ Living document tracking all projects, people helped, and events. Updated as new
 | 21 | LifePointe Ministries Cold-Weather Shelter Training | 2026-09-19 | Community News | `src/content/posts/lifepointe-cold-weather-shelter.md` (published) |
 | 22 | Scam Awareness at LifePointe Ministries | 2026-10-21 | Community News | `src/content/posts/lifepointe-scam-awareness.md` (published) |
 | 23 | Home Visit Helping a Senior Neighbor | 2026-10-29 | Impact Stories | `src/content/posts/helping-seniors-home-visit.md` (published) |
+| 24 | A Local AI Lab for the Neighbors We Serve (AI hardware campaign) | 2026-11-27 | Community News | `src/content/posts/ai-hardware-campaign.md` (published; links to `/ai-hardware-campaign`) |
 
 ## Pending / Undocumented Stories (need to be added)
 

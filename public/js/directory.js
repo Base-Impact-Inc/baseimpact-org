@@ -37,6 +37,9 @@
 
   // --- Map legend chips ---
   const mapChips = Array.from(document.querySelectorAll('.map-legend-chip, #map-legend-mobile button[data-mapgroup]'));
+  mapChips.forEach(chip => {
+    chip.addEventListener('click', () => filterMap(chip.getAttribute('data-mapgroup') || 'all'));
+  });
 
   // --- View toggle ---
   const viewListBtn = $('view-list');
@@ -97,6 +100,14 @@
   // --- State ---
   let visibleCount = PAGE_SIZE;
   let activeGroup = 'all';
+  // Deep links such as the nav's "Crisis Help (211)" → /directory?filter=crisis
+  // must preselect the same chip a user would click. Validate against the
+  // rendered chips so unknown values are ignored instead of yielding an
+  // empty list. syncChips()/render() at the end of init apply this state.
+  const requestedFilter = (new URLSearchParams(window.location.search).get('filter') || '').trim().toLowerCase();
+  if (requestedFilter && allChips.some(chip => chip.getAttribute('data-group') === requestedFilter)) {
+    activeGroup = requestedFilter;
+  }
   let activeState = 'all';
   let query = '';
   let openOnly = false;
@@ -109,6 +120,7 @@
   let allMarkers = [];
   let mapInitialised = false;
   let currentMapGroup = 'all';
+  let visibleIds = null;
   let roadMode = 'driving';
   let roadDistances = new Map();
   let roadUpgradeSeq = 0;
@@ -117,7 +129,8 @@
   try {
     savedIds = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]');
     location = JSON.parse(sessionStorage.getItem(LOCATION_KEY) || 'null');
-    radius = parseInt(sessionStorage.getItem(RADIUS_KEY) || '0', 10) || 0;
+    const storedRadius = sessionStorage.getItem(RADIUS_KEY);
+    radius = parseInt(storedRadius ?? radiusSelect?.value ?? '0', 10) || 0;
     recentSearches = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || '[]');
     const storedMode = sessionStorage.getItem(ROAD_MODE_KEY);
     if (storedMode && Object.prototype.hasOwnProperty.call(ROAD_PROFILES, storedMode)) {
@@ -126,6 +139,7 @@
   } catch {
     /* ignore malformed storage */
   }
+  syncSelectors([radiusSelect], String(radius));
 
   // --- Helpers ---
   function syncSelectors(selectors, value) {
@@ -151,7 +165,9 @@
     if (!savedBar || !savedCountEl) return;
     const count = savedIds.length;
     savedCountEl.textContent = `${count} ${savedCountEl.dataset.label || 'saved'}`;
-    savedBar.hidden = count === 0 || activeGroup !== 'saved';
+    const hideSavedBar = count === 0 || activeGroup !== 'saved';
+    savedBar.hidden = hideSavedBar;
+    savedBar.classList.toggle('hidden', hideSavedBar);
   }
 
   function saveRecentSearch(q) {
@@ -324,6 +340,7 @@
     if (!currentGrid) return;
 
     let matched = itemsNow.filter(matches);
+    visibleIds = new Set(matched.map(item => item.getAttribute('data-resource-id')));
 
     if (location) {
       matched.sort((a, b) => itemDistance(a) - itemDistance(b));
@@ -358,6 +375,7 @@
 
     updateSavedBar();
     updateSaveButtons();
+    if (mapInitialised) filterMap(currentMapGroup);
   }
 
   // --- Load more ---
@@ -524,6 +542,7 @@
 
     clearRoadDistances();
     visibleCount = PAGE_SIZE;
+    currentMapGroup = 'all';
     render();
   }
 
@@ -577,7 +596,7 @@
   function setLocation(loc, label) {
     location = { lat: loc.lat, lng: loc.lng, label };
     sessionStorage.setItem(LOCATION_KEY, JSON.stringify(location));
-    if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label}` : '';
+    if (locationStatus) locationStatus.textContent = label ? `Showing results near ${label} · straight-line distance (road distances load shortly)` : '';
     syncSelectors([zipInput], '');
     visibleCount = PAGE_SIZE;
     clearRoadDistances();
@@ -655,7 +674,7 @@
   }
 
   function escapeHTML(value) {
-    return String(value).replace(/[&<>\"']/g, c => ({ '&': '&', '<': '<', '>': '>', '"': '"', "'": "'" }[c]));
+    return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
   function initMap(container) {
@@ -677,6 +696,7 @@
       const marker = L.marker([lat, lng]);
       marker.bindPopup(buildPopup(r));
       marker._group = r.group || 'all';
+      marker._data = r;
       allMarkers.push(marker);
         marker.addTo(layerGroup);
       bounds.push([lat, lng]);
@@ -686,9 +706,6 @@
 
     const legend = mapLegend;
     legend?.classList.remove('hidden');
-    legend?.querySelectorAll('.map-legend-chip').forEach(chip => {
-      chip.addEventListener('click', () => filterMap(chip.getAttribute('data-mapgroup') || 'all'));
-    });
 
     map = mapInstance; markerLayer = layerGroup;
 
@@ -712,7 +729,10 @@
     // the layer group skips entries and permanently drops markers.
     layer.clearLayers();
     allMarkers.forEach(m => {
-      if (group === 'all' || m._group === group) layer.addLayer(m);
+      const id = String(m._data?.id ?? '');
+      const groupOk = group === 'all' || m._group === group;
+      const listOk = !visibleIds || visibleIds.has(id);
+      if (groupOk && listOk) layer.addLayer(m);
     });
   }
 
@@ -729,6 +749,7 @@
     viewMapBtn?.classList.add('bg-inset', 'text-body');
     viewListBtn?.setAttribute('aria-selected', 'true');
     viewMapBtn?.setAttribute('aria-selected', 'false');
+    mapContainer?.setAttribute('aria-hidden', 'true');
 
   }
 
@@ -745,7 +766,9 @@
     viewMapBtn?.setAttribute('aria-selected', 'true');
     viewListBtn?.setAttribute('aria-selected', 'false');
     if (!mapInitialised) setTimeout(() => initMap('map-container'), 200);
+    else filterMap(currentMapGroup);
     if (map) setTimeout(() => map.invalidateSize(), 250);
+    mapContainer?.setAttribute('aria-hidden', 'false');
 
   }
 
@@ -868,7 +891,7 @@
   // --- Restore session ---
   if (radiusSelect && radius) radiusSelect.value = String(radius);
   if (distanceModeSelect) distanceModeSelect.value = roadMode;
-  if (location && locationStatus) locationStatus.textContent = `Showing results near ${location.label}`;
+  if (location && locationStatus) locationStatus.textContent = `Showing results near ${location.label} · straight-line distance (road distances load shortly)`;
   syncChips();
   updateSaveButtons();
   updateActiveFilterCount();

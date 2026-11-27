@@ -13,7 +13,7 @@ export type ResourceCategory =
   | "Showers & Hygiene"
   | "Gas & Transportation Assistance";
 
-export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Statewide";
+export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Indian River" | "Seminole" | "Osceola" | "St. Lucie" | "Polk" | "Lake" | "Statewide";
 
 /**
  * What kind of help an entry provides - the single browse taxonomy.
@@ -23,7 +23,7 @@ export type ResourceCounty = "Brevard" | "Volusia" | "Orange" | "Statewide";
  * runs it", and conflating the two is what put children's health insurance under a
  * jobs heading.
  */
-export type HelpGroup = "food" | "shelter" | "health" | "money" | "gas" | "basics" | "crisis" | "technology";
+export type HelpGroup = "food" | "shelter" | "health" | "money" | "gas" | "basics" | "crisis" | "technology" | "education" | "work" | "legal";
 
 export type HelpService = "Food" | "Faith" | "Charity";
 
@@ -104,6 +104,25 @@ export type Resource = {
   languages?: string[];
   /** Accessibility notes: wheelchair access, transit proximity, etc. */
   accessibility?: string;
+  /** Free / reduced cost / sliding scale, as stated by the source listing. */
+  cost?: string;
+  /** Who the program actually serves (counties/states or all US), verbatim from source. */
+  coverage?: string;
+  /** Organization or program that published the source listing. */
+  provider?: string;
+  /** Visit / Call / Email / Apply online — how a visitor starts. */
+  contactMethod?: string;
+  ageGroups?: string;
+  disabilitySupported?: string;
+  incomeEligibility?: string;
+  insuranceAccepted?: string;
+  immigrationStatus?: string;
+  mentalHealthSupport?: string;
+  importedSource?: string;
+  sourceType?: string;
+  importDate?: string;
+  /** Long-form research notes: what is included, dollar/frequency limits, documents, and working program links. */
+  notes?: string;
   /**
    * True when the organization has no public walk-in location, or is a phone-based
    * service. Distance and street directions are meaningless for these entries, so the

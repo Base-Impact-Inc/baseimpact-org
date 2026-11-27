@@ -78,6 +78,20 @@ export function rowToResource(row: Row): Resource {
     documents: row.documents ? str(row.documents) : undefined,
     languages: parseJSON<string[]>(row.languages, []),
     accessibility: row.accessibility ? str(row.accessibility) : undefined,
+    cost: row.cost ? str(row.cost) : undefined,
+    coverage: row.coverage_area ? str(row.coverage_area) : undefined,
+    provider: row.provider ? str(row.provider) : undefined,
+    contactMethod: row.contact_method ? str(row.contact_method) : undefined,
+    ageGroups: row.age_groups ? str(row.age_groups) : undefined,
+    disabilitySupported: row.disability_supported ? str(row.disability_supported) : undefined,
+    incomeEligibility: row.income_eligibility ? str(row.income_eligibility) : undefined,
+    insuranceAccepted: row.insurance_accepted ? str(row.insurance_accepted) : undefined,
+    immigrationStatus: row.immigration_status ? str(row.immigration_status) : undefined,
+    mentalHealthSupport: row.mental_health_support ? str(row.mental_health_support) : undefined,
+    notes: row.notes ? str(row.notes) : undefined,
+    importedSource: row.imported_source ? str(row.imported_source) : undefined,
+    sourceType: row.source_type ? str(row.source_type) : undefined,
+    importDate: row.import_date ? str(row.import_date) : undefined,
   };
 }
 

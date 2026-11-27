@@ -47,7 +47,29 @@ CREATE TABLE IF NOT EXISTS resources (
   services TEXT NOT NULL DEFAULT '[]',
   county TEXT NOT NULL,
   last_verified TEXT,
-  mobile_only INTEGER NOT NULL DEFAULT 0
+  mobile_only INTEGER NOT NULL DEFAULT 0,
+  eligibility TEXT,
+  documents TEXT,
+  languages TEXT NOT NULL DEFAULT '[]',
+  accessibility TEXT,
+  cost TEXT,
+  coverage_area TEXT,
+  provider TEXT,
+  source_type TEXT,
+  contact_method TEXT DEFAULT 'visit',
+  has_hours_details INTEGER NOT NULL DEFAULT 0,
+  has_cost_info INTEGER NOT NULL DEFAULT 0,
+  languages_spoken TEXT DEFAULT 'English',
+  age_groups TEXT DEFAULT 'general',
+  disability_supported TEXT DEFAULT 'no',
+  income_eligibility TEXT DEFAULT 'none',
+  insurance_accepted TEXT DEFAULT 'none',
+  immigration_status TEXT DEFAULT 'no-restrictions',
+  mental_health_support TEXT DEFAULT 'no',
+  race_ethnicity TEXT DEFAULT 'no-data',
+  notes TEXT,
+  imported_source TEXT DEFAULT 'custom',
+  import_date TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_resources_county ON resources(county);

@@ -308,6 +308,7 @@ A charity and crisis-resource resource directory for Brevard, Volusia, and Orang
 | `/reports` | Static | Impact reports |
 | `/grants` | Static | Grants info |
 | `/grants/ai-toolkit` | Static | AI toolkit (grants subpage) |
+| `/ai-hardware-campaign` | Static | AI hardware campaign (funder/manufacturer ask, linked from grants + blog) |
 | `/log` | Static | Blog log |
 | `/share-your-story` | Static | Story submission |
 | `/accessibility` | Static | Accessibility statement |

@@ -12,3 +12,5 @@ All images come from Pexels under the [Pexels License](https://www.pexels.com/li
 | `public/assets/traveler-florida-heat-road.jpg` | `/blog/helping-travelers-florida-heat/` | 13743142 | https://www.pexels.com/photo/13743142/ |
 
 The old images on the jackets and travelers posts (`community-food-support.jpg`, `community-volunteers.jpg`) remain in `public/assets` because other posts may reference them. The internet-bill and job-search posts previously had no hero image.
+
+`public/assets/laptop-neat-desk.jpg` is an existing repo asset used as an **illustrative** hero on `/blog/ai-hardware-campaign/` and `/ai-hardware-campaign`. It was already in the repo when this campaign was written; its original source and licence record were not available, so it must not be described as a Base Impact photo or as a photo of a person we helped. Replace it with a verified-licence image before paid promotional use if provenance matters.

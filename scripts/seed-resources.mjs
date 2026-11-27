@@ -42,7 +42,10 @@ const COLUMNS = [
   'service_url', 'source_url', 'description', 'hours_text', 'schedule', 'tags',
   'partner_type', 'capacity_status', 'help_group', 'services', 'county',
   'last_verified', 'mobile_only', 'eligibility', 'documents', 'languages',
-  'accessibility',
+  'accessibility', 'cost', 'coverage_area', 'provider', 'source_type',
+  'contact_method', 'age_groups', 'disability_supported', 'income_eligibility',
+  'insurance_accepted', 'immigration_status', 'mental_health_support',
+  'notes', 'imported_source', 'import_date',
 ];
 
 function sqlLiteral(value) {
@@ -78,6 +81,20 @@ function rowToValues(resource) {
     resource.documents ?? null,
     JSON.stringify(resource.languages ?? []),
     resource.accessibility ?? null,
+    resource.cost ?? null,
+    resource.coverage ?? null,
+    resource.provider ?? null,
+    resource.sourceType ?? 'our-org',
+    resource.contactMethod ?? null,
+    resource.ageGroups ?? null,
+    resource.disabilitySupported ?? null,
+    resource.incomeEligibility ?? null,
+    resource.insuranceAccepted ?? null,
+    resource.immigrationStatus ?? null,
+    resource.mentalHealthSupport ?? null,
+    resource.notes ?? null,
+    resource.importedSource ?? null,
+    resource.importDate ?? null,
   ];
 }
 
